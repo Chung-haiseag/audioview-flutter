@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
+import '../help/privacy_policy_screen.dart';
+import '../help/terms_of_service_screen.dart';
+import '../help/faq_screen.dart';
+import '../help/user_guide_screen.dart';
+import '../help/request_content_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -278,27 +283,62 @@ class _SettingsScreenState extends State<SettingsScreen> {
         _buildHelpMenuItem(
           icon: Icons.shield_outlined,
           title: '개인정보 처리방침',
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const PrivacyPolicyScreen(),
+              ),
+            );
+          },
         ),
         _buildHelpMenuItem(
           icon: Icons.description_outlined,
           title: '이용약관',
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const TermsOfServiceScreen(),
+              ),
+            );
+          },
         ),
         _buildHelpMenuItem(
           icon: Icons.chat_bubble_outline,
           title: '자주 묻는 질문',
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const FAQScreen(),
+              ),
+            );
+          },
         ),
         _buildHelpMenuItem(
           icon: Icons.info_outline,
           title: '이용안내',
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const UserGuideScreen(),
+              ),
+            );
+          },
         ),
         _buildHelpMenuItem(
           icon: Icons.add_circle_outline,
           title: '새로운 작품 요청하기',
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const RequestContentScreen(),
+              ),
+            );
+          },
         ),
 
         const SizedBox(height: 32),
