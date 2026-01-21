@@ -53,7 +53,7 @@ class _CustomHeaderState extends State<CustomHeader> {
                   Expanded(
                     child: Center(
                       child: Text(
-                        widget.customTitle ?? 'AUDIOVIEW',
+                        widget.customTitle ?? '오디오뷰',
                         style: const TextStyle(
                           color: Color(0xFFE50914),
                           fontSize: 20,
