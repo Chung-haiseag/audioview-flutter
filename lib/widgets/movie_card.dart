@@ -5,12 +5,14 @@ class MovieCard extends StatelessWidget {
   final Movie movie;
   final bool showNewBadge;
   final VoidCallback? onTap;
+  final bool removeMargin; // For grid layout without spacing
 
   const MovieCard({
     super.key,
     required this.movie,
     this.showNewBadge = false,
     this.onTap,
+    this.removeMargin = false,
   });
 
   @override
@@ -19,7 +21,8 @@ class MovieCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: 120,
-        margin: const EdgeInsets.only(right: 12),
+        margin:
+            removeMargin ? EdgeInsets.zero : const EdgeInsets.only(right: 12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

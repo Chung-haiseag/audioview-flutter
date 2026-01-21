@@ -66,34 +66,30 @@ class CategoryListScreen extends StatelessWidget {
                 ],
               ),
             )
-          : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 0.6,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 20,
-                ),
-                itemCount: movies.length,
-                itemBuilder: (context, index) {
-                  return MovieCard(
-                    movie: movies[index],
-                    showNewBadge:
-                        index < 2, // Show NEW badge for first 2 movies
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MovieDetailScreen(
-                            movie: movies[index],
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
+          : GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 0.6,
+                crossAxisSpacing: 0,
+                mainAxisSpacing: 0,
               ),
+              itemCount: movies.length,
+              itemBuilder: (context, index) {
+                return MovieCard(
+                  movie: movies[index],
+                  showNewBadge: index < 2, // Show NEW badge for first 2 movies
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MovieDetailScreen(
+                          movie: movies[index],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
             ),
     );
   }
