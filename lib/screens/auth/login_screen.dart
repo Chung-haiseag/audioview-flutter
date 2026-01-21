@@ -18,17 +18,17 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
 
   Future<void> _handleLogin() async {
-    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) return;
+    if (_emailController.text.isEmpty || _passwordController.text.isEmpty)
+      return;
 
     setState(() => _isLoading = true);
 
     try {
       await Provider.of<AuthProvider>(context, listen: false)
           .login(_emailController.text, _passwordController.text);
-      
+
       if (mounted) {
-        // Navigate or let the AuthWrapper handle it
-       // In Flutter, usually AuthWrapper listens to AuthProvider and switches pages.
+        Navigator.pop(context);
       }
     } finally {
       if (mounted) {
@@ -43,36 +43,16 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          // Background Layer
+          // Background Image with Overlay
           Positioned.fill(
-            child: Opacity(
-              opacity: 0.2,
-              child: GridView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  childAspectRatio: 2 / 3,
-                  crossAxisSpacing: 4,
-                  mainAxisSpacing: 4,
-                ),
-                itemBuilder: (context, index) {
-                  return Image.network(
-                    'https://picsum.photos/seed/${index + 50}/300/450',
-                    fit: BoxFit.cover,
-                  );
-                },
-              ),
+            child: Image.network(
+              'https://images.unsplash.com/photo-1574267432553-4b4628081c31?q=80&w=1000&auto=format&fit=crop',
+              fit: BoxFit.cover,
             ),
           ),
           Positioned.fill(
             child: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [Colors.black87, Colors.black45, Colors.black],
-                ),
-              ),
+              color: Colors.black.withOpacity(0.7),
             ),
           ),
 
@@ -82,11 +62,13 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 // Header
                 Padding(
-                  padding: const EdgeInsets.all(24.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 12.0),
                   child: Row(
                     children: [
                       IconButton(
-                        icon: const Icon(LucideIcons.chevronLeft, color: Colors.white, size: 32),
+                        icon: const Icon(LucideIcons.chevronLeft,
+                            color: Colors.white, size: 28),
                         onPressed: () => Navigator.of(context).maybePop(),
                       ),
                       const SizedBox(width: 8),
@@ -97,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           fontSize: 24,
                           fontWeight: FontWeight.w900,
                           fontStyle: FontStyle.italic,
-                          letterSpacing: 2,
+                          letterSpacing: 1,
                         ),
                       ),
                     ],
@@ -109,7 +91,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 32),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const SizedBox(height: 40),
                         const Text(
@@ -122,94 +103,165 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         const SizedBox(height: 32),
 
-                        // Form
+                        // Email Field
                         TextField(
                           controller: _emailController,
                           style: const TextStyle(color: Colors.white),
-                          decoration: const InputDecoration(
-                            labelText: '이메일 주소 또는 전화번호',
-                            prefixIcon: Icon(LucideIcons.mail, color: Colors.grey),
+                          decoration: InputDecoration(
+                            hintText: '이메일 주소 또는 전화번호',
+                            hintStyle: TextStyle(color: Colors.grey[400]),
+                            filled: true,
+                            fillColor: const Color(0xFF333333),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide.none,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 16),
                           ),
                         ),
                         const SizedBox(height: 16),
-                        
+
+                        // Password Field
                         TextField(
                           controller: _passwordController,
                           obscureText: !_showPassword,
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
-                            labelText: '비밀번호',
-                            prefixIcon: const Icon(LucideIcons.lock, color: Colors.grey),
+                            hintText: '비밀번호',
+                            hintStyle: TextStyle(color: Colors.grey[400]),
+                            filled: true,
+                            fillColor: const Color(0xFF333333),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide.none,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 16),
                             suffixIcon: IconButton(
                               icon: Icon(
-                                _showPassword ? LucideIcons.eyeOff : LucideIcons.eye,
+                                _showPassword
+                                    ? LucideIcons.eye
+                                    : LucideIcons.eyeOff,
                                 color: Colors.grey,
                               ),
-                              onPressed: () => setState(() => _showPassword = !_showPassword),
+                              onPressed: () => setState(
+                                  () => _showPassword = !_showPassword),
                             ),
                           ),
                         ),
                         const SizedBox(height: 24),
 
+                        // Login Button
                         ElevatedButton(
                           onPressed: _isLoading ? null : _handleLogin,
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 16),
                             backgroundColor: const Color(0xFFE50914),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8)),
+                            disabledBackgroundColor:
+                                const Color(0xFFE50914).withOpacity(0.5),
                           ),
                           child: _isLoading
                               ? const SizedBox(
-                                  width: 24, 
-                                  height: 24, 
-                                  child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)
-                                )
-                              : const Text('로그인', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                        ),
-
-                        const SizedBox(height: 24),
-                        
-                        Center(
-                          child: TextButton(
-                            onPressed: () {},
-                            child: const Text('비밀번호를 잊으셨나요?', style: TextStyle(color: Colors.grey)),
-                          ),
+                                  width: 24,
+                                  height: 24,
+                                  child: CircularProgressIndicator(
+                                      color: Colors.white, strokeWidth: 2))
+                              : const Text('로그인',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white)),
                         ),
 
                         const SizedBox(height: 16),
+
+                        Align(
+                          alignment: Alignment.center,
+                          child: TextButton(
+                            onPressed: () {},
+                            child: const Text('비밀번호를 잊으셨나요?',
+                                style: TextStyle(color: Colors.grey)),
+                          ),
+                        ),
+
+                        const SizedBox(height: 24),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text('AudioView 회원이 아닌가요?', style: TextStyle(color: Colors.grey)),
-                            TextButton(
-                              onPressed: () {},
-                              child: const Text('지금 가입하세요.', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                            Text('AudioView 회원이 아닌가요? ',
+                                style: TextStyle(color: Colors.grey[400])),
+                            GestureDetector(
+                              onTap: () {},
+                              child: const Text(
+                                '지금 가입하세요.',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ],
                         ),
+
+                        const SizedBox(height: 60),
+
+                        // Footer Links
+                        const Divider(color: Colors.grey, thickness: 0.5),
+                        const SizedBox(height: 20),
+
+                        Row(
+                          children: [
+                            const Icon(LucideIcons.helpCircle,
+                                size: 16, color: Colors.grey),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                '문의 사항이 있으신가요? 고객 센터에 문의하세요.',
+                                style: TextStyle(
+                                    color: Colors.grey[400], fontSize: 13),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+
+                        GridView.count(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          crossAxisCount: 2,
+                          childAspectRatio: 6,
+                          children: [
+                            _buildFooterLink('이용 약관'),
+                            _buildFooterLink('개인정보 처리방침'),
+                            _buildFooterLink('쿠키 설정'),
+                            _buildFooterLink('회사 정보'),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
                       ],
                     ),
                   ),
                 ),
-                
-                // Footer
-                Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextButton.icon(
-                        onPressed: () {},
-                        icon: const Icon(LucideIcons.helpCircle, size: 16, color: Colors.grey),
-                        label: const Text('문의 사항이 있으신가요? 고객 센터에 문의하세요.', style: TextStyle(color: Colors.grey, fontSize: 12)),
-                      ),
-                    ],
-                  ),
-                )
               ],
             ),
           ).animate().fadeIn(duration: 500.ms),
         ],
+      ),
+    );
+  }
+
+  Widget _buildFooterLink(String text) {
+    return GestureDetector(
+      onTap: () {},
+      child: Text(
+        text,
+        style: TextStyle(
+          color: Colors.grey[500],
+          fontSize: 12,
+        ),
       ),
     );
   }

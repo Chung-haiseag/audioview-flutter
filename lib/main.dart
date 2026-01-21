@@ -66,11 +66,7 @@ class _MainScreenState extends State<MainScreen> {
     return Consumer<AuthProvider>(
       builder: (context, auth, _) {
         // If on Downloads and not authenticated, redirect to login
-        if (_currentIndex == 3 && !auth.isAuthenticated) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            Navigator.pushNamed(context, '/login');
-          });
-        }
+        // REMOVED: Automatic redirect in build method causes loop
 
         return Scaffold(
           backgroundColor: const Color(0xFF0A0A0A),
@@ -97,7 +93,23 @@ class _MainScreenState extends State<MainScreen> {
           ),
           bottomNavigationBar: CustomBottomNavigation(
             currentIndex: _currentIndex,
-            onTap: (index) {
+            onTap: (index) async {
+              // made async
+              if (index == 3) {
+                final auth = Provider.of<AuthProvider>(context, listen: false);
+                if (!auth.isAuthenticated) {
+                  await Navigator.pushNamed(context, '/login');
+                  // After returning from login screen, check authentication status again
+                  if (mounted &&
+                      Provider.of<AuthProvider>(context, listen: false)
+                          .isAuthenticated) {
+                    setState(() {
+                      _currentIndex = index;
+                    });
+                  }
+                  return;
+                }
+              }
               setState(() {
                 _currentIndex = index;
               });

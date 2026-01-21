@@ -17,7 +17,7 @@ class _SearchScreenState extends State<SearchScreen> {
   final _searchController = TextEditingController();
   String _searchQuery = '';
   List<Movie> _searchResults = [];
-  bool _isSearching = false;
+  // bool _isSearching = false; // Removed unused variable
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ class _SearchScreenState extends State<SearchScreen> {
       if (_searchQuery.isNotEmpty) {
         _performSearch(_searchQuery);
       } else {
-        _isSearching = false;
+        // _isSearching = false;
         _searchResults = [];
       }
     });
@@ -46,7 +46,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   void _performSearch(String query) {
     setState(() {
-      _isSearching = true;
+      // _isSearching = true;
       _searchResults = mockMovies.where((movie) {
         final title = movie.title.toLowerCase();
         final genres = movie.genres.map((g) => g.toLowerCase()).toList();
