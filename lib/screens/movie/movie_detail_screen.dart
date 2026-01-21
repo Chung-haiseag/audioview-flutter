@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'dart:ui';
-import '../../models/widget.movie.dart';
+import '../../models/movie.dart';
 import '../../constants/mock_data.dart';
 import 'sync_screen.dart';
 
@@ -17,7 +17,7 @@ class MovieDetailScreen extends StatefulWidget {
 }
 
 class _MovieDetailScreenState extends State<MovieDetailScreen> {
-  double _brightness = 0.5; // 0.0 (?�두?�) ~ 1.0 (밝음)
+  double _brightness = 0.5; // 0.0 (?�두?�) ~ 1.0 (밝음)
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +52,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                 BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                   child: Container(
-                    color: Colors.black.withOpacity(0.5),
+                    color: Colors.black.withOpacity(0.5 + (_brightness * 0.3)),
                   ),
                 ),
               ],
@@ -72,7 +72,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                     onPressed: () => Navigator.pop(context),
                   ),
                   const Text(
-                    '?�화?�택',
+                    '?�화?�택',
                     style: TextStyle(
                       color: Colors.red,
                       fontSize: 18,
@@ -137,7 +137,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                     ),
                     const SizedBox(width: 12),
                     Text(
-                      '${widget.movie.duration}�?,
+                      '${widget.movie.duration}�?,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 16,
@@ -155,7 +155,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                     // AD button
                     _buildAccessibilityButton(
                       icon: Icons.record_voice_over,
-                      label: '?�면?�설(AD)',
+                      label: '?�면?�설(AD)',
                       isEnabled: widget.movie.hasAD,
                       onTap: () {
                         Navigator.push(
@@ -174,7 +174,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                     // CC button
                     _buildAccessibilityButton(
                       icon: Icons.closed_caption,
-                      label: '문자?�설(CC)',
+                      label: '문자?�설(CC)',
                       isEnabled: widget.movie.hasCC,
                       onTap: () {
                         Navigator.push(
