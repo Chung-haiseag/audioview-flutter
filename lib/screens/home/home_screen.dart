@@ -148,8 +148,8 @@ class HomeScreen extends StatelessWidget {
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemCount: mockMovies.length > 6
-                    ? 3
+                itemCount: mockMovies.length > 13
+                    ? 10
                     : (mockMovies.length > 3 ? mockMovies.length - 3 : 0),
                 itemBuilder: (context, index) {
                   final movieIndex = index + 3; // Start from 4th movie
