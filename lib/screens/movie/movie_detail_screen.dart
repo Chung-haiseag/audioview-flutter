@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:ui';
 import '../../models/movie.dart';
 import '../../constants/mock_data.dart';
+import 'sync_screen.dart';
 
 class MovieDetailScreen extends StatelessWidget {
   final Movie movie;
@@ -150,7 +151,14 @@ class MovieDetailScreen extends StatelessWidget {
                       label: '화면해설(AD)',
                       isEnabled: movie.hasAD,
                       onTap: () {
-                        // TODO: Play with AD
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SyncScreen(
+                              syncType: 'AD',
+                            ),
+                          ),
+                        );
                       },
                     ),
 
@@ -162,7 +170,14 @@ class MovieDetailScreen extends StatelessWidget {
                       label: '문자해설(CC)',
                       isEnabled: movie.hasCC,
                       onTap: () {
-                        // TODO: Play with CC
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SyncScreen(
+                              syncType: 'CC',
+                            ),
+                          ),
+                        );
                       },
                     ),
                   ],
