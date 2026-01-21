@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
-import '../../models/movie.dart';
+import '../../models/widget.movie.dart';
 import '../../constants/mock_data.dart';
 import 'sync_screen.dart';
 
-class MovieDetailScreen extends StatelessWidget {
+class MovieDetailScreen extends StatefulWidget {
   final Movie movie;
 
   const MovieDetailScreen({
     super.key,
     required this.movie,
   });
+
+  @override
+  State<MovieDetailScreen> createState() => _MovieDetailScreenState();
+}
+
+class _MovieDetailScreenState extends State<MovieDetailScreen> {
+  double _brightness = 0.5; // 0.0 (?�두?�) ~ 1.0 (밝음)
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +72,7 @@ class MovieDetailScreen extends StatelessWidget {
                     onPressed: () => Navigator.pop(context),
                   ),
                   const Text(
-                    '영화선택',
+                    '?�화?�택',
                     style: TextStyle(
                       color: Colors.red,
                       fontSize: 18,
@@ -75,7 +82,7 @@ class MovieDetailScreen extends StatelessWidget {
                   IconButton(
                     icon: const Icon(Icons.wb_sunny_outlined,
                         color: Colors.white, size: 28),
-                    onPressed: () {},
+                    onPressed: () => _showBrightnessDialog(context),
                   ),
                 ],
               ),
@@ -89,7 +96,7 @@ class MovieDetailScreen extends StatelessWidget {
               children: [
                 // Movie title
                 Text(
-                  movie.title,
+                  widget.movie.title,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 28,
@@ -105,7 +112,7 @@ class MovieDetailScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '${movie.year}',
+                      '${widget.movie.year}',
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 16,
@@ -130,7 +137,7 @@ class MovieDetailScreen extends StatelessWidget {
                     ),
                     const SizedBox(width: 12),
                     Text(
-                      '${movie.duration}분',
+                      '${widget.movie.duration}�?,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 16,
@@ -148,8 +155,8 @@ class MovieDetailScreen extends StatelessWidget {
                     // AD button
                     _buildAccessibilityButton(
                       icon: Icons.record_voice_over,
-                      label: '화면해설(AD)',
-                      isEnabled: movie.hasAD,
+                      label: '?�면?�설(AD)',
+                      isEnabled: widget.movie.hasAD,
                       onTap: () {
                         Navigator.push(
                           context,
@@ -167,8 +174,8 @@ class MovieDetailScreen extends StatelessWidget {
                     // CC button
                     _buildAccessibilityButton(
                       icon: Icons.closed_caption,
-                      label: '문자해설(CC)',
-                      isEnabled: movie.hasCC,
+                      label: '문자?�설(CC)',
+                      isEnabled: widget.movie.hasCC,
                       onTap: () {
                         Navigator.push(
                           context,
@@ -233,3 +240,76 @@ class MovieDetailScreen extends StatelessWidget {
     );
   }
 }
+
+  void _showBrightnessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierColor: Colors.black87,
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: const EdgeInsets.symmetric(horizontal: 20),
+        child: StatefulBuilder(
+          builder: (context, setDialogState) {
+            return Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: const Color(0xFF1A1A1A),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.brightness_low,
+                        color: Colors.grey,
+                        size: 24,
+                      ),
+                      Expanded(
+                        child: SliderTheme(
+                          data: SliderThemeData(
+                            activeTrackColor: Colors.red,
+                            inactiveTrackColor: Colors.grey[700],
+                            thumbColor: Colors.red,
+                            overlayColor: Colors.red.withOpacity(0.2),
+                            trackHeight: 4,
+                          ),
+                          child: Slider(
+                            value: _brightness,
+                            min: 0.0,
+                            max: 1.0,
+                            onChanged: (value) {
+                              setDialogState(() {
+                                _brightness = value;
+                              });
+                              setState(() {
+                                _brightness = value;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                      const Icon(
+                        Icons.brightness_high,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    '밝기: ${(_brightness * 100).toInt()}%',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
