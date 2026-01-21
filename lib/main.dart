@@ -70,32 +70,55 @@ class _MainScreenState extends State<MainScreen> {
 
         return Scaffold(
           backgroundColor: const Color(0xFF0A0A0A),
-          appBar: CustomHeader(
-            isSubPage: _currentIndex != 0,
-            customTitle: _currentIndex == 0 ? null : _titles[_currentIndex],
-            brightness: _brightness,
-            onBrightnessChanged: (value) {
-              setState(() {
-                _brightness = value;
-              });
-            },
-            onBackPressed: () {
-              if (_currentIndex != 0) {
-                setState(() {
-                  _currentIndex = 0;
-                });
-              } else {
-                Navigator.of(context).maybePop();
-              }
-            },
-          ),
           body: Stack(
             children: [
-              _screens[_currentIndex],
-              // Brightness overlay
-              IgnorePointer(
-                child: Container(
-                  color: Colors.black.withOpacity((100 - _brightness) / 100),
+              // 1. Content Layer
+              Column(
+                children: [
+                  // Spacer for Header (StatusBar + Header Height)
+                  SizedBox(height: MediaQuery.of(context).padding.top + 68),
+                  Expanded(child: _screens[_currentIndex]),
+                ],
+              ),
+
+              // 2. Brightness Overlay Layer (Covers content below header)
+              // Only covers content area, keeps header bright
+              Positioned(
+                top: MediaQuery.of(context).padding.top + 68,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: IgnorePointer(
+                  child: Container(
+                    color: Colors.black.withOpacity((100 - _brightness) / 100),
+                  ),
+                ),
+              ),
+
+              // 3. Header Layer (Floating on top)
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: CustomHeader(
+                  isSubPage: _currentIndex != 0,
+                  customTitle:
+                      _currentIndex == 0 ? null : _titles[_currentIndex],
+                  brightness: _brightness,
+                  onBrightnessChanged: (value) {
+                    setState(() {
+                      _brightness = value;
+                    });
+                  },
+                  onBackPressed: () {
+                    if (_currentIndex != 0) {
+                      setState(() {
+                        _currentIndex = 0;
+                      });
+                    } else {
+                      Navigator.of(context).maybePop();
+                    }
+                  },
                 ),
               ),
             ],
