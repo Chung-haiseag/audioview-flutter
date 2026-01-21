@@ -26,16 +26,20 @@ class AudioVisualizerPainter extends CustomPainter {
 
     for (int i = 0; i < count; i++) {
       final amplitude = amplitudes[i];
-      final barHeight = height * amplitude;
+      // Make height change more dramatic
+      final barHeight = height * amplitude * 0.8;
 
       final x = i * itemWidth + spacing / 2;
+      // Center vertically
       final y = (height - barHeight) / 2;
 
-      // Draw rounded rectangle for better visual
       final rect = RRect.fromRectAndRadius(
         Rect.fromLTWH(x, y, itemWidth - spacing, barHeight),
         const Radius.circular(4),
       );
+
+      // Add gradient opacity based on amplitude
+      paint.color = color.withOpacity(0.5 + (amplitude * 0.5).clamp(0.0, 0.5));
 
       canvas.drawRRect(rect, paint);
     }
@@ -55,45 +59,60 @@ class VoiceSearchScreen extends StatefulWidget {
 }
 
 class _VoiceSearchScreenState extends State<VoiceSearchScreen>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
+    with TickerProviderStateMixin {
+  late AnimationController _waveController;
+  late AnimationController _pulseController;
+  late Animation<double> _pulseAnimation;
+
   final List<double> _amplitudes = List.generate(20, (index) => 0.1);
   final Random _random = Random();
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
+
+    // Wave animation
+    _waveController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 100),
     )
       ..addListener(() {
         setState(() {
-          // Update amplitudes randomly to simulate audio input
           for (int i = 0; i < _amplitudes.length; i++) {
-            // Smoothly transition to new random value
-            final target = 0.2 + _random.nextDouble() * 0.8;
-            _amplitudes[i] = _amplitudes[i] * 0.8 + target * 0.2;
+            // More dynamic wave movement
+            final target = 0.1 + _random.nextDouble() * 0.9;
+            _amplitudes[i] = _amplitudes[i] * 0.7 + target * 0.3;
           }
         });
       })
       ..repeat();
+
+    // Pulse animation for microphone
+    _pulseController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1500),
+    )..repeat(reverse: true);
+
+    _pulseAnimation = Tween<double>(begin: 1.0, end: 1.2).animate(
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
+    );
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _waveController.dispose();
+    _pulseController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black, // Full screen black background
+      backgroundColor: Colors.black,
       body: SafeArea(
         child: Column(
           children: [
-            // Top bar with back button
+            // Top bar
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(
@@ -110,32 +129,59 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Muted animated rings effect (optional, simplified here)
-                  // Red Microphone Circle
-                  Container(
-                    width: 120,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: const Color(0xFFE50914), // Netflix Red
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xFFE50914).withOpacity(0.5),
-                          blurRadius: 30,
-                          spreadRadius: 10,
-                        ),
-                      ],
-                    ),
-                    child: const Icon(
-                      Icons.mic,
-                      color: Colors.white,
-                      size: 48,
-                    ),
+                  // Animated Microphone with Pulse Effect
+                  AnimatedBuilder(
+                    animation: _pulseAnimation,
+                    builder: (context, child) {
+                      return Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          // Outer glow rings
+                          Container(
+                            width: 120 * _pulseAnimation.value,
+                            height: 120 * _pulseAnimation.value,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: const Color(0xFFE50914).withOpacity(0.2),
+                            ),
+                          ),
+                          Container(
+                            width: 120 * (_pulseAnimation.value * 0.85),
+                            height: 120 * (_pulseAnimation.value * 0.85),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: const Color(0xFFE50914).withOpacity(0.4),
+                            ),
+                          ),
+                          // Main microphone circle
+                          Container(
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: const Color(0xFFE50914),
+                              boxShadow: [
+                                BoxShadow(
+                                  color:
+                                      const Color(0xFFE50914).withOpacity(0.6),
+                                  blurRadius: 20,
+                                  spreadRadius: 2,
+                                ),
+                              ],
+                            ),
+                            child: const Icon(
+                              Icons.mic,
+                              color: Colors.white,
+                              size: 40,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
                   ),
 
-                  const SizedBox(height: 48),
+                  const SizedBox(height: 60),
 
-                  // Status Text
                   const Text(
                     '듣고 있습니다...',
                     style: TextStyle(
@@ -159,8 +205,8 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
 
                   // Audio Visualizer
                   SizedBox(
-                    height: 60,
-                    width: 200,
+                    height: 80,
+                    width: 240,
                     child: CustomPaint(
                       painter: AudioVisualizerPainter(
                         amplitudes: _amplitudes,
