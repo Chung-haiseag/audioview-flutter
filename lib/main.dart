@@ -79,6 +79,15 @@ class _MainScreenState extends State<MainScreen> {
                 _brightness = value;
               });
             },
+            onBackPressed: () {
+              if (_currentIndex != 0) {
+                setState(() {
+                  _currentIndex = 0;
+                });
+              } else {
+                Navigator.of(context).maybePop();
+              }
+            },
           ),
           body: Stack(
             children: [

@@ -6,6 +6,7 @@ class CustomHeader extends StatefulWidget implements PreferredSizeWidget {
   final String? customTitle;
   final double brightness;
   final ValueChanged<double> onBrightnessChanged;
+  final VoidCallback? onBackPressed; // Added callback
 
   const CustomHeader({
     super.key,
@@ -13,6 +14,7 @@ class CustomHeader extends StatefulWidget implements PreferredSizeWidget {
     this.customTitle,
     required this.brightness,
     required this.onBrightnessChanged,
+    this.onBackPressed, // Added parameter
   });
 
   @override
@@ -43,8 +45,10 @@ class _CustomHeaderState extends State<CustomHeader> {
                     width: 60,
                     child: widget.isSubPage
                         ? IconButton(
-                            icon: const Icon(LucideIcons.chevronLeft, color: Colors.white, size: 28),
-                            onPressed: () => Navigator.of(context).maybePop(),
+                            icon: const Icon(LucideIcons.chevronLeft,
+                                color: Colors.white, size: 28),
+                            onPressed: widget.onBackPressed ??
+                                () => Navigator.of(context).maybePop(),
                           )
                         : null,
                   ),
@@ -70,7 +74,9 @@ class _CustomHeaderState extends State<CustomHeader> {
                     child: IconButton(
                       icon: Icon(
                         LucideIcons.sun,
-                        color: _showBrightness ? const Color(0xFFE50914) : Colors.white,
+                        color: _showBrightness
+                            ? const Color(0xFFE50914)
+                            : Colors.white,
                         size: 24,
                       ),
                       onPressed: () {
@@ -99,7 +105,8 @@ class _CustomHeaderState extends State<CustomHeader> {
                           activeTrackColor: const Color(0xFFE50914),
                           inactiveTrackColor: Colors.grey[600],
                           thumbColor: const Color(0xFFE50914),
-                          overlayColor: const Color(0xFFE50914).withOpacity(0.2),
+                          overlayColor:
+                              const Color(0xFFE50914).withOpacity(0.2),
                         ),
                         child: Slider(
                           value: widget.brightness,
