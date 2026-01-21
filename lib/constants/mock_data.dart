@@ -218,3 +218,12 @@ final List<Category> categories = [
 ];
 
 const List<String> categoryChips = ['예능', '드라마', '영화', '시사교양', '애니', '해외'];
+
+final List<String> recommendationKeywords = [
+  '액션',
+  '가치봄',
+  '한국 영화',
+  '인사이드 아웃',
+  '데몬 헌터스',
+  '공포',
+];
