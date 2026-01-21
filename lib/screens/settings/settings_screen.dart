@@ -242,32 +242,209 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget _buildCustomerCenter() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.help_outline,
-            size: 64,
-            color: Colors.grey[700],
-          ),
-          const SizedBox(height: 16),
-          Text(
-            '고객센터',
-            style: TextStyle(
-              color: Colors.grey[600],
-              fontSize: 18,
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        // Help section header
+        Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.red.withOpacity(0.2),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.help_outline,
+                color: Colors.red,
+                size: 20,
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            '준비 중입니다',
-            style: TextStyle(
-              color: Colors.grey[700],
-              fontSize: 14,
+            const SizedBox(width: 12),
+            const Text(
+              '무엇을 도와드릴까요?',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
             ),
+          ],
+        ),
+
+        const SizedBox(height: 16),
+
+        // Help menu items
+        _buildHelpMenuItem(
+          icon: Icons.shield_outlined,
+          title: '개인정보 처리방침',
+          onTap: () {},
+        ),
+        _buildHelpMenuItem(
+          icon: Icons.description_outlined,
+          title: '이용약관',
+          onTap: () {},
+        ),
+        _buildHelpMenuItem(
+          icon: Icons.chat_bubble_outline,
+          title: '자주 묻는 질문',
+          onTap: () {},
+        ),
+        _buildHelpMenuItem(
+          icon: Icons.info_outline,
+          title: '이용안내',
+          onTap: () {},
+        ),
+        _buildHelpMenuItem(
+          icon: Icons.add_circle_outline,
+          title: '새로운 작품 요청하기',
+          onTap: () {},
+        ),
+
+        const SizedBox(height: 32),
+
+        // Production info
+        const Text(
+          'PRODUCTION',
+          style: TextStyle(
+            color: Colors.grey,
+            fontSize: 11,
+            letterSpacing: 1.2,
           ),
-        ],
+        ),
+        const SizedBox(height: 8),
+        const Text(
+          '제작 : (사)한국시각장애인연합회',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+
+        const SizedBox(height: 24),
+
+        // Contact info
+        Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: const Color(0xFF1A1A1A),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: const Color(0xFF333333)),
+          ),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF2A2A2A),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Icon(
+                      Icons.email_outlined,
+                      color: Colors.grey,
+                      size: 20,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'EMAIL',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 10,
+                          letterSpacing: 1.2,
+                        ),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        'kbu1004@hanmail.com',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF2A2A2A),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Icon(
+                      Icons.phone_outlined,
+                      color: Colors.grey,
+                      size: 20,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'PHONE',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 10,
+                          letterSpacing: 1.2,
+                        ),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        '02-799-1000',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildHelpMenuItem({
+    required IconData icon,
+    required String title,
+    required VoidCallback onTap,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1A1A1A),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFF333333)),
+      ),
+      child: ListTile(
+        leading: Icon(icon, color: Colors.grey, size: 20),
+        title: Text(
+          title,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+          ),
+        ),
+        trailing: const Icon(
+          Icons.chevron_right,
+          color: Colors.grey,
+          size: 20,
+        ),
+        onTap: onTap,
       ),
     );
   }
