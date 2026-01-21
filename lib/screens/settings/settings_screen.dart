@@ -21,7 +21,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _smartGlasses = true;
   bool _use3GLTE = true;
   bool _expandRecognition = false;
-  bool _accessibilityAll = false;
   bool _audioDescription = false;
   bool _closedCaption = false;
   bool _multiLanguage = false;
