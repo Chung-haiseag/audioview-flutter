@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../constants/mock_data.dart';
 import '../../widgets/movie_card.dart';
 import '../category/category_list_screen.dart';
+import '../movie/movie_detail_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -100,6 +101,16 @@ class HomeScreen extends StatelessWidget {
                   return MovieCard(
                     movie: mockMovies[index],
                     showNewBadge: true,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MovieDetailScreen(
+                            movie: mockMovies[index],
+                          ),
+                        ),
+                      );
+                    },
                   );
                 },
               ),
@@ -145,6 +156,16 @@ class HomeScreen extends StatelessWidget {
                   return MovieCard(
                     movie: mockMovies[movieIndex],
                     showNewBadge: false,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MovieDetailScreen(
+                            movie: mockMovies[movieIndex],
+                          ),
+                        ),
+                      );
+                    },
                   );
                 },
               ),

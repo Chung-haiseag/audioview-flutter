@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../models/movie.dart';
 import '../../constants/mock_data.dart';
 import '../../widgets/movie_card.dart';
+import '../movie/movie_detail_screen.dart';
 
 class CategoryListScreen extends StatelessWidget {
   final String categoryName;
@@ -80,6 +81,16 @@ class CategoryListScreen extends StatelessWidget {
                     movie: movies[index],
                     showNewBadge:
                         index < 2, // Show NEW badge for first 2 movies
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MovieDetailScreen(
+                            movie: movies[index],
+                          ),
+                        ),
+                      );
+                    },
                   );
                 },
               ),
