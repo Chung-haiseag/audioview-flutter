@@ -78,6 +78,7 @@ class CategoryListScreen extends StatelessWidget {
                 return MovieCard(
                   movie: movies[index],
                   showNewBadge: index < 2, // Show NEW badge for first 2 movies
+                  removeMargin: true, // Remove margin for grid layout
                   onTap: () {
                     Navigator.push(
                       context,

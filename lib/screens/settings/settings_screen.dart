@@ -2,130 +2,350 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  int _selectedTab = 0; // 0: 환경설정, 1: 고객센터
+
+  // Settings states
+  bool _smartGlasses = true;
+  bool _use3GLTE = true;
+  bool _expandRecognition = false;
+  bool _accessibilityAll = false;
+  bool _audioDescription = false;
+  bool _closedCaption = false;
+  bool _multiLanguage = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF0A0A0A),
-      body: Consumer<AuthProvider>(
-        builder: (context, auth, _) {
-          return ListView(
-            padding: const EdgeInsets.all(16),
-            children: [
-              // Account section
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1A1A1A),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: const Color(0xFF333333)),
+      body: Column(
+        children: [
+          // Tab bar
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Row(
+              children: [
+                Expanded(
+                  child: _buildTab('환경설정', 0),
                 ),
-                child: auth.isAuthenticated
-                    ? Row(
-                        children: [
-                          const CircleAvatar(
-                            radius: 30,
-                            backgroundColor: Color(0xFFE50914),
-                            child: Icon(Icons.person, color: Colors.white, size: 30),
-                          ),
-                          const SizedBox(width: 16),
-                          const Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '배리어프리 회원님',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(height: 4),
-                                Text(
-                                  'premium_user@audioview.kr',
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.logout, color: Colors.grey),
-                            onPressed: () => auth.logout(),
-                          ),
-                        ],
-                      )
-                    : Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            '로그인이 필요합니다',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          const Text(
-                            '로그인하고 시청 기록을 동기화하세요.',
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 12,
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: () => Navigator.pushNamed(context, '/login'),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFFE50914),
-                                padding: const EdgeInsets.symmetric(vertical: 16),
-                              ),
-                              child: const Text('로그인 하러가기'),
-                            ),
-                          ),
-                        ],
-                      ),
-              ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: _buildTab('고객센터', 1),
+                ),
+              ],
+            ),
+          ),
 
-              const SizedBox(height: 24),
-
-              // Settings list
-              _buildSettingItem('일반 설정', Icons.settings),
-              _buildSettingItem('접근성 기능', Icons.accessibility),
-              _buildSettingItem('자막 스타일', Icons.subtitles),
-              _buildSettingItem('알림 설정', Icons.notifications),
-              _buildSettingItem('고객센터', Icons.help_outline),
-            ],
-          );
-        },
+          // Content
+          Expanded(
+            child: _selectedTab == 0
+                ? _buildEnvironmentSettings()
+                : _buildCustomerCenter(),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildSettingItem(String title, IconData icon) {
+  Widget _buildTab(String title, int index) {
+    final isSelected = _selectedTab == index;
+    return GestureDetector(
+      onTap: () => setState(() => _selectedTab = index),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: isSelected ? Colors.red : Colors.transparent,
+              width: 2,
+            ),
+          ),
+        ),
+        child: Text(
+          title,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: isSelected ? Colors.white : Colors.grey,
+            fontSize: 16,
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEnvironmentSettings() {
+    return Consumer<AuthProvider>(
+      builder: (context, auth, _) {
+        return ListView(
+          padding: const EdgeInsets.all(16),
+          children: [
+            // Login section
+            if (!auth.isAuthenticated) ...[
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1A1A1A),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: const Color(0xFF333333)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.login, color: Colors.grey, size: 24),
+                        const SizedBox(width: 12),
+                        const Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '로그인이 필요합니다',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                '로그인하고 시청 기록을 동기화하세요.',
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () => Navigator.pushNamed(context, '/login'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFE50914),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: const Text(
+                          '로그인 하러가기',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
+            ],
+
+            // Smart Glasses
+            _buildSettingItem(
+              title: '스마트 안경',
+              subtitle: '스마트 안경 연동 설정',
+              value: _smartGlasses,
+              onChanged: (value) => setState(() => _smartGlasses = value),
+              badge: '연동됨',
+            ),
+
+            const SizedBox(height: 16),
+
+            // 3G/LTE Usage
+            _buildSettingItem(
+              title: '3G/LTE 사용',
+              subtitle: '체크 해제시 WiFi에서만 사용가능',
+              value: _use3GLTE,
+              onChanged: (value) => setState(() => _use3GLTE = value),
+            ),
+
+            const SizedBox(height: 16),
+
+            // Expand Recognition
+            _buildSettingItem(
+              title: '인식구간 확장하기',
+              subtitle: '음성인식 영상물 전체로 확장',
+              value: _expandRecognition,
+              onChanged: (value) => setState(() => _expandRecognition = value),
+            ),
+
+            const SizedBox(height: 32),
+
+            // Accessibility Settings Header
+            const Text(
+              '접근성 기능 설정',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              '화면해설, 자막 등 모든 보조 기능 켜기/끄기',
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 12,
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // Audio Description (AD)
+            _buildSettingItem(
+              title: '화면해설 (AD)',
+              subtitle: '시각장애인용 오디오자막',
+              value: _audioDescription,
+              onChanged: (value) => setState(() => _audioDescription = value),
+            ),
+
+            const SizedBox(height: 16),
+
+            // Closed Caption (CC)
+            _buildSettingItem(
+              title: '문자자막 (CC)',
+              subtitle: '청각장애인용 대사 및 소리자막',
+              value: _closedCaption,
+              onChanged: (value) => setState(() => _closedCaption = value),
+            ),
+
+            const SizedBox(height: 16),
+
+            // Multi-language Subtitle
+            _buildSettingItem(
+              title: '다국어자막',
+              subtitle: '외국인용 다국어 문자자막',
+              value: _multiLanguage,
+              onChanged: (value) => setState(() => _multiLanguage = value),
+            ),
+
+            const SizedBox(height: 32),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildCustomerCenter() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.help_outline,
+            size: 64,
+            color: Colors.grey[700],
+          ),
+          const SizedBox(height: 16),
+          Text(
+            '고객센터',
+            style: TextStyle(
+              color: Colors.grey[600],
+              fontSize: 18,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '준비 중입니다',
+            style: TextStyle(
+              color: Colors.grey[700],
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSettingItem({
+    required String title,
+    required String subtitle,
+    required bool value,
+    required ValueChanged<bool> onChanged,
+    String? badge,
+  }) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: const Color(0xFF1A1A1A),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: const Color(0xFF333333)),
       ),
-      child: ListTile(
-        leading: Icon(icon, color: Colors.grey),
-        title: Text(
-          title,
-          style: const TextStyle(color: Colors.white),
-        ),
-        trailing: const Icon(Icons.chevron_right, color: Colors.grey),
-        onTap: () {},
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    if (badge != null) ...[
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Text(
+                          badge,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  subtitle,
+                  style: const TextStyle(
+                    color: Colors.grey,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 16),
+          Switch(
+            value: value,
+            onChanged: onChanged,
+            activeColor: Colors.red,
+            activeTrackColor: Colors.red.withOpacity(0.5),
+            inactiveThumbColor: Colors.grey,
+            inactiveTrackColor: Colors.grey.withOpacity(0.3),
+          ),
+        ],
       ),
     );
   }
