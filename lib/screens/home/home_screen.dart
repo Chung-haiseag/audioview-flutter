@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../constants/mock_data.dart';
+import '../../widgets/movie_card.dart';
+import '../category/category_list_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -11,102 +14,143 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Featured section
-            Container(
-              height: 400,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage('https://picsum.photos/seed/featured/800/400'),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.transparent,
-                      const Color(0xFF0A0A0A).withOpacity(0.7),
-                      const Color(0xFF0A0A0A),
-                    ],
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        '추천 콘텐츠',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
+            const SizedBox(height: 16),
+
+            // Category menu (horizontal scrollable chips)
+            SizedBox(
+              height: 40,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemCount: categoryChips.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CategoryListScreen(
+                            categoryName: categoryChips[index],
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(right: 8),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF1A1A1A),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: const Color(0xFF333333),
+                          width: 1,
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      const Text(
-                        '배리어프리 영상 감상',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 14,
+                      child: Center(
+                        child: Text(
+                          categoryChips[index],
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFE50914),
-                          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                        ),
-                        child: const Text('재생하기'),
-                      ),
-                    ],
-                  ),
-                ),
+                    ),
+                  );
+                },
               ),
             ),
 
-            // Categories section
+            const SizedBox(height: 24),
+
+            // 새로 올라온 영화 section
             Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    '인기 카테고리',
+                    '새로 올라온 영화',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 20,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  SizedBox(
-                    height: 150,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 10,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          width: 250,
-                          margin: const EdgeInsets.only(right: 12),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            image: DecorationImage(
-                              image: NetworkImage('https://picsum.photos/seed/${index}/250/150'),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
+                  Icon(
+                    Icons.chevron_right,
+                    color: Colors.grey[600],
+                    size: 24,
                   ),
                 ],
               ),
             ),
+
+            const SizedBox(height: 12),
+
+            SizedBox(
+              height: 240,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemCount: mockMovies.length > 3 ? 3 : mockMovies.length,
+                itemBuilder: (context, index) {
+                  return MovieCard(
+                    movie: mockMovies[index],
+                    showNewBadge: true,
+                  );
+                },
+              ),
+            ),
+
+            const SizedBox(height: 32),
+
+            // 실시간 인기영화 section
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    '실시간 인기영화',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Icon(
+                    Icons.chevron_right,
+                    color: Colors.grey[600],
+                    size: 24,
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 12),
+
+            SizedBox(
+              height: 240,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemCount: mockMovies.length > 6
+                    ? 3
+                    : (mockMovies.length > 3 ? mockMovies.length - 3 : 0),
+                itemBuilder: (context, index) {
+                  final movieIndex = index + 3; // Start from 4th movie
+                  return MovieCard(
+                    movie: mockMovies[movieIndex],
+                    showNewBadge: false,
+                  );
+                },
+              ),
+            ),
+
+            const SizedBox(height: 24),
           ],
         ),
       ),

@@ -8,7 +8,19 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git branch:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(gh --version:*)",
+      "Bash(winget install:*)",
+      "Bash(git remote add:*)",
+      "Bash(git push:*)",
+      "Bash(\"C:/Program Files/GitHub CLI/gh.exe\" --version)",
+      "Bash(\"C:/Program Files/GitHub CLI/gh.exe\" auth login --web)",
+      "Bash(\"C:/Program Files/GitHub CLI/gh.exe\" repo create audioview-flutter --public --description \"배리어프리 OTT 플랫폼 - Flutter 모바일 앱\" --source=. --push)",
+      "Bash(git remote:*)",
+      "Bash(\"C:/Program Files/GitHub CLI/gh.exe\" workflow list --repo Chung-haiseag/audioview-flutter)",
+      "Bash(\"C:/Program Files/GitHub CLI/gh.exe\" run list --repo Chung-haiseag/audioview-flutter --limit 5)",
+      "Bash(\"C:/Program Files/GitHub CLI/gh.exe\" run view 21207074406 --repo Chung-haiseag/audioview-flutter --log-failed)",
+      "Bash(\"C:/Program Files/GitHub CLI/gh.exe\" run view 21207183237 --repo Chung-haiseag/audioview-flutter --log-failed)"
     ]
   }
 }
