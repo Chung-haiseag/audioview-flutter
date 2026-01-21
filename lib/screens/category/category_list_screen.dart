@@ -68,7 +68,7 @@ class CategoryListScreen extends StatelessWidget {
             )
           : GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
+                crossAxisCount: 3,
                 childAspectRatio: 0.6,
                 crossAxisSpacing: 0,
                 mainAxisSpacing: 0,
@@ -77,7 +77,7 @@ class CategoryListScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 return MovieCard(
                   movie: movies[index],
-                  showNewBadge: index < 2, // Show NEW badge for first 2 movies
+                  showNewBadge: true, // Show NEW badge for all movies
                   removeMargin: true, // Remove margin for grid layout
                   onTap: () {
                     Navigator.push(

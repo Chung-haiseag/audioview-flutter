@@ -96,7 +96,7 @@ class HomeScreen extends StatelessWidget {
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemCount: mockMovies.length > 3 ? 3 : mockMovies.length,
+                itemCount: mockMovies.length > 10 ? 10 : mockMovies.length,
                 itemBuilder: (context, index) {
                   return MovieCard(
                     movie: mockMovies[index],
