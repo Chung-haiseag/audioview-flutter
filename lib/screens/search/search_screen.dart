@@ -91,13 +91,19 @@ class _SearchScreenState extends State<SearchScreen> {
                   : IconButton(
                       icon: const Icon(Icons.keyboard_voice,
                           color: Colors.yellow),
-                      onPressed: () {
-                        Navigator.push(
+                      onPressed: () async {
+                        final result = await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => const VoiceSearchScreen(),
                           ),
                         );
+                        if (result != null &&
+                            result is String &&
+                            result.isNotEmpty) {
+                          _searchController.text = result;
+                          _performSearch(result);
+                        }
                       },
                     ),
               filled: true,

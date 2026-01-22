@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
+import 'package:permission_handler/permission_handler.dart';
 
 // Custom painter for audio visualizer
 class AudioVisualizerPainter extends CustomPainter {
@@ -67,9 +69,15 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
   final List<double> _amplitudes = List.generate(20, (index) => 0.1);
   final Random _random = Random();
 
+  late stt.SpeechToText _speech;
+  bool _isListening = false;
+  String _text = '듣고 있습니다...';
+  double _confidence = 1.0;
+
   @override
   void initState() {
     super.initState();
+    _speech = stt.SpeechToText();
 
     // Wave animation
     _waveController = AnimationController(
@@ -79,8 +87,11 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
       ..addListener(() {
         setState(() {
           for (int i = 0; i < _amplitudes.length; i++) {
-            // More dynamic wave movement
-            final target = 0.1 + _random.nextDouble() * 0.9;
+            // More dynamic wave movement based on listening state
+            double target = 0.1;
+            if (_isListening) {
+              target = 0.1 + _random.nextDouble() * 0.9;
+            }
             _amplitudes[i] = _amplitudes[i] * 0.7 + target * 0.3;
           }
         });
@@ -96,10 +107,75 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
     _pulseAnimation = Tween<double>(begin: 1.0, end: 1.2).animate(
       CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
     );
+
+    // Start listening automatically
+    _initSpeech();
+  }
+
+  Future<void> _initSpeech() async {
+    // Request microphone permission specifically
+    var status = await Permission.microphone.request();
+    if (status != PermissionStatus.granted) {
+      setState(() {
+        _text = '마이크 권한이 필요합니다.';
+        _isListening = false;
+      });
+      return;
+    }
+
+    bool available = await _speech.initialize(
+      onStatus: (status) {
+        // print('onStatus: $status');
+        if (status == 'notListening') {
+          setState(() => _isListening = false);
+          // If speech recognition stopped and we have text, return it
+          if (_text != '듣고 있습니다...' && _text.isNotEmpty) {
+            // Optionally auto-pop here, or wait for user to press confirm
+            // For now, let's wait a bit and pop
+            Future.delayed(const Duration(milliseconds: 1000), () {
+              if (mounted) Navigator.pop(context, _text);
+            });
+          }
+        }
+      },
+      onError: (errorNotification) {
+        // print('onError: $errorNotification');
+        setState(() {
+          _text = '오류가 발생했습니다. 다시 시도해주세요.';
+          _isListening = false;
+        });
+      },
+    );
+
+    if (available) {
+      if (mounted) setState(() => _isListening = true);
+      _speech.listen(
+        onResult: (val) {
+          if (mounted) {
+            setState(() {
+              _text = val.recognizedWords;
+              if (val.hasConfidenceRating && val.confidence > 0) {
+                _confidence = val.confidence;
+              }
+            });
+          }
+        },
+        localeId: 'ko_KR', // Korean locale
+        pauseFor: const Duration(seconds: 2), // Wait 2s silence before stopping
+      );
+    } else {
+      if (mounted) {
+        setState(() {
+          _text = '음성 인식을 사용할 수 없습니다.';
+          _isListening = false;
+        });
+      }
+    }
   }
 
   @override
   void dispose() {
+    _speech.stop();
     _waveController.dispose();
     _pulseController.dispose();
     super.dispose();
@@ -116,6 +192,7 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
                     icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -137,42 +214,56 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
                         alignment: Alignment.center,
                         children: [
                           // Outer glow rings
-                          Container(
-                            width: 120 * _pulseAnimation.value,
-                            height: 120 * _pulseAnimation.value,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: const Color(0xFFE50914).withOpacity(0.2),
+                          if (_isListening) ...[
+                            Container(
+                              width: 120 * _pulseAnimation.value,
+                              height: 120 * _pulseAnimation.value,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: const Color(0xFFE50914).withOpacity(0.2),
+                              ),
                             ),
-                          ),
-                          Container(
-                            width: 120 * (_pulseAnimation.value * 0.85),
-                            height: 120 * (_pulseAnimation.value * 0.85),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: const Color(0xFFE50914).withOpacity(0.4),
+                            Container(
+                              width: 120 * (_pulseAnimation.value * 0.85),
+                              height: 120 * (_pulseAnimation.value * 0.85),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: const Color(0xFFE50914).withOpacity(0.4),
+                              ),
                             ),
-                          ),
+                          ],
                           // Main microphone circle
-                          Container(
-                            width: 100,
-                            height: 100,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: const Color(0xFFE50914),
-                              boxShadow: [
-                                BoxShadow(
-                                  color:
-                                      const Color(0xFFE50914).withOpacity(0.6),
-                                  blurRadius: 20,
-                                  spreadRadius: 2,
-                                ),
-                              ],
-                            ),
-                            child: const Icon(
-                              Icons.mic,
-                              color: Colors.white,
-                              size: 40,
+                          GestureDetector(
+                            onTap: () {
+                              if (_isListening) {
+                                _speech.stop(); // Stop listening
+                              } else {
+                                _initSpeech(); // Start listening
+                              }
+                            },
+                            child: Container(
+                              width: 100,
+                              height: 100,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: _isListening
+                                    ? const Color(0xFFE50914)
+                                    : Colors.grey[800],
+                                boxShadow: [
+                                  if (_isListening)
+                                    BoxShadow(
+                                      color: const Color(0xFFE50914)
+                                          .withOpacity(0.6),
+                                      blurRadius: 20,
+                                      spreadRadius: 2,
+                                    ),
+                                ],
+                              ),
+                              child: Icon(
+                                _isListening ? Icons.mic : Icons.mic_off,
+                                color: Colors.white,
+                                size: 40,
+                              ),
                             ),
                           ),
                         ],
@@ -182,19 +273,23 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
 
                   const SizedBox(height: 60),
 
-                  const Text(
-                    '듣고 있습니다...',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                    child: Text(
+                      _text,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
 
                   const SizedBox(height: 12),
 
                   Text(
-                    '찾으시는 작품의 이름을 말씀해주세요.',
+                    _isListening ? '듣고 있습니다...' : '버튼을 눌러 다시 말씀해주세요.',
                     style: TextStyle(
                       color: Colors.grey[400],
                       fontSize: 16,
@@ -204,16 +299,22 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
                   const SizedBox(height: 60),
 
                   // Audio Visualizer
-                  SizedBox(
-                    height: 80,
-                    width: 240,
-                    child: CustomPaint(
-                      painter: AudioVisualizerPainter(
-                        amplitudes: _amplitudes,
-                        color: const Color(0xFFE50914),
+                  if (_isListening)
+                    SizedBox(
+                      height: 80,
+                      width: 240,
+                      child: CustomPaint(
+                        painter: AudioVisualizerPainter(
+                          amplitudes: _amplitudes,
+                          color: const Color(0xFFE50914),
+                        ),
                       ),
+                    )
+                  else
+                    const SizedBox(
+                      height: 80,
+                      width: 240,
                     ),
-                  ),
 
                   const Spacer(),
 
