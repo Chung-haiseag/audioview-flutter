@@ -113,12 +113,30 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
   }
 
   Future<void> _initSpeech() async {
-    // Request microphone permission specifically
-    var status = await Permission.microphone.request();
-    if (status != PermissionStatus.granted) {
+    // 1. Check permission status first to avoid unnecessary popups
+    var status = await Permission.microphone.status;
+    if (!status.isGranted) {
+      status = await Permission.microphone.request();
+    }
+
+    if (status.isPermanentlyDenied) {
       if (mounted) {
         setState(() {
-          _text = '설정에서 마이크 권한을 허용해주세요.';
+          _text = '설정에서 마이크 권한을 켜주세요.';
+          _isListening = false;
+        });
+        // Optional: show a dialog or button to openAppSettings()
+        Future.delayed(const Duration(seconds: 2), () {
+          openAppSettings();
+        });
+      }
+      return;
+    }
+
+    if (!status.isGranted) {
+      if (mounted) {
+        setState(() {
+          _text = '마이크 권한이 필요합니다.';
           _isListening = false;
         });
       }
