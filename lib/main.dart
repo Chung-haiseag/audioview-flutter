@@ -9,6 +9,7 @@ import 'screens/search/search_screen.dart';
 import 'screens/downloads/downloads_screen.dart';
 import 'screens/notice/notice_list_screen.dart';
 import 'widgets/custom_header.dart';
+import 'widgets/bottom_navigation.dart';
 
 void main() {
   runApp(const MyApp());

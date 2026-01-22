@@ -72,7 +72,6 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
   late stt.SpeechToText _speech;
   bool _isListening = false;
   String _text = '듣고 있습니다...';
-  double _confidence = 1.0;
 
   @override
   void initState() {
