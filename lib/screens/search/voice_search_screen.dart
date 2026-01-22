@@ -116,57 +116,81 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
     // Request microphone permission specifically
     var status = await Permission.microphone.request();
     if (status != PermissionStatus.granted) {
-      setState(() {
-        _text = '마이크 권한이 필요합니다.';
-        _isListening = false;
-      });
+      if (mounted) {
+        setState(() {
+          _text = '설정에서 마이크 권한을 허용해주세요.';
+          _isListening = false;
+        });
+      }
       return;
     }
 
-    bool available = await _speech.initialize(
-      onStatus: (status) {
-        // print('onStatus: $status');
-        if (status == 'notListening') {
-          setState(() => _isListening = false);
-          // If speech recognition stopped and we have text, return it
-          if (_text != '듣고 있습니다...' && _text.isNotEmpty) {
-            // Optionally auto-pop here, or wait for user to press confirm
-            // For now, let's wait a bit and pop
-            Future.delayed(const Duration(milliseconds: 1000), () {
-              if (mounted) Navigator.pop(context, _text);
-            });
+    try {
+      bool available = await _speech.initialize(
+        onStatus: (status) {
+          if (status == 'notListening') {
+            if (mounted) setState(() => _isListening = false);
+            if (_text != '듣고 있습니다...' &&
+                _text.isNotEmpty &&
+                !_text.startsWith('오류')) {
+              Future.delayed(const Duration(milliseconds: 1000), () {
+                if (mounted) Navigator.pop(context, _text);
+              });
+            }
           }
-        }
-      },
-      onError: (errorNotification) {
-        // print('onError: $errorNotification');
-        setState(() {
-          _text = '오류가 발생했습니다. 다시 시도해주세요.';
-          _isListening = false;
-        });
-      },
-    );
-
-    if (available) {
-      if (mounted) setState(() => _isListening = true);
-      _speech.listen(
-        onResult: (val) {
+        },
+        onError: (errorNotification) {
           if (mounted) {
             setState(() {
-              _text = val.recognizedWords;
-              if (val.hasConfidenceRating && val.confidence > 0) {
-                _confidence = val.confidence;
-              }
+              _text = '오류: ${errorNotification.errorMsg}';
+              _isListening = false;
             });
           }
         },
-        localeId: 'ko_KR', // Korean locale
-        pauseFor: const Duration(seconds: 2), // Wait 2s silence before stopping
       );
-    } else {
+
+      if (available) {
+        // Find Korean locale
+        var systemLocale = await _speech.systemLocale();
+        var locales = await _speech.locales();
+        var koreanLocale = locales.firstWhere(
+          (locale) => locale.localeId.contains('ko'),
+          orElse: () => systemLocale ?? locales.first,
+        );
+
+        if (mounted) {
+          setState(() {
+            _isListening = true;
+            _text = '말씀해주세요...';
+          });
+        }
+
+        _speech.listen(
+          onResult: (val) {
+            if (mounted) {
+              setState(() {
+                _text = val.recognizedWords;
+              });
+            }
+          },
+          localeId: koreanLocale.localeId,
+          pauseFor: const Duration(seconds: 3),
+          listenFor: const Duration(seconds: 10),
+          cancelOnError: true,
+          listenMode: stt.ListenMode.search,
+        );
+      } else {
+        if (mounted) {
+          setState(() {
+            _text = '기기가 음성 인식을 지원하지 않습니다.';
+            _isListening = false;
+          });
+        }
+      }
+    } catch (e) {
       if (mounted) {
         setState(() {
-          _text = '음성 인식을 사용할 수 없습니다.';
+          _text = '초기화 오류: $e';
           _isListening = false;
         });
       }
