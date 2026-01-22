@@ -228,17 +228,21 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         const SizedBox(height: 20),
 
-                        GridView.count(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          crossAxisCount: 2,
-                          childAspectRatio: 6,
-                          children: [
-                            _buildFooterLink('이용 약관'),
-                            _buildFooterLink('개인정보 처리방침'),
-                            _buildFooterLink('쿠키 설정'),
-                            _buildFooterLink('회사 정보'),
-                          ],
+                        // 공지사항 링크
+                        Center(
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/notice');
+                            },
+                            child: Text(
+                              '공지사항',
+                              style: TextStyle(
+                                color: Colors.grey[400],
+                                fontSize: 14,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ),
                         ),
                         const SizedBox(height: 20),
                       ],
@@ -249,19 +253,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ).animate().fadeIn(duration: 500.ms),
         ],
-      ),
-    );
-  }
-
-  Widget _buildFooterLink(String text) {
-    return GestureDetector(
-      onTap: () {},
-      child: Text(
-        text,
-        style: TextStyle(
-          color: Colors.grey[500],
-          fontSize: 12,
-        ),
       ),
     );
   }
