@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../constants/mock_data.dart';
+import '../../models/movie.dart';
+import '../../services/movie_service.dart';
+import '../../constants/mock_data.dart'; // Keep for categoryChips if needed
 import '../../widgets/movie_card.dart';
 import '../category/category_list_screen.dart';
 import '../movie/movie_detail_screen.dart';
@@ -93,27 +95,40 @@ class HomeScreen extends StatelessWidget {
 
             SizedBox(
               height: 240,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemCount: mockMovies.length > 10 ? 10 : mockMovies.length,
-                itemBuilder: (context, index) {
-                  return MovieCard(
-                    movie: mockMovies[index],
-                    showNewBadge: true,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MovieDetailScreen(
-                            movie: mockMovies[index],
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
+              child: StreamBuilder<List<Movie>>(
+                  stream: MovieService().getNewMovies(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Center(
+                          child: Text('새로 올라온 영화가 없습니다.',
+                              style: TextStyle(color: Colors.grey)));
+                    }
+                    final movies = snapshot.data!;
+                    return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      itemCount: movies.length,
+                      itemBuilder: (context, index) {
+                        return MovieCard(
+                          movie: movies[index],
+                          showNewBadge: true,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MovieDetailScreen(
+                                  movie: movies[index],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    );
+                  }),
             ),
 
             const SizedBox(height: 32),
@@ -145,30 +160,40 @@ class HomeScreen extends StatelessWidget {
 
             SizedBox(
               height: 240,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemCount: mockMovies.length > 13
-                    ? 10
-                    : (mockMovies.length > 3 ? mockMovies.length - 3 : 0),
-                itemBuilder: (context, index) {
-                  final movieIndex = index + 3; // Start from 4th movie
-                  return MovieCard(
-                    movie: mockMovies[movieIndex],
-                    showNewBadge: false,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MovieDetailScreen(
-                            movie: mockMovies[movieIndex],
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
+              child: StreamBuilder<List<Movie>>(
+                  stream: MovieService().getPopularMovies(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Center(
+                          child: Text('인기 영화가 없습니다.',
+                              style: TextStyle(color: Colors.grey)));
+                    }
+                    final movies = snapshot.data!;
+                    return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      itemCount: movies.length,
+                      itemBuilder: (context, index) {
+                        return MovieCard(
+                          movie: movies[index],
+                          showNewBadge: false,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MovieDetailScreen(
+                                  movie: movies[index],
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    );
+                  }),
             ),
 
             const SizedBox(height: 24),

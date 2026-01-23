@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Movie {
   final String id;
   final String title;
@@ -25,19 +27,32 @@ class Movie {
     required this.hasMultiLang,
   });
 
-  factory Movie.fromJson(Map<String, dynamic> json) {
+  factory Movie.fromFirestore(DocumentSnapshot doc) {
+    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+
+    // Parse year from release_date (Timestamp or String)
+    int parseYear(dynamic dateVal) {
+      if (dateVal is Timestamp) return dateVal.toDate().year;
+      if (dateVal is String) {
+        try {
+          return DateTime.parse(dateVal).year;
+        } catch (_) {}
+      }
+      return 2024; // Default
+    }
+
     return Movie(
-      id: json['id'],
-      title: json['title'],
-      year: json['year'],
-      country: json['country'],
-      duration: json['duration'],
-      genres: List<String>.from(json['genres']),
-      description: json['description'],
-      posterUrl: json['posterUrl'],
-      hasAD: json['hasAD'],
-      hasCC: json['hasCC'],
-      hasMultiLang: json['hasMultiLang'],
+      id: doc.id,
+      title: data['title'] ?? '',
+      year: parseYear(data['release_date']),
+      country: data['country'] ?? '한국', // Default if not provided
+      duration: data['running_time'] ?? 0,
+      genres: List<String>.from(data['genres'] ?? []),
+      description: data['synopsis'] ?? '',
+      posterUrl: data['poster_url'] ?? '',
+      hasAD: data['has_audio_commentary'] ?? false,
+      hasCC: data['has_closed_caption'] ?? false,
+      hasMultiLang: false, // Not in schema, default false
     );
   }
 
