@@ -22,6 +22,7 @@ List<Notice> mockNotices = [
     date: DateTime(2026, 1, 20),
     type: NoticeType.notice,
     isNew: true,
+    category: '일반',
   ),
   Notice(
     id: '2',
@@ -34,6 +35,7 @@ List<Notice> mockNotices = [
 시행일: 2026년 2월 1일""",
     date: DateTime(2026, 1, 15),
     type: NoticeType.notice,
+    category: '일반',
   ),
   Notice(
     id: '3',
@@ -47,6 +49,7 @@ List<Notice> mockNotices = [
     date: DateTime(2026, 1, 22),
     type: NoticeType.event,
     isNew: true,
+    category: '이벤트',
   ),
   Notice(
     id: '4',
@@ -57,6 +60,7 @@ List<Notice> mockNotices = [
 지금 바로 친구에게 AudioView를 소개해주세요.""",
     date: DateTime(2026, 1, 10),
     type: NoticeType.event,
+    category: '이벤트',
   ),
   Notice(
     id: '5',
@@ -64,5 +68,6 @@ List<Notice> mockNotices = [
     content: "음성 검색 기능이 추가되었습니다. 이제 마이크 버튼을 눌러 말로 영화를 검색해보세요!",
     date: DateTime(2026, 1, 18),
     type: NoticeType.notice,
+    category: '일반',
   ),
 ];

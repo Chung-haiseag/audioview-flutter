@@ -91,20 +91,46 @@ class NoticeListScreen extends StatelessWidget {
       children: [
         ListTile(
           contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           title: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (notice.isNew)
+              // 1. Importance / New Badge / Category Badge
+              if (notice.isImportant)
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0, top: 2),
+                  child: Icon(Icons.error_outline,
+                      color: const Color(0xFFE50914), size: 16),
+                )
+              else if (notice.category == '이벤트')
                 Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                  margin: const EdgeInsets.only(right: 8),
+                  margin: const EdgeInsets.only(right: 8, top: 2),
                   decoration: BoxDecoration(
-                    color: const Color(0xFFE50914),
+                    color: Colors.green, // Event color
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: const Text(
-                    'N',
+                    '이벤트',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )
+              else
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  margin: const EdgeInsets.only(right: 8, top: 2),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[700], // General color
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: const Text(
+                    '일반',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 10,
@@ -112,28 +138,49 @@ class NoticeListScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+
+              // 2. Title
               Expanded(
-                child: Text(
-                  notice.title,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      notice.title,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 4),
+                    // 3. Date and View Count
+                    Row(
+                      children: [
+                        Text(
+                          DateFormat('yyyy-MM-dd').format(notice.date),
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 14,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Icon(Icons.remove_red_eye_outlined,
+                            size: 14, color: Colors.grey[600]),
+                        const SizedBox(width: 4),
+                        Text(
+                          '${notice.viewCount}',
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ],
-          ),
-          subtitle: Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Text(
-              DateFormat('yyyy.MM.dd').format(notice.date),
-              style: TextStyle(
-                color: Colors.grey[600],
-                fontSize: 14,
-              ),
-            ),
           ),
           onTap: () {
             Navigator.push(
