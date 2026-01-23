@@ -11,7 +11,14 @@ import 'screens/notice/notice_list_screen.dart';
 import 'widgets/custom_header.dart';
 import 'widgets/bottom_navigation.dart';
 
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 

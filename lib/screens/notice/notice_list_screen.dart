@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../models/notice.dart';
-import '../../constants/mock_notices.dart';
+import '../../services/notice_service.dart'; // Import NoticeService
 import 'notice_detail_screen.dart';
 
 class NoticeListScreen extends StatelessWidget {
@@ -9,16 +9,6 @@ class NoticeListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Separate notices and events
-    final notices =
-        mockNotices.where((n) => n.type == NoticeType.notice).toList();
-    final events =
-        mockNotices.where((n) => n.type == NoticeType.event).toList();
-
-    // Sort by date descending
-    notices.sort((a, b) => b.date.compareTo(a.date));
-    events.sort((a, b) => b.date.compareTo(a.date));
-
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -43,12 +33,35 @@ class NoticeListScreen extends StatelessWidget {
             ],
           ),
         ),
-        body: TabBarView(
-          children: [
-            _buildNoticeList(notices),
-            _buildNoticeList(
-                events), // Reusing list builder but could be customized for events
-          ],
+        body: StreamBuilder<List<Notice>>(
+          stream: NoticeService().getNotices(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (snapshot.hasError) {
+              return Center(
+                child: Text(
+                  '오류가 발생했습니다: ${snapshot.error}',
+                  style: const TextStyle(color: Colors.white),
+                ),
+              );
+            }
+
+            final allNotices = snapshot.data ?? [];
+            final notices =
+                allNotices.where((n) => n.type == NoticeType.notice).toList();
+            final events =
+                allNotices.where((n) => n.type == NoticeType.event).toList();
+
+            return TabBarView(
+              children: [
+                _buildNoticeList(notices),
+                _buildNoticeList(events),
+              ],
+            );
+          },
         ),
       ),
     );
