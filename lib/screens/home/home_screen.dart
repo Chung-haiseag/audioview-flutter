@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../models/movie.dart';
 import '../../services/movie_service.dart';
-import '../../services/firestore_seeder.dart'; // Import Seeder
+// import '../../services/firestore_seeder.dart'; // import removed
 import '../../constants/mock_data.dart'; // Keep for categoryChips if needed
 import '../../widgets/movie_card.dart';
 import '../category/category_list_screen.dart';
@@ -82,27 +82,9 @@ class HomeScreen extends StatelessWidget {
                       return const Center(child: CircularProgressIndicator());
                     }
                     if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text('새로 올라온 영화가 없습니다.',
-                                style: TextStyle(color: Colors.grey)),
-                            const SizedBox(height: 10),
-                            ElevatedButton.icon(
-                              onPressed: () async {
-                                await FirestoreSeeder().seedMovies();
-                              },
-                              icon: const Icon(Icons.cloud_upload),
-                              label: const Text('테스트 데이터 생성하기'),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red,
-                                foregroundColor: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
+                      return const Center(
+                          child: Text('새로 올라온 영화가 없습니다.',
+                              style: TextStyle(color: Colors.grey)));
                     }
                     final movies = snapshot.data!;
                     return ListView.builder(

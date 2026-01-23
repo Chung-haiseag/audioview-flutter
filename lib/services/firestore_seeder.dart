@@ -16,17 +16,17 @@ class FirestoreSeeder {
       // Using movie.id as doc ID for consistency
       await moviesRef.doc(movie.id).set({
         'title': movie.title,
-        'release_date': DateTime(movie.year, 1, 1), // Approx date
+        'releaseDate': DateTime(movie.year, 1, 1), // Approx date
         'country': movie.country,
-        'running_time': movie.duration,
+        'runningTime': movie.duration,
         'genres': movie.genres,
         'synopsis': '영화 설명이 여기에 들어갑니다. (${movie.title})',
-        'poster_url': movie.posterUrl,
-        'has_audio_commentary': movie.hasAD,
-        'has_closed_caption': movie.hasCC,
-        'noticeType': 'general', // Default
-        'is_latest': movie.year >= 2025, // Logic for "New"
-        'is_popular': movie.year < 2025, // Logic for "Popular" for testing
+        'posterUrl': movie.posterUrl,
+        'hasAudioCommentary': movie.hasAD,
+        'hasClosedCaption': movie.hasCC,
+        'noticeType': 'general',
+        'isLatest': movie.year >= 2025,
+        'isPopular': movie.year < 2025,
         'viewCount': 0,
         'createdAt': FieldValue.serverTimestamp(),
       });
