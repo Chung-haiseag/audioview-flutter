@@ -34,11 +34,39 @@ class MovieCard extends StatelessWidget {
                   width: 120,
                   height: 180,
                   decoration: BoxDecoration(
+                    color: Colors.grey[900], // Fallback background
                     borderRadius: BorderRadius.circular(8),
-                    image: DecorationImage(
-                      image: NetworkImage(movie.posterUrl),
-                      fit: BoxFit.cover,
-                    ),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: movie.posterUrl.isNotEmpty
+                        ? Image.network(
+                            movie.posterUrl,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Center(
+                                child: Icon(Icons.broken_image,
+                                    color: Colors.white24),
+                              );
+                            },
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  value: loadingProgress.expectedTotalBytes !=
+                                          null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                          loadingProgress.expectedTotalBytes!
+                                      : null,
+                                ),
+                              );
+                            },
+                          )
+                        : const Center(
+                            child: Icon(Icons.movie_creation,
+                                color: Colors.white24),
+                          ),
                   ),
                 ),
 
