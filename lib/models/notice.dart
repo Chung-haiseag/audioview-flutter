@@ -28,21 +28,39 @@ class Notice {
   factory Notice.fromFirestore(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
-    // Map Firestore 'category' string to NoticeType for older app logic if needed,
-    // or just use category string directly.
-    // Assuming Admin saves '분류' as 'category' field.
-    String category = data['category'] ?? '일반';
-    NoticeType type = category == '이벤트' ? NoticeType.event : NoticeType.notice;
+    // 1. Title
+    String title = data['title'] ?? '제목 없음';
+
+    // 2. Content
+    String content = data['content'] ?? '';
+
+    // 3. Date (publishedAt or createdAt)
+    Timestamp? timestamp =
+        data['publishedAt'] as Timestamp? ?? data['createdAt'] as Timestamp?;
+    DateTime date = timestamp?.toDate() ?? DateTime.now();
+
+    // 4. Category (noticeType)
+    // Firestore stores "general" or "event", map to "일반" / "이벤트"
+    String rawType = data['noticeType'] ?? 'general';
+    String category = (rawType == 'event') ? '이벤트' : '일반';
+    NoticeType type =
+        (rawType == 'event') ? NoticeType.event : NoticeType.notice;
+
+    // 5. Importance
+    bool isImportant = data['isImportant'] ?? false;
+
+    // 6. ViewCount
+    int viewCount = data['viewCount'] ?? 0;
 
     return Notice(
       id: doc.id,
-      title: data['title'] ?? '',
-      content: data['content'] ?? '',
-      date: (data['date'] as Timestamp).toDate(),
+      title: title,
+      content: content,
+      date: date,
       type: type,
-      isNew: data['isNew'] ?? false,
-      isImportant: data['isImportant'] ?? false,
-      viewCount: data['viewCount'] ?? 0,
+      isNew: false,
+      isImportant: isImportant,
+      viewCount: viewCount,
       category: category,
     );
   }

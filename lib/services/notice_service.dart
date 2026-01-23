@@ -7,7 +7,7 @@ class NoticeService {
   Stream<List<Notice>> getNotices() {
     return _firestore
         .collection('notices')
-        .orderBy('date', descending: true)
+        .orderBy('publishedAt', descending: true)
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) => Notice.fromFirestore(doc)).toList();
