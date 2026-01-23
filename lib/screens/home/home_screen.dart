@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../models/movie.dart';
 import '../../services/movie_service.dart';
+import '../../services/firestore_seeder.dart'; // Import Seeder
 import '../../constants/mock_data.dart'; // Keep for categoryChips if needed
 import '../../widgets/movie_card.dart';
 import '../category/category_list_screen.dart';
@@ -27,40 +28,14 @@ class HomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 itemCount: categoryChips.length,
                 itemBuilder: (context, index) {
+                  // ... (existing code)
                   return GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CategoryListScreen(
-                            categoryName: categoryChips[index],
-                          ),
-                        ),
-                      );
+                      // ...
                     },
                     child: Container(
-                      margin: const EdgeInsets.only(right: 8),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF1A1A1A),
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: const Color(0xFF333333),
-                          width: 1,
+                        // ...
                         ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          categoryChips[index],
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ),
                   );
                 },
               ),
@@ -98,13 +73,36 @@ class HomeScreen extends StatelessWidget {
               child: StreamBuilder<List<Movie>>(
                   stream: MovieService().getNewMovies(),
                   builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(
+                          child: Text('오류 발생: ${snapshot.error}',
+                              style: const TextStyle(color: Colors.red)));
+                    }
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(child: CircularProgressIndicator());
                     }
                     if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Center(
-                          child: Text('새로 올라온 영화가 없습니다.',
-                              style: TextStyle(color: Colors.grey)));
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text('새로 올라온 영화가 없습니다.',
+                                style: TextStyle(color: Colors.grey)),
+                            const SizedBox(height: 10),
+                            ElevatedButton.icon(
+                              onPressed: () async {
+                                await FirestoreSeeder().seedMovies();
+                              },
+                              icon: const Icon(Icons.cloud_upload),
+                              label: const Text('테스트 데이터 생성하기'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.red,
+                                foregroundColor: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
                     }
                     final movies = snapshot.data!;
                     return ListView.builder(
