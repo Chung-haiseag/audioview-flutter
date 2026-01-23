@@ -44,15 +44,17 @@ class Movie {
     return Movie(
       id: doc.id,
       title: data['title'] ?? '',
-      year: parseYear(data['release_date']),
-      country: data['country'] ?? '한국', // Default if not provided
-      duration: data['running_time'] ?? 0,
+      year: parseYear(data['releaseDate'] ?? data['release_date']),
+      country: data['country'] ?? '한국',
+      duration: data['runningTime'] ?? data['running_time'] ?? 0,
       genres: List<String>.from(data['genres'] ?? []),
       description: data['synopsis'] ?? '',
-      posterUrl: data['poster_url'] ?? '',
-      hasAD: data['has_audio_commentary'] ?? false,
-      hasCC: data['has_closed_caption'] ?? false,
-      hasMultiLang: false, // Not in schema, default false
+      posterUrl: data['posterUrl'] ?? data['poster_url'] ?? '',
+      // Support camelCase (actual DB) and snake_case (reference)
+      hasAD:
+          data['hasAudioCommentary'] ?? data['has_audio_commentary'] ?? false,
+      hasCC: data['hasClosedCaption'] ?? data['has_closed_caption'] ?? false,
+      hasMultiLang: false,
     );
   }
 
