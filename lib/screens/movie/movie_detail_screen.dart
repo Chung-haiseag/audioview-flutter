@@ -1,7 +1,7 @@
 ﻿import 'package:flutter/material.dart';
 import 'dart:ui';
 import '../../models/movie.dart';
-import '../../constants/mock_data.dart';
+// import '../../constants/mock_data.dart'; // unused
 import 'sync_screen.dart';
 
 class MovieDetailScreen extends StatefulWidget {
@@ -98,32 +98,22 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
       backgroundColor: const Color(0xFF0A0A0A),
       body: Stack(
         children: [
-          // Background with blurred movie posters
+          // Background with blurred movie poster
           Positioned.fill(
             child: Stack(
+              fit: StackFit.expand,
               children: [
-                // Grid of movie posters
-                GridView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    childAspectRatio: 0.67,
-                  ),
-                  itemCount: mockMovies.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(mockMovies[index].posterUrl),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    );
+                // Current movie poster background
+                Image.network(
+                  widget.movie.posterUrl,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(color: Colors.black);
                   },
                 ),
                 // Blur effect
                 BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                  filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
                   child: Container(
                     color: Colors.black.withOpacity(0.5 + (_brightness * 0.3)),
                   ),

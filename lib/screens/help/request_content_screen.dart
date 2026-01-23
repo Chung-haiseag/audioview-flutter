@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RequestContentScreen extends StatefulWidget {
   const RequestContentScreen({super.key});
@@ -192,35 +193,68 @@ class _RequestContentScreenState extends State<RequestContentScreen> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      // Show success dialog
+                      // Show loading indicator
                       showDialog(
                         context: context,
-                        builder: (context) => AlertDialog(
-                          backgroundColor: const Color(0xFF1A1A1A),
-                          title: const Text(
-                            '요청 완료',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          content: const Text(
-                            '작품 요청이 접수되었습니다.\n검토 후 서비스에 추가하겠습니다.',
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(context); // Close dialog
-                                Navigator.pop(context); // Go back
-                              },
-                              child: const Text(
-                                '확인',
-                                style: TextStyle(color: Colors.red),
-                              ),
-                            ),
-                          ],
+                        barrierDismissible: false,
+                        builder: (context) => const Center(
+                          child: CircularProgressIndicator(color: Colors.red),
                         ),
                       );
+
+                      try {
+                        // Submit to Firestore
+                        await FirebaseFirestore.instance
+                            .collection('requests')
+                            .add({
+                          'category': _selectedCategory,
+                          'title': _titleController.text.trim(),
+                          'reason': _descriptionController.text.trim(),
+                          'status': 'pending',
+                          'createdAt': FieldValue.serverTimestamp(),
+                        });
+
+                        if (context.mounted) {
+                          Navigator.pop(context); // Close loading
+
+                          // Show success dialog
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              backgroundColor: const Color(0xFF1A1A1A),
+                              title: const Text(
+                                '요청 완료',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              content: const Text(
+                                '작품 요청이 접수되었습니다.\n검토 후 서비스에 추가하겠습니다.',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context); // Close dialog
+                                    Navigator.pop(context); // Go back
+                                  },
+                                  child: const Text(
+                                    '확인',
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                      } catch (e) {
+                        if (context.mounted) {
+                          Navigator.pop(context); // Close loading
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('요청 중 오류가 발생했습니다: $e')),
+                          );
+                        }
+                      }
                     }
                   },
                   style: ElevatedButton.styleFrom(
