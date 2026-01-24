@@ -53,14 +53,16 @@ class MovieService {
     }
   }
 
-  // Fetch movies by genre (array-contains)
+  // Fetch movies by genre (Client-side filtering for robustness)
   Stream<List<Movie>> getMoviesByGenre(String genre) {
-    return _firestore
-        .collection('movies')
-        .where('genres', arrayContains: genre)
-        .snapshots()
-        .map((snapshot) {
-      return snapshot.docs.map((doc) => Movie.fromFirestore(doc)).toList();
+    return _firestore.collection('movies').snapshots().map((snapshot) {
+      final allMovies =
+          snapshot.docs.map((doc) => Movie.fromFirestore(doc)).toList();
+
+      return allMovies.where((movie) {
+        // Check exact match, case-insensitive, or trimmed match
+        return movie.genres.any((g) => g.trim() == genre.trim());
+      }).toList();
     });
   }
 
