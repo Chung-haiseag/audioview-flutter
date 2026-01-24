@@ -51,4 +51,15 @@ class MovieService {
       return [];
     }
   }
+
+  // Fetch movies by genre (array-contains)
+  Stream<List<Movie>> getMoviesByGenre(String genre) {
+    return _firestore
+        .collection('movies')
+        .where('genres', arrayContains: genre)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) => Movie.fromFirestore(doc)).toList();
+    });
+  }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/movie.dart';
-import '../../constants/mock_data.dart';
+import '../../services/movie_service.dart';
 import '../../widgets/movie_card.dart';
 import '../movie/movie_detail_screen.dart';
 
@@ -12,21 +12,8 @@ class CategoryListScreen extends StatelessWidget {
     required this.categoryName,
   });
 
-  List<Movie> _getMoviesByCategory() {
-    // Filter movies by category (check if category name is in genres)
-    final filteredMovies = mockMovies.where((movie) {
-      return movie.genres
-          .any((genre) => genre.toLowerCase() == categoryName.toLowerCase());
-    }).toList();
-
-    // Return up to 5 movies
-    return filteredMovies.take(5).toList();
-  }
-
   @override
   Widget build(BuildContext context) {
-    final movies = _getMoviesByCategory();
-
     return Scaffold(
       backgroundColor: const Color(0xFF0A0A0A),
       appBar: AppBar(
@@ -45,8 +32,26 @@ class CategoryListScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: movies.isEmpty
-          ? Center(
+      body: StreamBuilder<List<Movie>>(
+        stream: MovieService().getMoviesByGenre(categoryName),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                '오류가 발생했습니다',
+                style: TextStyle(color: Colors.grey[600]),
+              ),
+            );
+          }
+
+          final movies = snapshot.data ?? [];
+
+          if (movies.isEmpty) {
+            return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -65,33 +70,38 @@ class CategoryListScreen extends StatelessWidget {
                   ),
                 ],
               ),
-            )
-          : GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                childAspectRatio: 0.6,
-                crossAxisSpacing: 0,
-                mainAxisSpacing: 0,
-              ),
-              itemCount: movies.length,
-              itemBuilder: (context, index) {
-                return MovieCard(
-                  movie: movies[index],
-                  showNewBadge: true, // Show NEW badge for all movies
-                  removeMargin: true, // Remove margin for grid layout
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MovieDetailScreen(
-                          movie: movies[index],
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
+            );
+          }
+
+          return GridView.builder(
+            padding: const EdgeInsets.all(16),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              childAspectRatio: 0.67,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
             ),
+            itemCount: movies.length,
+            itemBuilder: (context, index) {
+              return MovieCard(
+                movie: movies[index],
+                showNewBadge: false,
+                removeMargin: true,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MovieDetailScreen(
+                        movie: movies[index],
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
