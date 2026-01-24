@@ -8,19 +8,34 @@ class AuthProvider with ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   User? _user;
+  Map<String, dynamic>? _userData;
   bool _isLoading = true;
 
   bool get isAuthenticated => _user != null;
   bool get isLoading => _isLoading;
   User? get user => _user;
+  Map<String, dynamic>? get userData => _userData;
 
   AuthProvider() {
     _loadAuthStatus();
   }
 
   Future<void> _loadAuthStatus() async {
-    _auth.authStateChanges().listen((User? user) {
+    _auth.authStateChanges().listen((User? user) async {
       _user = user;
+      if (user != null) {
+        // Fetch user data from Firestore
+        try {
+          final doc = await _firestore.collection('users').doc(user.uid).get();
+          if (doc.exists) {
+            _userData = doc.data();
+          }
+        } catch (e) {
+          print('Error fetching user data: $e');
+        }
+      } else {
+        _userData = null;
+      }
       _isLoading = false;
       notifyListeners();
     });

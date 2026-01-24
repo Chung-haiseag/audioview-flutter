@@ -2,6 +2,7 @@
 import 'voice_search_screen.dart';
 import '../../constants/mock_data.dart';
 import '../../models/movie.dart';
+import '../../services/movie_service.dart';
 import '../../widgets/movie_card.dart';
 import '../movie/movie_detail_screen.dart';
 import '../help/request_content_screen.dart';
@@ -17,45 +18,58 @@ class _SearchScreenState extends State<SearchScreen> {
   final _searchController = TextEditingController();
   String _searchQuery = '';
   List<Movie> _searchResults = [];
-  // bool _isSearching = false; // Removed unused variable
+  bool _isSearching = false;
 
   @override
   void initState() {
     super.initState();
-    _searchController.addListener(_onSearchChanged);
+    // _searchController.addListener(_onSearchChanged); // Removed listener for manual submission preferred or debounce?
+    // User usually expects search on enter or typing. Let's keep typing search but maybe with debounce.
+    // For now, simpler: search on submitted or icon press.
   }
 
   @override
   void dispose() {
-    _searchController.removeListener(_onSearchChanged);
+    // _searchController.removeListener(_onSearchChanged);
     _searchController.dispose();
     super.dispose();
   }
 
-  void _onSearchChanged() {
-    setState(() {
-      _searchQuery = _searchController.text;
-      if (_searchQuery.isNotEmpty) {
-        _performSearch(_searchQuery);
-      } else {
-        // _isSearching = false;
+  // Removed _onSearchChanged to avoid too many queries. Use onSubmitted.
+
+  Future<void> _performSearch(String query) async {
+    if (query.isEmpty) {
+      setState(() {
         _searchResults = [];
-      }
-    });
-  }
+        _searchQuery = '';
+      });
+      return;
+    }
 
-  void _performSearch(String query) {
     setState(() {
-      // _isSearching = true;
-      _searchResults = mockMovies.where((movie) {
-        final title = movie.title.toLowerCase();
-        final genres = movie.genres.map((g) => g.toLowerCase()).toList();
-        final searchLower = query.toLowerCase();
-
-        return title.contains(searchLower) ||
-            genres.any((g) => g.contains(searchLower));
-      }).toList();
+      _isSearching = true;
+      _searchQuery = query;
     });
+
+    try {
+      // Use MovieService to search in Firestore
+      // Note: Firestore prefix search is case-sensitive and limited.
+      // For demo, this connects to the real DB.
+      final results = await MovieService().searchMovies(query);
+
+      setState(() {
+        _searchResults = results;
+      });
+    } catch (e) {
+      print('Search failed: $e');
+      setState(() {
+        _searchResults = [];
+      });
+    } finally {
+      setState(() {
+        _isSearching = false;
+      });
+    }
   }
 
   void _onKeywordTap(String keyword) {
