@@ -4,12 +4,14 @@ import '../../services/movie_service.dart';
 import '../../widgets/movie_card.dart';
 import '../movie/movie_detail_screen.dart';
 
+import '../../models/genre.dart'; // Add import
+
 class CategoryListScreen extends StatelessWidget {
-  final String categoryName;
+  final Genre genre; // Changed from String categoryName
 
   const CategoryListScreen({
     super.key,
-    required this.categoryName,
+    required this.genre,
   });
 
   @override
@@ -24,7 +26,7 @@ class CategoryListScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          categoryName,
+          genre.name,
           style: const TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -33,7 +35,7 @@ class CategoryListScreen extends StatelessWidget {
         ),
       ),
       body: StreamBuilder<List<Movie>>(
-        stream: MovieService().getMoviesByGenre(categoryName),
+        stream: MovieService().getMoviesByGenre(genre),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());

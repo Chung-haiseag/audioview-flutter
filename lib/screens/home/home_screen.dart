@@ -67,7 +67,7 @@ class HomeScreen extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => CategoryListScreen(
-                                categoryName: genre.name,
+                                genre: genre,
                               ),
                             ),
                           );
