@@ -107,6 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         // Email Field
                         TextField(
                           controller: _emailController,
+                          keyboardType: TextInputType.emailAddress,
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                             hintText: '이메일 주소 또는 전화번호',
@@ -242,16 +243,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
                         // 공지사항 링크
                         Center(
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(context, '/notice');
-                            },
-                            child: Text(
-                              '공지사항',
-                              style: TextStyle(
-                                color: Colors.grey[400],
-                                fontSize: 14,
-                                decoration: TextDecoration.underline,
+                          child: MouseRegion(
+                            cursor: SystemMouseCursors.click,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(context, '/notice');
+                              },
+                              child: Text(
+                                '공지사항',
+                                style: TextStyle(
+                                  color: Colors.grey[400],
+                                  fontSize: 14,
+                                  decoration: TextDecoration.underline,
+                                ),
                               ),
                             ),
                           ),
