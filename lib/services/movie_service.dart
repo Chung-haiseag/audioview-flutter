@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/movie.dart';
+import '../models/genre.dart';
 
 class MovieService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -60,6 +61,13 @@ class MovieService {
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) => Movie.fromFirestore(doc)).toList();
+    });
+  }
+
+  // Fetch all genres from 'genres' collection
+  Stream<List<Genre>> getGenres() {
+    return _firestore.collection('genres').snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) => Genre.fromFirestore(doc)).toList();
     });
   }
 }

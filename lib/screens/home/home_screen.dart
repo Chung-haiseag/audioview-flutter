@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/movie.dart';
+import '../../models/genre.dart';
 import '../../services/movie_service.dart';
 // import '../../services/firestore_seeder.dart'; // import removed
 import '../../constants/mock_data.dart'; // Keep for categoryChips if needed
@@ -23,39 +24,73 @@ class HomeScreen extends StatelessWidget {
             // Category menu (horizontal scrollable chips)
             SizedBox(
               height: 40,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemCount: categoryChips.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CategoryListScreen(
-                            categoryName: categoryChips[index],
+              child: StreamBuilder<List<Genre>>(
+                stream: MovieService().getGenres(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    // Show a few skeleton chips or loader while loading
+                    return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      itemCount: 4,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          width: 60,
+                          margin: const EdgeInsets.only(right: 8),
+                          decoration: BoxDecoration(
+                            color: Colors.white10,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        );
+                      },
+                    );
+                  }
+
+                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    // Fallback to static if empty? Or show nothing?
+                    // Let's show nothing or a specific message.
+                    // The user expects connection, so allow empty if DB is truly empty.
+                    return const SizedBox();
+                  }
+
+                  final genres = snapshot.data!;
+
+                  return ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    itemCount: genres.length,
+                    itemBuilder: (context, index) {
+                      final genre = genres[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CategoryListScreen(
+                                categoryName: genre.name,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(right: 8),
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.white, width: 1),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            genre.name,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
                       );
                     },
-                    child: Container(
-                      margin: const EdgeInsets.only(right: 8),
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.white, width: 1),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        categoryChips[index],
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
                   );
                 },
               ),
