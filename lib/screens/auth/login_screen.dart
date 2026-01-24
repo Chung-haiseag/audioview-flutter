@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(width: 8),
                       const Text(
-                        'AUDIOVIEW',
+                        '오디오뷰',
                         style: TextStyle(
                           color: Color(0xFFE50914),
                           fontSize: 24,

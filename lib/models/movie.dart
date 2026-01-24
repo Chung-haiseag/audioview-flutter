@@ -30,13 +30,28 @@ class Movie {
   factory Movie.fromFirestore(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
-    // Parse year from release_date (Timestamp or String)
+    // Helper to safely parse int from various types
+    int parseInt(dynamic value) {
+      if (value is int) return value;
+      if (value is String) {
+        // Remove non-digit characters if likely "100분" format
+        final cleanStr = value.replaceAll(RegExp(r'[^0-9]'), '');
+        return int.tryParse(cleanStr) ?? 0;
+      }
+      return 0;
+    }
+
+    // Parse year from release_date (Timestamp, String date, or String year)
     int parseYear(dynamic dateVal) {
       if (dateVal is Timestamp) return dateVal.toDate().year;
+      if (dateVal is int) return dateVal;
       if (dateVal is String) {
+        // Try parsing assuming full date string
         try {
           return DateTime.parse(dateVal).year;
         } catch (_) {}
+        // Try parsing just the year integer
+        return parseInt(dateVal);
       }
       return 2024; // Default
     }
@@ -46,7 +61,7 @@ class Movie {
       title: data['title'] ?? '',
       year: parseYear(data['releaseDate'] ?? data['release_date']),
       country: data['country'] ?? '한국',
-      duration: data['runningTime'] ?? data['running_time'] ?? 0,
+      duration: parseInt(data['runningTime'] ?? data['running_time']),
       genres: _parseGenres(data),
       description: data['synopsis'] ?? '',
       posterUrl: data['posterUrl'] ?? data['poster_url'] ?? '',
