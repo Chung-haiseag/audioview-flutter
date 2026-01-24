@@ -194,20 +194,24 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             Text('AudioView 회원이 아닌가요? ',
                                 style: TextStyle(color: Colors.grey[400])),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const SignUpScreen(),
+                            MouseRegion(
+                              cursor: SystemMouseCursors.click,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const SignUpScreen(),
+                                    ),
+                                  );
+                                },
+                                child: const Text(
+                                  '지금 가입하세요.',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                );
-                              },
-                              child: const Text(
-                                '지금 가입하세요.',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),

@@ -169,6 +169,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         // Email Field
                         TextField(
                           controller: _emailController,
+                          keyboardType: TextInputType
+                              .emailAddress, // Optimize for email/English
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                             hintText: '이메일 주소',
