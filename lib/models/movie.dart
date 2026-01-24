@@ -47,7 +47,7 @@ class Movie {
       year: parseYear(data['releaseDate'] ?? data['release_date']),
       country: data['country'] ?? '한국',
       duration: data['runningTime'] ?? data['running_time'] ?? 0,
-      genres: List<String>.from(data['genres'] ?? []),
+      genres: _parseGenres(data),
       description: data['synopsis'] ?? '',
       posterUrl: data['posterUrl'] ?? data['poster_url'] ?? '',
       // Support camelCase (actual DB) and snake_case (reference)
@@ -56,6 +56,24 @@ class Movie {
       hasCC: data['hasClosedCaption'] ?? data['has_closed_caption'] ?? false,
       hasMultiLang: false,
     );
+  }
+
+  static List<String> _parseGenres(Map<String, dynamic> data) {
+    if (data['genres'] is List) {
+      return List<String>.from(data['genres']);
+    }
+    if (data['genre'] is String) {
+      return [data['genre']];
+    }
+    if (data['category'] is String) {
+      return [data['category']];
+    }
+    if (data['genreId'] is String) {
+      // If we only have ID, we might store it, but for UI display we usually need name.
+      // But for filtering, having the ID in this list helps.
+      return [data['genreId']];
+    }
+    return [];
   }
 
   Map<String, dynamic> toJson() {
