@@ -28,14 +28,34 @@ class HomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 itemCount: categoryChips.length,
                 itemBuilder: (context, index) {
-                  // ... (existing code)
                   return GestureDetector(
                     onTap: () {
-                      // ...
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CategoryListScreen(
+                            categoryName: categoryChips[index],
+                          ),
+                        ),
+                      );
                     },
                     child: Container(
-                        // ...
+                      margin: const EdgeInsets.only(right: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white, width: 1),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        categoryChips[index],
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
                         ),
+                      ),
+                    ),
                   );
                 },
               ),
