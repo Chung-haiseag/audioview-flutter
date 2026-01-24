@@ -250,8 +250,27 @@ class _RequestContentScreenState extends State<RequestContentScreen> {
                       } catch (e) {
                         if (context.mounted) {
                           Navigator.pop(context); // Close loading
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('요청 중 오류가 발생했습니다: $e')),
+                          // Show error dialog
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              backgroundColor: const Color(0xFF1A1A1A),
+                              title: const Text(
+                                '오류 발생',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                              content: Text(
+                                '요청 중 문제가 발생했습니다.\n\n내용:\n$e',
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Text('확인',
+                                      style: TextStyle(color: Colors.grey)),
+                                ),
+                              ],
+                            ),
                           );
                         }
                       }
