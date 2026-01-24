@@ -6,7 +6,6 @@ class MovieService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // Fetch "New" movies (isLatest or is_latest)
-  // Screenshot shows 'isLatest', 'isPopular' in camelCase
   Stream<List<Movie>> getNewMovies() {
     return _firestore
         .collection('movies')
@@ -32,14 +31,6 @@ class MovieService {
   Future<List<Movie>> searchMovies(String query) async {
     if (query.isEmpty) return [];
 
-    // Simple prefix search: title >= query AND title <= query + '\uf8ff'
-    // Note: Firestore is case sensitive. Ideally, store a lowercase search field.
-    // For now, we assume titles are stored as regular case and this basic search works strictly.
-    // Or better, do a client-side filter if dataset is small, but let's try Firestore query first.
-    // Actually, effective search usually requires a dedicated search service (Algolia/Typesense).
-    // Let's implement client-side filtering over "New" or "All" for simplicity if dataset is small?
-    // No, let's try the Firestore prefix query on 'title'.
-
     try {
       final snapshot = await _firestore
           .collection('movies')
@@ -54,14 +45,17 @@ class MovieService {
   }
 
   // Fetch movies by genre (Client-side filtering for robustness)
-  Stream<List<Movie>> getMoviesByGenre(String genre) {
+  Stream<List<Movie>> getMoviesByGenre(Genre genre) {
     return _firestore.collection('movies').snapshots().map((snapshot) {
       final allMovies =
           snapshot.docs.map((doc) => Movie.fromFirestore(doc)).toList();
 
       return allMovies.where((movie) {
-        // Check exact match, case-insensitive, or trimmed match
-        return movie.genres.any((g) => g.trim() == genre.trim());
+        // Check exact match, case-insensitive, trimmed match on Name OR ID match
+        return movie.genres.any((g) {
+          final gTrimmed = g.trim();
+          return gTrimmed == genre.name.trim() || gTrimmed == genre.id;
+        });
       }).toList();
     });
   }
