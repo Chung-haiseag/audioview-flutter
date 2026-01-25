@@ -5,6 +5,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { IconHome, IconMovie, IconSettings, IconUser, IconSearch, IconLogout } from '@tabler/icons-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '../context/AuthProvider';
+import { BottomNav } from './BottomNav';
 
 interface AppLayoutProps {
     children: React.ReactNode;
@@ -34,7 +35,9 @@ export function AppLayout({ children }: AppLayoutProps) {
             navbar={{
                 width: 250,
                 breakpoint: 'sm',
-                collapsed: { mobile: !opened },
+                collapsed: { mobile: true }, // Always collapsed on mobile if we use BottomNav
+                // Or: collapsed: { mobile: !opened }, but if we want BottomNav, we usually disable Sidebar on mobile.
+                // Let's set it to always hidden on mobile for this design.
             }}
             padding="md"
         >
@@ -85,7 +88,7 @@ export function AppLayout({ children }: AppLayoutProps) {
                 </Group>
             </AppShell.Header>
 
-            <AppShell.Navbar p="md">
+            <AppShell.Navbar p="md" hiddenFrom="sm">
                 <Stack gap="xs">
                     {navItems.map((item) => (
                         <NavLink
@@ -102,9 +105,11 @@ export function AppLayout({ children }: AppLayoutProps) {
                 </Stack>
             </AppShell.Navbar>
 
-            <AppShell.Main>
+            <AppShell.Main pb={80}>
                 {children}
             </AppShell.Main>
+
+            <BottomNav />
         </AppShell>
     );
 }
