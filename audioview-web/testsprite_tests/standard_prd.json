@@ -1,0 +1,90 @@
+{
+  "meta": {
+    "project": "AudioView Mobile App Frontend",
+    "date": "2026-01-21",
+    "prepared_by": "Software Development Manager"
+  },
+  "product_overview": "AudioView is a mobile frontend application designed for streaming and managing movies and audio content, emphasizing accessible UX features, session persistence, responsive layouts, and performant media loading with robust error handling.",
+  "core_goals": [
+    "Ensure seamless user authentication and session management with clear feedback and security.",
+    "Provide an intuitive and responsive home screen featuring categorized movie content with smooth scrolling and visual feedback.",
+    "Implement robust search and filter functionalities with real-time results and user-friendly empty states.",
+    "Support personalized user areas with protected access, displaying user data accurately.",
+    "Offer comprehensive settings with accessibility options to support visually impaired users.",
+    "Maintain consistent UI/UX across devices with responsive design and theme support including dark mode.",
+    "Handle network and API errors gracefully to ensure robustness in offline or error conditions."
+  ],
+  "key_features": [
+    "Secure and user-friendly authentication flow supporting login, logout, and session persistence.",
+    "Responsive home screen with custom scroll views and categorized movie sections like 'New Releases', 'Popular Now', and 'Top 10'.",
+    "Horizontal scrollable category chips with visual selection cues.",
+    "Efficient image loading with caching and fallback visuals for movie posters.",
+    "Real-time search filtering with support for keyboard actions and empty state displays.",
+    "Tag and category filters to refine search results with accurate results.",
+    "Protected user profile and download sections prompting login when needed.",
+    "Accessibility features including toggles for audio description and closed captions, support for TalkBack and VoiceOver, semantic labeling of UI elements, and logical focus order.",
+    "Settings to manage network usage preferences and brightness with persistent state.",
+    "Consistent dark mode theme with good color contrast and text readability.",
+    "Error handling for network issues including offline mode and API timeout management."
+  ],
+  "user_flow_summary": [
+    "User logs in with ID/PW, receives feedback on success or failure, and session persists across app restarts.",
+    "User navigates the home screen browsing categorized movie grids with smooth scrolling and responsive layout.",
+    "User conducts searches with instant filtering; when no results found, a clear 'No Results' screen is shown.",
+    "User interacts with filter tags to refine search results dynamically.",
+    "Non-authenticated users attempting to access protected sections are prompted to log in.",
+    "Users toggle accessibility features like audio description and subtitles in settings, with immediate effect.",
+    "Users adjust network and display settings, which persist between app uses.",
+    "Navigation across bottom tabs retains state; back button triggers exit confirmation modal.",
+    "App handles offline status and API timeouts by showing appropriate error screens and messages."
+  ],
+  "validation_criteria": [
+    "Login succeeds with valid credentials and changes authentication state.",
+    "Error messages display correctly for invalid login attempts.",
+    "Session state is retained after app restart confirming persistent login.",
+    "Logout leads user to appropriate screen and protects zones requiring authentication.",
+    "Home screen layout is smooth, responsive, and sections have proper spacing.",
+    "Category chips provide visual feedback and allow horizontal scrolling without jank.",
+    "Movie poster images load quickly, cache effectively, and show placeholder on fail.",
+    "Search filters results in real-time; 'No Results' screen appears when applicable.",
+    "Filter tags update search input correctly and display accurate filtered results.",
+    "Access control prompts unauthenticated users to log in when accessing protected routes.",
+    "Accessibility toggles affect UI immediately; screen reader support is confirmed.",
+    "Settings changes save state persistently for network and display preferences.",
+    "Text elements handle overflow properly; dark theme colors provide sufficient contrast and readability.",
+    "Offline mode triggers appropriate UI warnings; API error timeouts handled gracefully."
+  ],
+  "code_summary": {
+    "tech_stack": [
+      "TypeScript",
+      "Next.js",
+      "Mantine UI",
+      "React"
+    ],
+    "features": [
+      {
+        "name": "AppShell Layout",
+        "description": "Main application layout with responsive sidebar, header, and themes",
+        "files": [
+          "src/app/layout.tsx",
+          "src/app/page.tsx"
+        ]
+      },
+      {
+        "name": "Home Page",
+        "description": "Dashboard landing page with Hero section and Movie grid",
+        "files": [
+          "src/app/page.tsx"
+        ]
+      },
+      {
+        "name": "Theme Configuration",
+        "description": "Global Mantine theme setup with dark mode and custom colors",
+        "files": [
+          "theme.ts",
+          "src/app/layout.tsx"
+        ]
+      }
+    ]
+  }
+}

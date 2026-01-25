@@ -1,0 +1,16 @@
+{
+  "status": "commited",
+  "type": "frontend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:3000",
+  "executionArgs": {
+    "projectName": "audioview-web",
+    "projectPath": "c:\\audioview\\audioview-web",
+    "testIds": [],
+    "additionalInstruction": "Verify that the AppShell loads and the 'AudioView' title is visible. Check that the Movie grid renders with mock data. Check if the Hero section is displayed.",
+    "envs": {
+      "API_KEY": "sk-user-HGp0oVSxHzFx3NBRSPj0RZUVqwIek9ob3-5WOtoJ63aU0ZGlz_0en5k-_Dx8ZTZknsAUP8gykqIHpKuCPCBRDj1q1W9FHiT4zs6ms8nBp4eQmhXm63qebyY5tKFnj32pcbk"
+    }
+  },
+  "proxy": "http://fc48326b-cc54-4e50-adeb-65ec6dd03d8c:3dzJsUX59WbnUlRBMu73UaAobcLBr6lO@tun.testsprite.com:8080"
+}

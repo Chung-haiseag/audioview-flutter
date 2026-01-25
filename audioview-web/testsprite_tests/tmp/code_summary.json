@@ -1,0 +1,33 @@
+{
+  "tech_stack": [
+    "TypeScript",
+    "Next.js",
+    "Mantine UI",
+    "React"
+  ],
+  "features": [
+    {
+      "name": "AppShell Layout",
+      "description": "Main application layout with responsive sidebar, header, and themes",
+      "files": [
+        "src/app/layout.tsx",
+        "src/app/page.tsx"
+      ]
+    },
+    {
+      "name": "Home Page",
+      "description": "Dashboard landing page with Hero section and Movie grid",
+      "files": [
+        "src/app/page.tsx"
+      ]
+    },
+    {
+      "name": "Theme Configuration",
+      "description": "Global Mantine theme setup with dark mode and custom colors",
+      "files": [
+        "theme.ts",
+        "src/app/layout.tsx"
+      ]
+    }
+  ]
+}
