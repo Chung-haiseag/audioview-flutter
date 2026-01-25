@@ -1,400 +1,472 @@
 [
   {
     "id": "TC001",
-    "title": "Login with valid credentials",
-    "description": "Verify that login succeeds and authentication state updates with correct user ID and password.",
+    "title": "Successful user login with valid credentials",
+    "description": "Verify that a user can log in successfully using correct username and password, and the authentication state updates accordingly.",
     "category": "functional",
     "priority": "High",
     "steps": [
       {
         "type": "action",
-        "description": "Navigate to login screen."
+        "description": "Navigate to login page"
       },
       {
         "type": "action",
-        "description": "Input valid user ID and password."
+        "description": "Input valid username/email and password"
       },
       {
         "type": "action",
-        "description": "Click the login button."
+        "description": "Click login button"
       },
       {
-        "type": "assertion",
-        "description": "Check that user is authenticated and navigated to home screen."
+        "assertion": "Check that the login is successful and user is redirected to home screen"
+      },
+      {
+        "assertion": "Verify global authentication state reflects logged-in user"
       }
     ]
   },
   {
     "id": "TC002",
     "title": "Login failure with invalid credentials",
-    "description": "Ensure login fails with incorrect user ID and/or password and appropriate error message is shown.",
+    "description": "Verify that login fails with incorrect username and/or password and appropriate error message is displayed.",
     "category": "error handling",
     "priority": "High",
     "steps": [
       {
         "type": "action",
-        "description": "Navigate to login screen."
+        "description": "Navigate to login page"
       },
       {
         "type": "action",
-        "description": "Enter invalid user ID or password."
+        "description": "Input invalid username/email or password"
       },
       {
         "type": "action",
-        "description": "Click the login button."
+        "description": "Click login button"
       },
       {
         "type": "assertion",
-        "description": "Verify error message is displayed and user remains on login screen."
+        "description": "Check that login is failed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify error message is visible and instructs user about invalid credentials"
       }
     ]
   },
   {
     "id": "TC003",
-    "title": "Session persistence after app restart",
-    "description": "Verify that after a successful login, user session persists when the app is closed and reopened.",
+    "title": "Login button disables on click to prevent duplicate requests",
+    "description": "Verify the login button disables immediately after being clicked to prevent multiple authentication requests.",
     "category": "functional",
-    "priority": "High",
+    "priority": "Medium",
     "steps": [
       {
         "type": "action",
-        "description": "Login successfully with valid credentials."
+        "description": "Navigate to login page"
       },
       {
         "type": "action",
-        "description": "Close and restart the application."
+        "description": "Input valid username/email and password"
+      },
+      {
+        "type": "action",
+        "description": "Click login button"
       },
       {
         "type": "assertion",
-        "description": "Check that the user remains logged in and is navigated to the home screen."
+        "description": "Ensure login button is disabled during authentication process"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify button re-enables only after login completes or fails"
       }
     ]
   },
   {
     "id": "TC004",
-    "title": "Logout functionality and protected zones access",
-    "description": "Ensure logging out returns the user to the login screen and accessing protected sections prompts for login.",
-    "category": "security",
+    "title": "Session persistence after app restart",
+    "description": "Verify that the app maintains user login state (session persistence) after restarting or refreshing the app.",
+    "category": "functional",
     "priority": "High",
     "steps": [
       {
         "type": "action",
-        "description": "Login successfully."
+        "description": "Log in successfully"
       },
       {
         "type": "action",
-        "description": "Navigate to logout button and perform logout."
+        "description": "Restart or refresh the app"
       },
       {
         "type": "assertion",
-        "description": "Verify user is redirected to login screen and authentication state is cleared."
-      },
-      {
-        "type": "action",
-        "description": "Attempt to access protected user profile or download sections while logged out."
+        "description": "Verify user is still authenticated without requiring login"
       },
       {
         "type": "assertion",
-        "description": "Check that login prompt appears to restrict access."
+        "description": "Authentication-dependent UI and navigation reflect logged-in state"
       }
     ]
   },
   {
     "id": "TC005",
-    "title": "Home screen layout responsiveness and scrolling",
-    "description": "Validate that the home screen displays categorized movie grids properly with smooth vertical scrolling and adaptive layout.",
+    "title": "Logout functionality and authentication state update",
+    "description": "Verify that clicking logout properly clears authentication state and user is redirected to login screen.",
     "category": "functional",
     "priority": "High",
     "steps": [
       {
         "type": "action",
-        "description": "Navigate to home screen."
-      },
-      {
-        "type": "assertion",
-        "description": "Verify sections 'New Releases', 'Popular Now', and 'Top 10' are visible with proper spacing."
+        "description": "Log in successfully"
       },
       {
         "type": "action",
-        "description": "Scroll vertically through the home screen content."
+        "description": "Navigate to logout or trigger logout action"
       },
       {
         "type": "assertion",
-        "description": "Check scrolling is smooth without jitter or layout shifts."
+        "description": "Verify user is logged out and authentication state is cleared"
+      },
+      {
+        "type": "assertion",
+        "description": "User is redirected to login screen"
       }
     ]
   },
   {
     "id": "TC006",
-    "title": "Category chips horizontal scroll with visual feedback",
-    "description": "Verify horizontal scrollable category chips provide visual cues on selection and scroll smoothly.",
+    "title": "Responsive layout on multiple screen sizes and orientations",
+    "description": "Verify that the home screen, sidebar, and components layout correctly adapt to different device screen widths and orientations without UI breakage.",
     "category": "ui",
-    "priority": "Medium",
+    "priority": "High",
     "steps": [
       {
         "type": "action",
-        "description": "Navigate to home screen category chips."
-      },
-      {
-        "type": "action",
-        "description": "Scroll horizontally across category chips."
+        "description": "Open app on small, medium, and large screen sizes"
       },
       {
         "type": "assertion",
-        "description": "Verify scrolling is smooth without jank."
-      },
-      {
-        "type": "action",
-        "description": "Select a category chip."
+        "description": "Verify sidebar is responsive and navigation is accessible"
       },
       {
         "type": "assertion",
-        "description": "Confirm visual highlight or selection cue appears on the selected chip."
+        "description": "Home screen content and movie dashboards layout adjust appropriately"
+      },
+      {
+        "type": "action",
+        "description": "Rotate device to landscape and portrait"
+      },
+      {
+        "type": "assertion",
+        "description": "UI elements remain visible and properly arranged without overlap"
       }
     ]
   },
   {
     "id": "TC007",
-    "title": "Movie poster image loading, caching, and fallback",
-    "description": "Ensure movie poster images load efficiently with caching and display fallback placeholder if loading fails.",
+    "title": "Home screen movie dashboard filtering and horizontal scrolling",
+    "description": "Verify that users can select movie categories using horizontal chips and the movie cards update accordingly with smooth horizontal scrolling.",
     "category": "functional",
     "priority": "High",
     "steps": [
       {
         "type": "action",
-        "description": "Navigate to home screen with movie posters displayed."
-      },
-      {
-        "type": "assertion",
-        "description": "Verify images load quickly and cache on repeat visits."
+        "description": "Navigate to home screen"
       },
       {
         "type": "action",
-        "description": "Simulate image load failure by blocking image resource."
+        "description": "Scroll horizontally through category chips and select a category"
       },
       {
         "type": "assertion",
-        "description": "Check that fallback placeholder image is shown instead of broken image."
+        "description": "Movies displayed match selected category"
+      },
+      {
+        "type": "assertion",
+        "description": "Horizontal scrolling is smooth without jank or stutter"
+      },
+      {
+        "type": "assertion",
+        "description": "Movie cards with missing images show the fallback image"
       }
     ]
   },
   {
     "id": "TC008",
-    "title": "Real-time search filtering with empty state handling",
-    "description": "Validate that search input filters movie content dynamically with keyboard support and shows 'No Results' screen if no matches.",
+    "title": "Search functionality with real-time filtering and recommended tags",
+    "description": "Verify that search input filters movie results instantly and recommended tags can be selected to refine results, including empty state handling.",
     "category": "functional",
     "priority": "High",
     "steps": [
       {
         "type": "action",
-        "description": "Focus on search input and type a query."
-      },
-      {
-        "type": "assertion",
-        "description": "Confirm search results update in real-time matching the query."
+        "description": "Navigate to search interface"
       },
       {
         "type": "action",
-        "description": "Type a query that matches no movie."
+        "description": "Input partial movie title in search box"
       },
       {
         "type": "assertion",
-        "description": "Check that a clear 'No Results' screen or message is displayed."
+        "description": "Search results update in real-time matching the input"
+      },
+      {
+        "type": "action",
+        "description": "Select one or more recommended tags"
+      },
+      {
+        "type": "assertion",
+        "description": "Results refine based on selected tags"
+      },
+      {
+        "type": "action",
+        "description": "Clear search input"
+      },
+      {
+        "type": "assertion",
+        "description": "Empty state UI is displayed when no results exist"
       }
     ]
   },
   {
     "id": "TC009",
-    "title": "Filter tags update search input and results correctly",
-    "description": "Ensure that selecting and deselecting tag and category filters updates the search input and filtered movie list accurately.",
-    "category": "functional",
-    "priority": "Medium",
-    "steps": [
-      {
-        "type": "action",
-        "description": "Navigate to search/filter section."
-      },
-      {
-        "type": "action",
-        "description": "Select one or more tag/category filters."
-      },
-      {
-        "type": "assertion",
-        "description": "Verify that the search input updates accordingly and filtered results match selected filters."
-      },
-      {
-        "type": "action",
-        "description": "Deselect filters."
-      },
-      {
-        "type": "assertion",
-        "description": "Confirm search input and results revert appropriately."
-      }
-    ]
-  },
-  {
-    "id": "TC010",
-    "title": "Protected profile and downloads access control",
-    "description": "Verify that unauthenticated users attempting to access profile or downloads are prompted to login, and authenticated users see correct data.",
+    "title": "Access control redirects for non-authenticated users",
+    "description": "Verify that attempting to access protected routes like My Page redirects non-authenticated users to login screen with appropriate message.",
     "category": "security",
     "priority": "High",
     "steps": [
       {
         "type": "action",
-        "description": "While logged out, attempt to access user profile section."
-      },
-      {
-        "type": "assertion",
-        "description": "Check login prompt is shown."
+        "description": "Ensure user is logged out"
       },
       {
         "type": "action",
-        "description": "Login successfully."
-      },
-      {
-        "type": "action",
-        "description": "Navigate to profile and downloads."
+        "description": "Attempt to navigate to My Page or other protected route"
       },
       {
         "type": "assertion",
-        "description": "Verify user data is displayed accurately."
+        "description": "User is redirected to login screen"
+      },
+      {
+        "type": "assertion",
+        "description": "Message is shown indicating login is required for access"
+      }
+    ]
+  },
+  {
+    "id": "TC010",
+    "title": "My Page displays user profile and watch history for authenticated users",
+    "description": "Verify that authenticated users can access My Page and view their profile information and watch history correctly.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Log in successfully"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to My Page"
+      },
+      {
+        "type": "assertion",
+        "description": "User profile information is displayed correctly"
+      },
+      {
+        "type": "assertion",
+        "description": "Watch history list is visible and accurate"
       }
     ]
   },
   {
     "id": "TC011",
-    "title": "Accessibility toggles effect and screen reader support",
-    "description": "Validate toggling audio description and closed captions applies immediately and app supports screen readers with semantic labeling and logical focus.",
+    "title": "Settings page toggles save and apply accessibility preferences",
+    "description": "Verify that toggling audio description (AD) and closed captioning (CC) settings updates preferences and applies them immediately.",
     "category": "functional",
-    "priority": "High",
+    "priority": "Medium",
     "steps": [
       {
         "type": "action",
-        "description": "Open settings and toggle audio description."
-      },
-      {
-        "type": "assertion",
-        "description": "Confirm that audio description state changes immediately in UI."
+        "description": "Navigate to Settings page"
       },
       {
         "type": "action",
-        "description": "Toggle closed captions on and off."
+        "description": "Toggle audio description setting ON and OFF"
       },
       {
         "type": "assertion",
-        "description": "Verify subtitles appear/disappear accordingly."
+        "description": "User preference is saved and applied in app behavior"
       },
       {
         "type": "action",
-        "description": "Enable screen reader (TalkBack/VoiceOver)."
+        "description": "Toggle closed captioning setting ON and OFF"
       },
       {
         "type": "assertion",
-        "description": "Confirm UI elements have semantic labels and logical tab/focus order."
+        "description": "Preference updates accordingly and affects playback if applicable"
       }
     ]
   },
   {
     "id": "TC012",
-    "title": "Settings persistence for network and display preferences",
-    "description": "Ensure changes to network usage and brightness settings are saved persistently and applied on app restart.",
+    "title": "Settings page network usage preference saves correctly",
+    "description": "Verify that users can select network usage preferences and these choices persist and apply correctly.",
     "category": "functional",
     "priority": "Medium",
     "steps": [
       {
         "type": "action",
-        "description": "Open settings and adjust network usage preferences."
+        "description": "Open Settings page"
       },
       {
         "type": "action",
-        "description": "Adjust brightness slider."
+        "description": "Change network usage preference (e.g., data saver mode)"
       },
       {
         "type": "assertion",
-        "description": "Verify settings changes take immediate effect."
-      },
-      {
-        "type": "action",
-        "description": "Close and reopen the app."
+        "description": "Preference is saved and retained on app reload"
       },
       {
         "type": "assertion",
-        "description": "Confirm that settings persist and reflect user choices."
+        "description": "App respects chosen preference during data usage scenarios"
       }
     ]
   },
   {
     "id": "TC013",
-    "title": "Dark mode UI colors and text readability",
-    "description": "Verify that dark theme colors provide sufficient contrast and all text elements remain readable without overflow.",
-    "category": "ui",
-    "priority": "Medium",
-    "steps": [
-      {
-        "type": "action",
-        "description": "Enable dark mode theme in settings."
-      },
-      {
-        "type": "assertion",
-        "description": "Check color contrast ratios meet accessibility standards."
-      },
-      {
-        "type": "assertion",
-        "description": "Verify text does not overflow or get clipped in common screens."
-      }
-    ]
-  },
-  {
-    "id": "TC014",
-    "title": "Offline mode and API timeout error handling",
-    "description": "Ensure the app detects offline status or API timeouts and shows appropriate error messages and fallback UI.",
-    "category": "error handling",
-    "priority": "High",
-    "steps": [
-      {
-        "type": "action",
-        "description": "Disable network connection or simulate API timeout."
-      },
-      {
-        "type": "action",
-        "description": "Navigate through the app to load content requiring network."
-      },
-      {
-        "type": "assertion",
-        "description": "Verify offline error screen or messages display clearly."
-      },
-      {
-        "type": "action",
-        "description": "Attempt app usage in offline mode."
-      },
-      {
-        "type": "assertion",
-        "description": "Check graceful degradation and fallback behaviors."
-      }
-    ]
-  },
-  {
-    "id": "TC015",
-    "title": "Bottom tab navigation state retention and exit confirmation",
-    "description": "Validate that navigation across bottom tabs retains state per tab, and back button triggers exit confirmation modal.",
+    "title": "Custom brightness overlay toggle and application",
+    "description": "Verify that users can enable custom brightness overlay and it applies visually with persistence across sessions.",
     "category": "functional",
     "priority": "Medium",
     "steps": [
       {
         "type": "action",
-        "description": "Navigate across different bottom tabs."
-      },
-      {
-        "type": "assertion",
-        "description": "Check each tab retains its state and scroll position."
+        "description": "Navigate to Settings page"
       },
       {
         "type": "action",
-        "description": "Press back button on main screen."
+        "description": "Toggle custom brightness overlay ON"
       },
       {
         "type": "assertion",
-        "description": "Verify exit confirmation modal appears."
+        "description": "Brightness overlay effect is applied on app screens"
+      },
+      {
+        "type": "action",
+        "description": "Restart app"
+      },
+      {
+        "type": "assertion",
+        "description": "Brightness overlay preference persists and effect remains active"
+      }
+    ]
+  },
+  {
+    "id": "TC014",
+    "title": "Accessibility support with screen reader and semantic labeling",
+    "description": "Verify that UI elements have proper semantic labels and are compatible with screen readers and logical focus order.",
+    "category": "ui",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Enable screen reader on device"
+      },
+      {
+        "type": "action",
+        "description": "Navigate through major UI components: home, navigation, search, settings, My Page"
+      },
+      {
+        "type": "assertion",
+        "description": "All interactive elements have meaningful semantic labels"
+      },
+      {
+        "type": "assertion",
+        "description": "Focus order follows logical and intuitive sequence"
+      }
+    ]
+  },
+  {
+    "id": "TC015",
+    "title": "Offline notification and fallback UI display",
+    "description": "Verify that when network connection is lost, app displays offline notification and fallback UI gracefully guiding the user.",
+    "category": "error handling",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Simulate network loss on device"
+      },
+      {
+        "type": "assertion",
+        "description": "An offline notification is displayed prominently"
+      },
+      {
+        "type": "assertion",
+        "description": "Areas dependent on network show fallback UI with appropriate messages"
+      },
+      {
+        "type": "action",
+        "description": "Restore network connection"
+      },
+      {
+        "type": "assertion",
+        "description": "App recovers from offline state and normal UI returns"
+      }
+    ]
+  },
+  {
+    "id": "TC016",
+    "title": "Network timeout handling shows error and allows retry",
+    "description": "Verify that API/network timeout errors are caught, user is notified with error UI and can retry the operation.",
+    "category": "error handling",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Simulate network timeout during data fetch (e.g., search or movie dashboard)"
+      },
+      {
+        "type": "assertion",
+        "description": "Error message or UI is shown explaining network timeout"
+      },
+      {
+        "type": "action",
+        "description": "User triggers retry"
+      },
+      {
+        "type": "assertion",
+        "description": "App attempts the request again and recovers if network restored"
+      }
+    ]
+  },
+  {
+    "id": "TC017",
+    "title": "UI theme consistency and text readability in light and dark modes",
+    "description": "Verify that the UI maintains consistent design and text remains readable in both light and dark themes across all screens.",
+    "category": "ui",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Switch app theme to light mode"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text contrast and color scheme are visually accessible"
+      },
+      {
+        "type": "action",
+        "description": "Switch app theme to dark mode"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text contrast and color scheme are visually accessible without readability issues"
+      },
+      {
+        "type": "action",
+        "description": "Review all major screens and components for consistent styling"
       }
     ]
   }

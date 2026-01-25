@@ -1,12 +1,12 @@
 'use client';
 
-import { AppShell, Burger, Group, Text, ScrollArea, NavLink, TextInput, SimpleGrid, Card, Image, Badge, Title, Container, Button, Stack, ThemeIcon, ActionIcon, rem } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
-import { IconHome, IconMovie, IconSettings, IconUser, IconSearch, IconPlayerPlay, IconHeart } from '@tabler/icons-react';
+import { Text, SimpleGrid, Card, Badge, Title, Container, Button, Stack, Group, Chip } from '@mantine/core';
+import { IconPlayerPlay, IconHeart } from '@tabler/icons-react';
 import { useState } from 'react';
+import { MovieCard } from '../components/MovieCard';
 
-// Mock Data from Flutter project
-const movies = [
+// Mock Data
+const allMovies = [
   {
     id: '1',
     title: '거룩한 밤: 데몬 헌터스',
@@ -97,138 +97,81 @@ const movies = [
   },
 ];
 
-export default function Home() {
-  const [opened, { toggle }] = useDisclosure();
-  const [active, setActive] = useState(0);
+const categoryChips = ['전체', '영화', '드라마', '예능', '애니', '시사교양'];
 
-  const navItems = [
-    { icon: IconHome, label: '홈', href: '#' },
-    { icon: IconMovie, label: '영화', href: '#' },
-    { icon: IconUser, label: 'MY', href: '#' },
-    { icon: IconSettings, label: '설정', href: '#' },
-  ];
+export default function Home() {
+  const [selectedCategory, setSelectedCategory] = useState('전체');
+
+  const filteredMovies = selectedCategory === '전체'
+    ? allMovies
+    : allMovies.filter(m => m.genres.includes(selectedCategory));
 
   return (
-    <AppShell
-      header={{ height: 70 }}
-      navbar={{
-        width: 250,
-        breakpoint: 'sm',
-        collapsed: { mobile: !opened },
-      }}
-      padding="md"
-    >
-      <AppShell.Header>
-        <Group h="100%" px="md" justify="space-between">
-          <Group>
-            <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-            <Text
-              size="xl"
-              fw={900}
-              variant="gradient"
-              gradient={{ from: 'red', to: 'orange', deg: 90 }}
-            >
-              AudioView
+    <Container fluid>
+      <Stack gap="xl">
+        {/* Hero Section */}
+        <Card
+          radius="lg"
+          p="xl"
+          h={400}
+          style={{
+            backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url(${allMovies[0].posterUrl})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
+          }}
+        >
+          <Stack gap="md" maw={600}>
+            <Badge size="lg" color="red">NEW</Badge>
+            <Title order={1} c="white" size={48}>{allMovies[0].title}</Title>
+            <Text c="gray.3" size="lg" lineClamp={2}>
+              악에 맞서 싸우는 신성한 힘! 데몬 헌터들의 숨막히는 액션이 시작된다.
+              {allMovies[0].year} • {allMovies[0].genres.join(', ')} • {allMovies[0].duration}분
             </Text>
-          </Group>
-          <Group>
-            <TextInput
-              placeholder="검색어를 입력하세요"
-              leftSection={<IconSearch size={16} />}
-              radius="xl"
-              w={300}
-              visibleFrom="sm"
-            />
-            <ActionIcon variant="light" size="lg" radius="xl">
-              <IconUser size={20} />
-            </ActionIcon>
-          </Group>
-        </Group>
-      </AppShell.Header>
-
-      <AppShell.Navbar p="md">
-        <Stack gap="xs">
-          {navItems.map((item, index) => (
-            <NavLink
-              key={item.label}
-              active={index === active}
-              label={item.label}
-              leftSection={<item.icon size={20} stroke={1.5} />}
-              onClick={() => setActive(index)}
-              variant="light"
-              color="violet"
-              style={{ borderRadius: 8 }}
-            />
-          ))}
-        </Stack>
-      </AppShell.Navbar>
-
-      <AppShell.Main>
-        <Container fluid>
-          <Stack gap="xl">
-            {/* Hero Section */}
-            <Card
-              radius="lg"
-              p="xl"
-              h={400}
-              style={{
-                backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url(${movies[0].posterUrl})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'flex-end',
-              }}
-            >
-              <Stack gap="md" maw={600}>
-                <Badge size="lg" color="red">NEW</Badge>
-                <Title order={1} c="white" size={48}>{movies[0].title}</Title>
-                <Text c="gray.3" size="lg" lineClamp={2}>
-                  악에 맞서 싸우는 신성한 힘! 데몬 헌터들의 숨막히는 액션이 시작된다.
-                  {movies[0].year} • {movies[0].genres.join(', ')} • {movies[0].duration}분
-                </Text>
-                <Group>
-                  <Button size="lg" leftSection={<IconPlayerPlay size={20} />} color="red">
-                    재생하기
-                  </Button>
-                  <Button size="lg" variant="light" leftSection={<IconHeart size={20} />}>
-                    찜하기
-                  </Button>
-                </Group>
-              </Stack>
-            </Card>
-
-            {/* Movie Grid */}
-            <Stack>
-              <Title order={2}>최신 업데이트</Title>
-              <SimpleGrid cols={{ base: 2, sm: 3, md: 4, lg: 5 }} spacing="lg">
-                {movies.map((movie) => (
-                  <Card key={movie.id} shadow="sm" padding="none" radius="md" withBorder={false} style={{ cursor: 'pointer', backgroundColor: 'transparent' }}>
-                    <Card.Section>
-                      <Image
-                        src={movie.posterUrl}
-                        h={320}
-                        alt={movie.title}
-                        fallbackSrc="https://placehold.co/300x450?text=No+Image"
-                      />
-                    </Card.Section>
-                    <Stack mt="sm" gap={4}>
-                      <Text fw={700} truncate>{movie.title}</Text>
-                      <Group gap={4}>
-                        {movie.hasAD && <Badge size="xs" variant="outline" color="blue">AD</Badge>}
-                        {movie.hasCC && <Badge size="xs" variant="outline" color="gray">CC</Badge>}
-                        <Text size="xs" c="dimmed">
-                          {movie.year} • {movie.genres[0]}
-                        </Text>
-                      </Group>
-                    </Stack>
-                  </Card>
-                ))}
-              </SimpleGrid>
-            </Stack>
+            <Group>
+              <Button size="lg" leftSection={<IconPlayerPlay size={20} />} color="red">
+                재생하기
+              </Button>
+              <Button size="lg" variant="light" leftSection={<IconHeart size={20} />}>
+                찜하기
+              </Button>
+            </Group>
           </Stack>
-        </Container>
-      </AppShell.Main>
-    </AppShell>
+        </Card>
+
+        {/* Filter Chips */}
+        <Group>
+          {categoryChips.map((chip) => (
+            <Chip
+              key={chip}
+              checked={selectedCategory === chip}
+              onChange={() => setSelectedCategory(chip)}
+              color="violet"
+              variant="light"
+            >
+              {chip}
+            </Chip>
+          ))}
+        </Group>
+
+        {/* Movie Grid */}
+        <Stack>
+          <Title order={2}>
+            {selectedCategory === '전체' ? '최신 업데이트' : `${selectedCategory} 콘텐츠`}
+          </Title>
+          {filteredMovies.length > 0 ? (
+            <SimpleGrid cols={{ base: 2, sm: 3, md: 4, lg: 5 }} spacing="lg">
+              {filteredMovies.map((movie) => (
+                <MovieCard key={movie.id} movie={movie} />
+              ))}
+            </SimpleGrid>
+          ) : (
+            <Text c="dimmed" py="xl">해당 카테고리의 콘텐츠가 없습니다.</Text>
+          )}
+        </Stack>
+      </Stack>
+    </Container>
   );
 }

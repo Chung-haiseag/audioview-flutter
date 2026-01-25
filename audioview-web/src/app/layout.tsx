@@ -2,6 +2,9 @@ import '@mantine/core/styles.css';
 import React from 'react';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import { theme } from '../../theme';
+import { AppLayout } from '../components/AppLayout';
+import { AuthProvider } from '../context/AuthProvider';
+import { OfflineNotification } from '../components/OfflineNotification';
 
 export const metadata = {
   title: 'AudioView',
@@ -20,7 +23,12 @@ export default function RootLayout({
       </head>
       <body>
         <MantineProvider theme={theme} defaultColorScheme="dark">
-          {children}
+          <AuthProvider>
+            <AppLayout>
+              {children}
+            </AppLayout>
+            <OfflineNotification />
+          </AuthProvider>
         </MantineProvider>
       </body>
     </html>
