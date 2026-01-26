@@ -1,23 +1,53 @@
 import 'package:flutter/material.dart';
+import '../models/movie.dart';
+import '../screens/movie/movie_detail_screen.dart';
 
 class HeroSection extends StatelessWidget {
   const HeroSection({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Hardcoded movie data for the Hero section
+    final heroMovie = Movie(
+      id: 'hero_movie_01',
+      title: '범죄도시4',
+      year: 2024,
+      country: '한국',
+      duration: 109,
+      genres: ['액션', '범죄'],
+      description:
+          '괴물형사 ‘마석도’(마동석)가 다시 돌아왔다! 대규모 온라인 불법 도박 조직을 소탕하기 위해 대한민국 광수대와 사이버팀이 뭉쳤다. 이번엔 더 커진 판, 더 강력해진 웃음으로 돌아왔다!',
+      posterUrl:
+          'https://search.pstatic.net/common?quality=75&direct=true&src=https%3A%2F%2Fmovie-phinf.pstatic.net%2F20240328_111%2F1711587839843Q6qLO_JPEG%2Fmovie_image.jpg',
+      hasAD: true,
+      hasCC: true,
+      hasMultiLang: false,
+    );
+
     return SizedBox(
       height: 250, // Reduced height by half
       child: Stack(
         fit: StackFit.expand,
         children: [
           // 1. Background Image
-          Image.network(
-            'https://search.pstatic.net/common?quality=75&direct=true&src=https%3A%2F%2Fmovie-phinf.pstatic.net%2F20240328_111%2F1711587839843Q6qLO_JPEG%2Fmovie_image.jpg', // The Roundup: Punishment Poster
-            fit: BoxFit.cover,
-            alignment: Alignment.topCenter, // Align top to show faces properly
-            errorBuilder: (context, error, stackTrace) => Container(
-              color: Colors.grey[900],
-              child: const Icon(Icons.movie, size: 50, color: Colors.white24),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MovieDetailScreen(movie: heroMovie),
+                ),
+              );
+            },
+            child: Image.network(
+              heroMovie.posterUrl,
+              fit: BoxFit.cover,
+              alignment:
+                  Alignment.topCenter, // Align top to show faces properly
+              errorBuilder: (context, error, stackTrace) => Container(
+                color: Colors.grey[900],
+                child: const Icon(Icons.movie, size: 50, color: Colors.white24),
+              ),
             ),
           ),
 
@@ -44,9 +74,9 @@ class HeroSection extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  '범죄도시4',
-                  style: TextStyle(
+                Text(
+                  heroMovie.title,
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 32,
                     fontWeight: FontWeight.w900,
@@ -55,7 +85,7 @@ class HeroSection extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  '괴물형사 ‘마석도’(마동석)가 다시 돌아왔다! 대규모 온라인 불법 도박 조직을 소탕하기 위해 대한민국 광수대와 사이버팀이 뭉쳤다.',
+                  heroMovie.description ?? '',
                   style: TextStyle(
                     color: Colors.grey[300],
                     fontSize: 14,
@@ -68,7 +98,15 @@ class HeroSection extends StatelessWidget {
                 Row(
                   children: [
                     ElevatedButton.icon(
-                      onPressed: () {},
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('${heroMovie.title} 재생을 시작합니다.'),
+                            duration: const Duration(seconds: 2),
+                            backgroundColor: const Color(0xFFE50914),
+                          ),
+                        );
+                      },
                       icon: const Icon(Icons.play_arrow_rounded,
                           color: Colors.black),
                       label: const Text('재생',
@@ -85,7 +123,15 @@ class HeroSection extends StatelessWidget {
                     ),
                     const SizedBox(width: 12),
                     ElevatedButton.icon(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                MovieDetailScreen(movie: heroMovie),
+                          ),
+                        );
+                      },
                       icon: const Icon(Icons.info_outline, color: Colors.white),
                       label: const Text('상세 정보',
                           style: TextStyle(
