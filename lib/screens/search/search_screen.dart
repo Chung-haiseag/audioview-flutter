@@ -18,7 +18,7 @@ class _SearchScreenState extends State<SearchScreen> {
   final _searchController = TextEditingController();
   String _searchQuery = '';
   List<Movie> _searchResults = [];
-  bool _isSearching = false;
+  // bool _isSearching = false; // Removed unused field
 
   @override
   void initState() {
@@ -47,7 +47,6 @@ class _SearchScreenState extends State<SearchScreen> {
     }
 
     setState(() {
-      _isSearching = true;
       _searchQuery = query;
     });
 
@@ -65,11 +64,7 @@ class _SearchScreenState extends State<SearchScreen> {
       setState(() {
         _searchResults = [];
       });
-    } finally {
-      setState(() {
-        _isSearching = false;
-      });
-    }
+    } finally {}
   }
 
   void _onKeywordTap(String keyword) {
