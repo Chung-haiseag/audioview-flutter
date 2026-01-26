@@ -1,8 +1,8 @@
 {
-  "status": "commited",
+  "status": "init",
   "type": "frontend",
   "scope": "codebase",
-  "localEndpoint": "http://localhost:3000",
+  "localEndpoint": "http://localhost:3000/",
   "executionArgs": {
     "projectName": "audioview-web",
     "projectPath": "c:\\audioview\\audioview-web",

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'dart:ui' as ui;
 
 class CustomBottomNavigation extends StatelessWidget {
   final int currentIndex;
@@ -15,23 +16,29 @@ class CustomBottomNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF141414).withOpacity(0.95),
+        color: const Color(0xFF141414).withOpacity(0.85), // More transparent
         border: const Border(
           top: BorderSide(color: Color(0xFF333333), width: 1),
         ),
       ),
-      child: SafeArea(
-        top: false,
-        child: SizedBox(
-          height: 60,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildNavItem(LucideIcons.home, '홈', 0),
-              _buildNavItem(LucideIcons.settings, '설정', 1),
-              _buildNavItem(LucideIcons.search, '검색', 2),
-              _buildNavItem(LucideIcons.user, 'MY', 3),
-            ],
+      child: ClipRect(
+        // Helper to clip the blur
+        child: BackdropFilter(
+          filter: ui.ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+          child: SafeArea(
+            top: false,
+            child: SizedBox(
+              height: 60,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _buildNavItem(LucideIcons.home, '홈', 0),
+                  _buildNavItem(LucideIcons.settings, '설정', 1),
+                  _buildNavItem(LucideIcons.search, '검색', 2),
+                  _buildNavItem(LucideIcons.user, 'MY', 3),
+                ],
+              ),
+            ),
           ),
         ),
       ),
