@@ -6,14 +6,15 @@ class HeroSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 500, // Adjust height as needed
+      height: 250, // Reduced height by half
       child: Stack(
         fit: StackFit.expand,
         children: [
           // 1. Background Image
           Image.network(
-            'https://image.tmdb.org/t/p/original/tMefBSflR6PGQLv7WvFPpKLZkyk.jpg', // Placeholder
+            'https://search.pstatic.net/common?quality=75&direct=true&src=https%3A%2F%2Fmovie-phinf.pstatic.net%2F20240328_111%2F1711587839843Q6qLO_JPEG%2Fmovie_image.jpg', // The Roundup: Punishment Poster
             fit: BoxFit.cover,
+            alignment: Alignment.topCenter, // Align top to show faces properly
             errorBuilder: (context, error, stackTrace) => Container(
               color: Colors.grey[900],
               child: const Icon(Icons.movie, size: 50, color: Colors.white24),
