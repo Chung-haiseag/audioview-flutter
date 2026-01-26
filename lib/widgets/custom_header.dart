@@ -56,15 +56,33 @@ class _CustomHeaderState extends State<CustomHeader> {
                   // Center - Title
                   Expanded(
                     child: Center(
-                      child: Text(
-                        widget.customTitle ?? '오디오뷰',
-                        style: const TextStyle(
-                          color: Color(0xFFE50914),
-                          fontSize: 20,
-                          fontWeight: FontWeight.w900,
-                          letterSpacing: -0.5,
-                        ),
-                      ),
+                      child: widget.customTitle != null
+                          ? Text(
+                              widget.customTitle!,
+                              style: const TextStyle(
+                                color: Color(0xFFE50914),
+                                fontSize: 20,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: -0.5,
+                              ),
+                            )
+                          : Image.asset(
+                              'assets/images/logo_horizontal.png',
+                              height: 38,
+                              fit: BoxFit.contain,
+                              errorBuilder: (context, error, stackTrace) {
+                                // Fallback to text if image fails
+                                return const Text(
+                                  '오디오뷰',
+                                  style: TextStyle(
+                                    color: Color(0xFFE50914),
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w900,
+                                    letterSpacing: -0.5,
+                                  ),
+                                );
+                              },
+                            ),
                     ),
                   ),
 
