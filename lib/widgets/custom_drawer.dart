@@ -79,6 +79,12 @@ class CustomDrawer extends StatelessWidget {
                   index: 1, // SettingsScreen index in MainScreen
                   context: context,
                 ),
+                _buildDrawerItem(
+                  icon: LucideIcons.megaphone,
+                  label: '공지/이벤트',
+                  index: 4, // NoticeListScreen index in MainScreen
+                  context: context,
+                ),
               ],
             ),
           ),
