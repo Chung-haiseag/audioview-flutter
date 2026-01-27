@@ -59,7 +59,7 @@ class HeroSection extends StatelessWidget {
                 end: Alignment.topCenter,
                 colors: [
                   const Color(0xFF0A0A0A), // Match scaffold background
-                  const Color(0xFF0A0A0A).withOpacity(0.0),
+                  const Color(0xFF0A0A0A).withValues(alpha: 0.0),
                 ],
                 stops: const [0.1, 0.6],
               ),
@@ -138,7 +138,7 @@ class HeroSection extends StatelessWidget {
                               color: Colors.white,
                               fontWeight: FontWeight.bold)),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white.withOpacity(0.2),
+                        backgroundColor: Colors.white.withValues(alpha: 0.2),
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 12),
                         shape: RoundedRectangleBorder(

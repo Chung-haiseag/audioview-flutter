@@ -94,9 +94,10 @@ class _MainScreenState extends State<MainScreen> {
                 final auth = Provider.of<AuthProvider>(context, listen: false);
                 if (!auth.isAuthenticated) {
                   await Navigator.pushNamed(context, '/login');
-                  if (mounted &&
-                      Provider.of<AuthProvider>(context, listen: false)
-                          .isAuthenticated) {
+                  if (!context.mounted) return;
+
+                  if (Provider.of<AuthProvider>(context, listen: false)
+                      .isAuthenticated) {
                     setState(() {
                       _currentIndex = index;
                     });
@@ -129,7 +130,8 @@ class _MainScreenState extends State<MainScreen> {
                 bottom: 0,
                 child: IgnorePointer(
                   child: Container(
-                    color: Colors.black.withOpacity((100 - _brightness) / 100),
+                    color: Colors.black
+                        .withValues(alpha: (100 - _brightness) / 100),
                   ),
                 ),
               ),

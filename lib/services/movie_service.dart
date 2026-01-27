@@ -44,7 +44,7 @@ class MovieService {
 
       return snapshot.docs.map((doc) => Movie.fromFirestore(doc)).toList();
     } catch (e) {
-      print('Search error: $e');
+      // print('Search error: $e');
       return [];
     }
   }

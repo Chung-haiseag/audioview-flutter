@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           Positioned.fill(
             child: Container(
-              color: Colors.black.withOpacity(0.7),
+              color: Colors.black.withValues(alpha: 0.7),
             ),
           ),
 
@@ -171,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8)),
                             disabledBackgroundColor:
-                                const Color(0xFFE50914).withOpacity(0.5),
+                                const Color(0xFFE50914).withValues(alpha: 0.5),
                           ),
                           child: _isLoading
                               ? const SizedBox(

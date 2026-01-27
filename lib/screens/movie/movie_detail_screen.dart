@@ -50,7 +50,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                             activeTrackColor: Colors.red,
                             inactiveTrackColor: Colors.grey[700],
                             thumbColor: Colors.red,
-                            overlayColor: Colors.red.withOpacity(0.2),
+                            overlayColor: Colors.red.withValues(alpha: 0.2),
                             trackHeight: 4,
                           ),
                           child: Slider(
@@ -115,7 +115,8 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                 BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
                   child: Container(
-                    color: Colors.black.withOpacity(0.5 + (_brightness * 0.3)),
+                    color: Colors.black
+                        .withValues(alpha: 0.5 + (_brightness * 0.3)),
                   ),
                 ),
               ],

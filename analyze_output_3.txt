@@ -1,0 +1,17 @@
+Analyzing audioview...                                          
+
+   info - Don't invoke 'print' in production code - lib\providers\auth_provider.dart:37:11 - avoid_print
+   info - Don't invoke 'print' in production code - lib\screens\search\search_screen.dart:63:7 - avoid_print
+   info - 'cancelOnError' is deprecated and shouldn't be used. Use SpeechListenOptions.cancelOnError instead - lib\screens\search\voice_search_screen.dart:197:11 - deprecated_member_use
+   info - 'listenMode' is deprecated and shouldn't be used. Use SpeechListenOptions.listenMode instead - lib\screens\search\voice_search_screen.dart:198:11 - deprecated_member_use
+   info - Don't invoke 'print' in production code - lib\services\firestore_seeder.dart:33:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\services\movie_service.dart:47:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\services\notification_service.dart:21:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\services\notification_service.dart:23:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\services\notification_service.dart:69:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\services\notification_service.dart:101:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\services\notification_service.dart:103:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\services\notification_service.dart:129:9 - avoid_print
+   info - Don't invoke 'print' in production code - lib\services\notification_service.dart:142:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\services\notification_service.dart:150:5 - avoid_print
+

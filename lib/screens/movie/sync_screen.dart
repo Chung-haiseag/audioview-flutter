@@ -58,8 +58,8 @@ class _SyncScreenState extends State<SyncScreen>
                           shape: BoxShape.circle,
                           gradient: RadialGradient(
                             colors: [
-                              Colors.red.withOpacity(0.3),
-                              Colors.red.withOpacity(0.1),
+                              Colors.red.withValues(alpha: 0.3),
+                              Colors.red.withValues(alpha: 0.1),
                               Colors.transparent,
                             ],
                             stops: const [0.0, 0.5, 1.0],
@@ -75,8 +75,8 @@ class _SyncScreenState extends State<SyncScreen>
                           shape: BoxShape.circle,
                           gradient: RadialGradient(
                             colors: [
-                              Colors.red.withOpacity(0.4),
-                              Colors.red.withOpacity(0.2),
+                              Colors.red.withValues(alpha: 0.4),
+                              Colors.red.withValues(alpha: 0.2),
                               Colors.transparent,
                             ],
                             stops: const [0.0, 0.6, 1.0],
