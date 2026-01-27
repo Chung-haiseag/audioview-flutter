@@ -151,6 +151,13 @@ class _MainScreenState extends State<MainScreen> {
                       _brightness = value;
                     });
                   },
+                  onSearchPressed: _currentIndex == 2
+                      ? null
+                      : () {
+                          setState(() {
+                            _currentIndex = 2;
+                          });
+                        },
                   onBackPressed: () {
                     if (_currentIndex != 0) {
                       setState(() {

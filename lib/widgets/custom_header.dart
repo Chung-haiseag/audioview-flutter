@@ -6,7 +6,8 @@ class CustomHeader extends StatefulWidget implements PreferredSizeWidget {
   final String? customTitle;
   final double brightness;
   final ValueChanged<double> onBrightnessChanged;
-  final VoidCallback? onBackPressed; // Added callback
+  final VoidCallback? onSearchPressed; // Added callback
+  final VoidCallback? onBackPressed;
 
   const CustomHeader({
     super.key,
@@ -14,7 +15,8 @@ class CustomHeader extends StatefulWidget implements PreferredSizeWidget {
     this.customTitle,
     required this.brightness,
     required this.onBrightnessChanged,
-    this.onBackPressed, // Added parameter
+    this.onSearchPressed, // Added parameter
+    this.onBackPressed,
   });
 
   @override
@@ -98,23 +100,43 @@ class _CustomHeaderState extends State<CustomHeader> {
                     ),
                   ),
 
-                  // Right side - Brightness button
-                  SizedBox(
-                    width: 60,
-                    child: IconButton(
-                      icon: Icon(
-                        LucideIcons.sun,
-                        color: _showBrightness
-                            ? const Color(0xFFE50914)
-                            : Colors.white,
-                        size: 24,
+                  // Right side - Action Buttons
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Search button (New)
+                      if (widget.onSearchPressed != null)
+                        SizedBox(
+                          width: 48,
+                          child: IconButton(
+                            icon: const Icon(
+                              LucideIcons.search,
+                              color: Colors.white,
+                              size: 24,
+                            ),
+                            onPressed: widget.onSearchPressed,
+                          ),
+                        ),
+                      // Brightness button
+                      SizedBox(
+                        width: 48, // Adjusted width slightly
+                        child: IconButton(
+                          icon: Icon(
+                            LucideIcons.sun,
+                            color: _showBrightness
+                                ? const Color(0xFFE50914)
+                                : Colors.white,
+                            size: 24,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _showBrightness = !_showBrightness;
+                            });
+                          },
+                        ),
                       ),
-                      onPressed: () {
-                        setState(() {
-                          _showBrightness = !_showBrightness;
-                        });
-                      },
-                    ),
+                      const SizedBox(width: 8), // Right Padding
+                    ],
                   ),
                 ],
               ),
