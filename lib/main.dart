@@ -9,6 +9,7 @@ import 'screens/settings/settings_screen.dart';
 import 'screens/search/search_screen.dart';
 import 'screens/downloads/downloads_screen.dart'; // Contains MyPageScreen class
 import 'screens/notice/notice_list_screen.dart';
+import 'screens/category/genre_list_screen.dart';
 import 'widgets/custom_header.dart';
 import 'widgets/custom_drawer.dart';
 
@@ -67,6 +68,7 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _screens = const [
     HomeScreen(),
+    GenreListScreen(),
     SettingsScreen(),
     SearchScreen(),
     MyPageScreen(),
@@ -75,6 +77,7 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<String> _titles = [
     'AUDIOVIEW',
+    '장르',
     '설정',
     '검색',
     '마이페이지',
@@ -136,11 +139,11 @@ class _MainScreenState extends State<MainScreen> {
                       _brightness = value;
                     });
                   },
-                  onSearchPressed: _currentIndex == 2
+                  onSearchPressed: _currentIndex == 3
                       ? null
                       : () {
                           setState(() {
-                            _currentIndex = 2;
+                            _currentIndex = 3;
                           });
                         },
                   onBackPressed: null,
