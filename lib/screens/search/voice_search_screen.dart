@@ -41,7 +41,8 @@ class AudioVisualizerPainter extends CustomPainter {
       );
 
       // Add gradient opacity based on amplitude
-      paint.color = color.withOpacity(0.5 + (amplitude * 0.5).clamp(0.0, 0.5));
+      paint.color =
+          color.withValues(alpha: 0.5 + (amplitude * 0.5).clamp(0.0, 0.5));
 
       canvas.drawRRect(rect, paint);
     }
@@ -193,8 +194,8 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
           localeId: koreanLocale.localeId,
           pauseFor: const Duration(seconds: 3),
           listenFor: const Duration(seconds: 10),
-          cancelOnError: true,
-          listenMode: stt.ListenMode.search,
+          // cancelOnError: true, // Deprecated in 6.x
+          // listenMode: stt.ListenMode.search, // Deprecated in 6.x
         );
       } else {
         if (mounted) {
@@ -261,7 +262,8 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
                               height: 120 * _pulseAnimation.value,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: const Color(0xFFE50914).withOpacity(0.2),
+                                color: const Color(0xFFE50914)
+                                    .withValues(alpha: 0.2),
                               ),
                             ),
                             Container(
@@ -269,7 +271,8 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
                               height: 120 * (_pulseAnimation.value * 0.85),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: const Color(0xFFE50914).withOpacity(0.4),
+                                color: const Color(0xFFE50914)
+                                    .withValues(alpha: 0.4),
                               ),
                             ),
                           ],
@@ -294,7 +297,7 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
                                   if (_isListening)
                                     BoxShadow(
                                       color: const Color(0xFFE50914)
-                                          .withOpacity(0.6),
+                                          .withValues(alpha: 0.6),
                                       blurRadius: 20,
                                       spreadRadius: 2,
                                     ),

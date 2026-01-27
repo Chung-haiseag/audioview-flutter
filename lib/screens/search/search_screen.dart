@@ -60,7 +60,7 @@ class _SearchScreenState extends State<SearchScreen> {
         _searchResults = results;
       });
     } catch (e) {
-      print('Search failed: $e');
+      // print('Search failed: $e');
       setState(() {
         _searchResults = [];
       });

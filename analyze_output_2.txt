@@ -1,0 +1,38 @@
+Analyzing audioview...                                          
+
+   info - Don't invoke 'print' in production code - lib\providers\auth_provider.dart:37:11 - avoid_print
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\auth\login_screen.dart:57:35 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\auth\login_screen.dart:174:57 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\auth\signup_screen.dart:103:35 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\auth\signup_screen.dart:253:57 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\help\request_content_screen.dart:51:38 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\help\request_content_screen.dart:53:57 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\movie\movie_detail_screen.dart:53:54 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\movie\movie_detail_screen.dart:118:41 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\movie\sync_screen.dart:61:42 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\movie\sync_screen.dart:62:42 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\movie\sync_screen.dart:78:42 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\movie\sync_screen.dart:79:42 - deprecated_member_use
+   info - Don't invoke 'print' in production code - lib\screens\search\search_screen.dart:63:7 - avoid_print
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\search\voice_search_screen.dart:44:27 - deprecated_member_use
+   info - 'cancelOnError' is deprecated and shouldn't be used. Use SpeechListenOptions.cancelOnError instead - lib\screens\search\voice_search_screen.dart:196:11 - deprecated_member_use
+   info - 'listenMode' is deprecated and shouldn't be used. Use SpeechListenOptions.listenMode instead - lib\screens\search\voice_search_screen.dart:197:11 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\search\voice_search_screen.dart:264:64 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\search\voice_search_screen.dart:272:64 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\search\voice_search_screen.dart:297:44 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\settings\settings_screen.dart:258:35 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\settings\settings_screen.dart:560:42 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\screens\settings\settings_screen.dart:562:45 - deprecated_member_use
+   info - Don't invoke 'print' in production code - lib\services\firestore_seeder.dart:33:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\services\movie_service.dart:47:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\services\notification_service.dart:21:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\services\notification_service.dart:23:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\services\notification_service.dart:69:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\services\notification_service.dart:101:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\services\notification_service.dart:103:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\services\notification_service.dart:129:9 - avoid_print
+   info - Don't invoke 'print' in production code - lib\services\notification_service.dart:142:7 - avoid_print
+   info - Don't invoke 'print' in production code - lib\services\notification_service.dart:150:5 - avoid_print
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\widgets\hero_section.dart:62:43 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\widgets\hero_section.dart:141:55 - deprecated_member_use
+

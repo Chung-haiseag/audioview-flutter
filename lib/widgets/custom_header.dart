@@ -136,7 +136,7 @@ class _CustomHeaderState extends State<CustomHeader> {
                           inactiveTrackColor: Colors.grey[600],
                           thumbColor: const Color(0xFFE50914),
                           overlayColor:
-                              const Color(0xFFE50914).withOpacity(0.2),
+                              const Color(0xFFE50914).withValues(alpha: 0.2),
                         ),
                         child: Slider(
                           value: widget.brightness,

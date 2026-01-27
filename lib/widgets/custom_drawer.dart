@@ -128,7 +128,7 @@ class CustomDrawer extends StatelessWidget {
         ),
       ),
       selected: isSelected,
-      selectedTileColor: const Color(0xFFE50914).withOpacity(0.1),
+      selectedTileColor: const Color(0xFFE50914).withValues(alpha: 0.1),
       onTap: () {
         onItemTapped(index);
         Navigator.pop(context); // Close drawer

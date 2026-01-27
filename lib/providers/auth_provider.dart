@@ -34,7 +34,7 @@ class AuthProvider with ChangeNotifier {
             NotificationService.saveTokenToDatabase(user.uid);
           }
         } catch (e) {
-          print('Error fetching user data: $e');
+          // print('Error fetching user data: $e');
         }
       } else {
         _userData = null;

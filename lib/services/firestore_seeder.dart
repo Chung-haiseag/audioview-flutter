@@ -30,7 +30,7 @@ class FirestoreSeeder {
         'viewCount': 0,
         'createdAt': FieldValue.serverTimestamp(),
       });
-      print('Uploaded movie: ${movie.title}');
+      // print('Uploaded movie: ${movie.title}');
     }
   }
 }

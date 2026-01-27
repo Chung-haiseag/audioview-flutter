@@ -18,9 +18,9 @@ class NotificationService {
     );
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      print('User granted permission');
+      // print('User granted permission');
     } else {
-      print('User declined or has not accepted permission');
+      // print('User declined or has not accepted permission');
     }
 
     // 2. Initialize local notifications for foreground handling
@@ -66,7 +66,7 @@ class NotificationService {
 
     // 4. Handle foreground messages
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Got a message whilst in the foreground!');
+      // print('Got a message whilst in the foreground!');
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
 
@@ -95,13 +95,7 @@ class NotificationService {
       }
     });
 
-    // 5. Get and print FCM Token (for debugging)
-    try {
-      String? token = await _messaging.getToken();
-      print('FCM Token: $token');
-    } catch (e) {
-      print('Error getting FCM token: $e');
-    }
+    // 5. Get and print FCM Token (for debugging) - Removed for production build
   }
 
   static Future<void> saveTokenToDatabase(String userId) async {
@@ -126,7 +120,7 @@ class NotificationService {
           'fcm_token': token,
           'platform': platformName,
         });
-        print('FCM Token saved for user $userId');
+        // print('FCM Token saved for user $userId');
       }
 
       // Monitor token refresh
@@ -139,7 +133,7 @@ class NotificationService {
         });
       });
     } catch (e) {
-      print('Error saving FCM token: $e');
+      // print('Error saving FCM token: $e');
     }
   }
 
@@ -147,6 +141,6 @@ class NotificationService {
   @pragma('vm:entry-point')
   static Future<void> firebaseMessagingBackgroundHandler(
       RemoteMessage message) async {
-    print("Handling a background message: ${message.messageId}");
+    // print("Handling a background message: ${message.messageId}");
   }
 }
