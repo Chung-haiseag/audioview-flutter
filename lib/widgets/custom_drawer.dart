@@ -68,12 +68,6 @@ class CustomDrawer extends StatelessWidget {
                   context: context,
                 ),
                 _buildDrawerItem(
-                  icon: LucideIcons.search,
-                  label: '검색',
-                  index: 2, // SearchScreen index in MainScreen
-                  context: context,
-                ),
-                _buildDrawerItem(
                   icon: LucideIcons.download,
                   label: '보관함',
                   index: 3, // DownloadsScreen index in MainScreen
