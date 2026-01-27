@@ -78,10 +78,11 @@ class HomeScreen extends StatelessWidget {
             StreamBuilder<List<Movie>>(
                 stream: MovieService().getNewMovies(),
                 builder: (context, snapshot) {
-                  if (!snapshot.hasData)
+                  if (!snapshot.hasData) {
                     return const SizedBox(
                         height: 200,
                         child: Center(child: CircularProgressIndicator()));
+                  }
                   return MovieSection(
                       title: '새로 올라온 영화', movies: snapshot.data!);
                 }),

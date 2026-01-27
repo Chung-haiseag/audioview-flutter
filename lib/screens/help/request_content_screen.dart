@@ -54,7 +54,7 @@ class _RequestContentScreenState extends State<RequestContentScreen> {
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.info_outline, color: Colors.blue, size: 24),
+                    const Icon(Icons.info_outline, color: Colors.blue, size: 24),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(

@@ -17,7 +17,6 @@ class AppTheme {
         primary: brandRed,
         secondary: brandRed,
         surface: brandDark,
-        background: brandBlack,
       ),
       textTheme: GoogleFonts.notoSansKrTextTheme(
         ThemeData.dark().textTheme,

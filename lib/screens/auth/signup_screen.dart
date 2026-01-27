@@ -16,7 +16,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _passwordController = TextEditingController();
   final _passwordConfirmController = TextEditingController();
   final _nameController = TextEditingController();
-  String _disabilityType = 'visual'; // Default based on screenshot
+  final String _disabilityType = 'visual'; // Default based on screenshot
   bool _showPassword = false;
   bool _showConfirmPassword = false;
   bool _isLoading = false;
