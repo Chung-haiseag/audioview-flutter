@@ -1,3 +1,5 @@
+import '../utils/type_parser.dart';
+
 class Category {
   final String id;
   final String name;
@@ -15,7 +17,7 @@ class Category {
     return Category(
       id: json['id'],
       name: json['name'],
-      count: json['count'],
+      count: TypeParser.parseInt(json['count']),
       imageUrl: json['imageUrl'],
     );
   }

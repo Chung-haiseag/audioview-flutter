@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../services/notification_service.dart';
 
 class AuthProvider with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -29,6 +30,8 @@ class AuthProvider with ChangeNotifier {
           final doc = await _firestore.collection('users').doc(user.uid).get();
           if (doc.exists) {
             _userData = doc.data();
+            // Update FCM Token
+            NotificationService.saveTokenToDatabase(user.uid);
           }
         } catch (e) {
           print('Error fetching user data: $e');

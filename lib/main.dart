@@ -13,12 +13,20 @@ import 'widgets/bottom_navigation.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'services/notification_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // Initialize push notifications
+  await NotificationService.initialize();
+  FirebaseMessaging.onBackgroundMessage(
+      NotificationService.firebaseMessagingBackgroundHandler);
+
   runApp(const MyApp());
 }
 

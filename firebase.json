@@ -1,1 +1,52 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"audioview-f62dd","appId":"1:1074786462696:android:11d6c31c3499476611925d","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"audioview-f62dd","configurations":{"android":"1:1074786462696:android:11d6c31c3499476611925d","web":"1:1074786462696:web:590c4d13b9f91a4911925d"}}}}}}
+{
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "audioview-f62dd",
+                    "appId": "1:1074786462696:android:11d6c31c3499476611925d",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "audioview-f62dd",
+                    "configurations": {
+                        "android": "1:1074786462696:android:11d6c31c3499476611925d",
+                        "web": "1:1074786462696:web:590c4d13b9f91a4911925d"
+                    }
+                }
+            }
+        }
+    },
+    "functions": [
+        {
+            "source": "functions",
+            "codebase": "default",
+            "ignore": [
+                "node_modules",
+                ".git",
+                "firebase-debug.log",
+                "firebase-debug.*.log",
+                "*.local"
+            ],
+            "predeploy": [
+                "npm --prefix \"$RESOURCE_DIR\" run build"
+            ]
+        }
+    ],
+    "hosting": {
+        "public": "admin-tool/dist",
+        "ignore": [
+            "firebase.json",
+            "**/.*",
+            "**/node_modules/**"
+        ],
+        "rewrites": [
+            {
+                "source": "**",
+                "destination": "/index.html"
+            }
+        ]
+    }
+}
