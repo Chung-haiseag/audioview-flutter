@@ -12,6 +12,8 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   int _selectedTab = 0; // 0: 환경설정, 1: 고객센터
+  int _expandedIndex =
+      -1; // -1: all closed, 0: Privacy, 1: Terms, 2: FAQ, 3: Guide
 
   // Settings states
   bool _smartGlasses = true;
@@ -57,7 +59,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget _buildTab(String title, int index) {
     final isSelected = _selectedTab == index;
     return GestureDetector(
-      onTap: () => setState(() => _selectedTab = index),
+      onTap: () {
+        setState(() {
+          _selectedTab = index;
+          _expandedIndex = -1; // Reset accordion expansion when switching tabs
+        });
+      },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
@@ -200,26 +207,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         const SizedBox(height: 16),
         _buildHelpAccordionItem(
+          index: 0,
           icon: Icons.shield_outlined,
           title: '개인정보 처리방침',
           content: _buildPrivacyPolicyContent(),
         ),
         _buildHelpAccordionItem(
+          index: 1,
           icon: Icons.description_outlined,
           title: '이용약관',
           content: _buildTermsOfServiceContent(),
         ),
         _buildHelpAccordionItem(
+          index: 2,
           icon: Icons.chat_bubble_outline,
           title: '자주 묻는 질문',
           content: _buildFAQContent(),
         ),
         _buildHelpAccordionItem(
+          index: 3,
           icon: Icons.info_outline,
           title: '이용안내',
           content: _buildUserGuideContent(),
         ),
         _buildHelpAccordionItem(
+          index: 4,
           icon: Icons.add_circle_outline,
           title: '새로운 작품 요청하기',
           onTap: () {
@@ -342,11 +354,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget _buildHelpAccordionItem({
+    required int index,
     required IconData icon,
     required String title,
     Widget? content,
     VoidCallback? onTap,
   }) {
+    final bool isExpanded = _expandedIndex == index;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
@@ -366,11 +381,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 onTap: onTap,
               )
             : ExpansionTile(
+                key: PageStorageKey<int>(index),
+                initiallyExpanded: isExpanded,
                 leading: Icon(icon, color: Colors.grey, size: 20),
                 title: Text(title,
                     style: const TextStyle(color: Colors.white, fontSize: 14)),
                 iconColor: Colors.white,
                 collapsedIconColor: Colors.grey,
+                onExpansionChanged: (expanding) {
+                  setState(() {
+                    if (expanding) {
+                      _expandedIndex = index;
+                    } else {
+                      if (_expandedIndex == index) {
+                        _expandedIndex = -1;
+                      }
+                    }
+                  });
+                },
                 children: [
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
