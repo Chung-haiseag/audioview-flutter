@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart' show kIsWeb; // For web check
 import 'dart:io';
 
 class NotificationService {
@@ -107,12 +108,23 @@ class NotificationService {
     try {
       String? token = await _messaging.getToken();
       if (token != null) {
+        String platformName;
+        if (kIsWeb) {
+          platformName = 'web';
+        } else {
+          try {
+            platformName = Platform.operatingSystem;
+          } catch (e) {
+            platformName = 'unknown';
+          }
+        }
+
         await FirebaseFirestore.instance
             .collection('users')
             .doc(userId)
             .update({
           'fcm_token': token,
-          'platform': Platform.operatingSystem,
+          'platform': platformName,
         });
         print('FCM Token saved for user $userId');
       }
