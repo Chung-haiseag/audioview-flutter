@@ -6,7 +6,7 @@ import 'screens/auth/login_screen.dart';
 import 'screens/home/home_screen.dart';
 import 'screens/settings/settings_screen.dart';
 import 'screens/search/search_screen.dart';
-import 'screens/downloads/downloads_screen.dart';
+import 'screens/downloads/downloads_screen.dart'; // Contains MyPageScreen class
 import 'screens/notice/notice_list_screen.dart';
 import 'widgets/custom_header.dart';
 import 'widgets/custom_drawer.dart';
@@ -68,43 +68,25 @@ class _MainScreenState extends State<MainScreen> {
     HomeScreen(),
     SettingsScreen(),
     SearchScreen(),
-    DownloadsScreen(),
+    MyPageScreen(),
   ];
 
   final List<String> _titles = [
     'AUDIOVIEW',
     '설정',
     '검색',
-    'MY AUDIOVIEW',
+    '마이페이지',
   ];
 
   @override
   Widget build(BuildContext context) {
     return Consumer<AuthProvider>(
       builder: (context, auth, _) {
-        // If on Downloads and not authenticated, redirect to login
-        // REMOVED: Automatic redirect in build method causes loop
-
         return Scaffold(
           backgroundColor: const Color(0xFF0A0A0A),
           drawer: CustomDrawer(
             currentIndex: _currentIndex,
             onItemTapped: (index) async {
-              if (index == 3) {
-                final auth = Provider.of<AuthProvider>(context, listen: false);
-                if (!auth.isAuthenticated) {
-                  await Navigator.pushNamed(context, '/login');
-                  if (!context.mounted) return;
-
-                  if (Provider.of<AuthProvider>(context, listen: false)
-                      .isAuthenticated) {
-                    setState(() {
-                      _currentIndex = index;
-                    });
-                  }
-                  return;
-                }
-              }
               setState(() {
                 _currentIndex = index;
               });
