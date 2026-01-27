@@ -47,19 +47,20 @@ class _CustomHeaderState extends State<CustomHeader> {
                     width: 60,
                     child: IconButton(
                       icon: Icon(
-                        widget.isSubPage
-                            ? LucideIcons.chevronLeft
-                            : LucideIcons.menu,
+                        widget.isSubPage && widget.onBackPressed == null
+                            ? LucideIcons.menu
+                            : (widget.isSubPage
+                                ? LucideIcons.chevronLeft
+                                : LucideIcons.menu),
                         color: Colors.white,
                         size: 28,
                       ),
                       onPressed: () {
-                        if (widget.isSubPage) {
-                          if (widget.onBackPressed != null) {
-                            widget.onBackPressed!();
-                          } else {
-                            Navigator.of(context).maybePop();
-                          }
+                        if (widget.isSubPage && widget.onBackPressed != null) {
+                          widget.onBackPressed!();
+                        } else if (widget.isSubPage &&
+                            widget.onBackPressed == null) {
+                          Scaffold.of(context).openDrawer();
                         } else {
                           Scaffold.of(context).openDrawer();
                         }

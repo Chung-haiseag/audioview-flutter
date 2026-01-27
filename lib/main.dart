@@ -141,15 +141,7 @@ class _MainScreenState extends State<MainScreen> {
                             _currentIndex = 2;
                           });
                         },
-                  onBackPressed: () {
-                    if (_currentIndex != 0) {
-                      setState(() {
-                        _currentIndex = 0;
-                      });
-                    } else {
-                      Navigator.of(context).maybePop();
-                    }
-                  },
+                  onBackPressed: null,
                 ),
               ),
             ],
