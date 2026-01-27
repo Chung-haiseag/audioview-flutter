@@ -19,8 +19,9 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
 
   Future<void> _handleLogin() async {
-    if (_emailController.text.isEmpty || _passwordController.text.isEmpty)
+    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
       return;
+    }
 
     setState(() => _isLoading = true);
 

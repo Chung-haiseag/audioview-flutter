@@ -10,6 +10,7 @@ class MovieService {
     return _firestore
         .collection('movies')
         .where('isLatest', isEqualTo: true)
+        .limit(20)
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) => Movie.fromFirestore(doc)).toList();
@@ -21,6 +22,7 @@ class MovieService {
     return _firestore
         .collection('movies')
         .where('isPopular', isEqualTo: true)
+        .limit(20)
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) => Movie.fromFirestore(doc)).toList();
@@ -35,7 +37,10 @@ class MovieService {
       final snapshot = await _firestore
           .collection('movies')
           .orderBy('title')
-          .startAt([query]).endAt([query + '\uf8ff']).get();
+          .startAt([query])
+          .endAt(['$query\uf8ff'])
+          .limit(20)
+          .get();
 
       return snapshot.docs.map((doc) => Movie.fromFirestore(doc)).toList();
     } catch (e) {
@@ -44,19 +49,17 @@ class MovieService {
     }
   }
 
-  // Fetch movies by genre (Client-side filtering for robustness)
+  // Fetch movies by genre (Server-side filtering)
   Stream<List<Movie>> getMoviesByGenre(Genre genre) {
-    return _firestore.collection('movies').snapshots().map((snapshot) {
-      final allMovies =
-          snapshot.docs.map((doc) => Movie.fromFirestore(doc)).toList();
-
-      return allMovies.where((movie) {
-        // Check exact match, case-insensitive, trimmed match on Name OR ID match
-        return movie.genres.any((g) {
-          final gTrimmed = g.trim();
-          return gTrimmed == genre.name.trim() || gTrimmed == genre.id;
-        });
-      }).toList();
+    // Requires an index on 'genreId' if combined with other orderBys,
+    // but simple equality where usually works without composite index.
+    return _firestore
+        .collection('movies')
+        .where('genreId', isEqualTo: genre.id)
+        .limit(20)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) => Movie.fromFirestore(doc)).toList();
     });
   }
 

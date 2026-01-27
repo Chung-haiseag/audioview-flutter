@@ -22,7 +22,7 @@ export const onViewingComplete = functions.firestore
       const userDoc = await userRef.get();
 
       if (!userDoc.exists) {
-        console.error(`User not found: ${userId}`);
+        functions.logger.error(`User not found: ${userId}`);
         return;
       }
 
@@ -43,9 +43,9 @@ export const onViewingComplete = functions.firestore
         created_at: admin.firestore.FieldValue.serverTimestamp(),
       });
 
-      console.log(`포인트 적립 완료: ${userId} - ${viewingPoints}포인트`);
+      functions.logger.info(`포인트 적립 완료: ${userId} - ${viewingPoints}포인트`);
     } catch (error) {
-      console.error("포인트 적립 실패:", error);
+      functions.logger.error("포인트 적립 실패:", error);
     }
   });
 
@@ -64,7 +64,7 @@ export const onReviewCreate = functions.firestore
       const userDoc = await userRef.get();
 
       if (!userDoc.exists) {
-        console.error(`User not found: ${userId}`);
+        functions.logger.error(`User not found: ${userId}`);
         return;
       }
 
@@ -85,9 +85,9 @@ export const onReviewCreate = functions.firestore
         created_at: admin.firestore.FieldValue.serverTimestamp(),
       });
 
-      console.log(`리뷰 포인트 적립 완료: ${userId} - ${reviewPoints}포인트`);
+      functions.logger.info(`리뷰 포인트 적립 완료: ${userId} - ${reviewPoints}포인트`);
     } catch (error) {
-      console.error("리뷰 포인트 적립 실패:", error);
+      functions.logger.error("리뷰 포인트 적립 실패:", error);
     }
   });
 
@@ -99,42 +99,49 @@ export const onNoticeCreate = functions.firestore
   .document("notices/{noticeId}")
   .onCreate(async (snap, _context) => {
     const noticeData = snap.data();
+    functions.logger.info("새 공지사항 감지:", { noticeId: snap.id, push_enabled: noticeData.push_enabled, title: noticeData.title });
 
     // 푸시 알림을 활성화한 사용자만 대상
     if (!noticeData.push_enabled) {
-      console.log("푸시 알림이 비활성화된 공지사항입니다.");
+      functions.logger.info("푸시 알림이 비활성화된 공지사항입니다.");
       return;
     }
 
     try {
-      // 모든 사용자의 FCM 토큰 가져오기
+      // 모든 사용자의 FCM 토큰 가져오기 (컬렉션 그룹 쿼리 고려 가능하지만 일단 users 컬렉션만)
+      functions.logger.info("FCM 토큰을 가진 사용자 검색 시작...");
+
       const usersSnapshot = await db.collection("users")
         .where("fcm_token", "!=", null)
         .get();
 
       if (usersSnapshot.empty) {
-        console.log("푸시 알림을 받을 사용자가 없습니다.");
+        functions.logger.info("푸시 알림을 받을 사용자가 없습니다. (fcm_token 필드를 가진 유저 0명)");
         return;
       }
 
       const tokens: string[] = [];
       usersSnapshot.forEach((doc) => {
         const userData = doc.data();
-        if (userData.fcm_token) {
+        if (userData.fcm_token && typeof userData.fcm_token === 'string' && userData.fcm_token.length > 0) {
           tokens.push(userData.fcm_token);
         }
       });
 
+      functions.logger.info(`유효 토큰 수집 완료: ${tokens.length}개`);
+
       if (tokens.length === 0) {
-        console.log("유효한 FCM 토큰이 없습니다.");
+        functions.logger.info("유효한 FCM 토큰이 없습니다 (필드는 있으나 값이 비었거나 형식이 다름).");
         return;
       }
 
       // FCM 메시지 구성
+      // Note: sendEachForMulticast는 최대 500개 토큰까지 지원. 
+      // 사용자가 많아지면 배치 처리로 변경해야 함.
       const message = {
         notification: {
-          title: noticeData.title,
-          body: noticeData.content.substring(0, 100), // 100자로 제한
+          title: noticeData.title || "새 공지사항",
+          body: noticeData.content ? noticeData.content.substring(0, 100) : "내용 없음",
         },
         data: {
           notice_id: snap.id,
@@ -144,19 +151,21 @@ export const onNoticeCreate = functions.firestore
       };
 
       // 푸시 알림 전송
+      functions.logger.info("FCM 멀티캐스트 전송 시도...");
       const response = await admin.messaging().sendEachForMulticast(message);
-      console.log(`푸시 알림 전송 완료: ${response.successCount}/${tokens.length}`);
+      functions.logger.info(`푸시 알림 전송 결과 - 성공: ${response.successCount}, 실패: ${response.failureCount}`);
 
       if (response.failureCount > 0) {
-        console.log(`실패한 토큰 수: ${response.failureCount}`);
+        const failedTokens: any[] = [];
         response.responses.forEach((resp, idx) => {
           if (!resp.success) {
-            console.error(`토큰 ${tokens[idx]} 전송 실패:`, resp.error);
+            failedTokens.push({ token: tokens[idx], error: resp.error });
           }
         });
+        functions.logger.error("실패한 토큰 상세:", failedTokens);
       }
     } catch (error) {
-      console.error("푸시 알림 전송 실패:", error);
+      functions.logger.error("푸시 알림 전송 중 예외 발생:", error);
     }
   });
 
@@ -171,7 +180,7 @@ export const onEventCreate = functions.firestore
 
     // 푸시 알림을 활성화한 이벤트만 대상
     if (!eventData.push_enabled) {
-      console.log("푸시 알림이 비활성화된 이벤트입니다.");
+      functions.logger.info("푸시 알림이 비활성화된 이벤트입니다.");
       return;
     }
 
@@ -182,7 +191,7 @@ export const onEventCreate = functions.firestore
         .get();
 
       if (usersSnapshot.empty) {
-        console.log("푸시 알림을 받을 사용자가 없습니다.");
+        functions.logger.info("푸시 알림을 받을 사용자가 없습니다.");
         return;
       }
 
@@ -195,7 +204,7 @@ export const onEventCreate = functions.firestore
       });
 
       if (tokens.length === 0) {
-        console.log("유효한 FCM 토큰이 없습니다.");
+        functions.logger.info("유효한 FCM 토큰이 없습니다.");
         return;
       }
 
@@ -214,13 +223,13 @@ export const onEventCreate = functions.firestore
 
       // 푸시 알림 전송
       const response = await admin.messaging().sendEachForMulticast(message);
-      console.log(`이벤트 푸시 알림 전송 완료: ${response.successCount}/${tokens.length}`);
+      functions.logger.info(`이벤트 푸시 알림 전송 완료: ${response.successCount}/${tokens.length}`);
 
       if (response.failureCount > 0) {
-        console.log(`실패한 토큰 수: ${response.failureCount}`);
+        functions.logger.info(`실패한 토큰 수: ${response.failureCount}`);
       }
     } catch (error) {
-      console.error("이벤트 푸시 알림 전송 실패:", error);
+      functions.logger.error("이벤트 푸시 알림 전송 실패:", error);
     }
   });
 
@@ -237,16 +246,14 @@ export const onMovieUpdate = functions.firestore
     // 좋아요 수 변경 시
     if (before.like_count !== after.like_count) {
       const movieId = context.params.movieId;
-      console.log(`영화 ${movieId} 좋아요 수 변경: ` +
+      functions.logger.info(`영화 ${movieId} 좋아요 수 변경: ` +
         `${before.like_count} -> ${after.like_count}`);
-
-      // 여기에 추가 로직 구현 가능 (예: 인기 영화 순위 업데이트)
     }
 
     // 조회수 변경 시
     if (before.view_count !== after.view_count) {
       const movieId = context.params.movieId;
-      console.log(`영화 ${movieId} 조회수 변경: ` +
+      functions.logger.info(`영화 ${movieId} 조회수 변경: ` +
         `${before.view_count} -> ${after.view_count}`);
     }
   });

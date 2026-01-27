@@ -40,17 +40,29 @@ class _CustomHeaderState extends State<CustomHeader> {
               height: 68,
               child: Row(
                 children: [
-                  // Left side - Back button or spacer
+                  // Left side - Back button or Menu button
                   SizedBox(
                     width: 60,
-                    child: widget.isSubPage
-                        ? IconButton(
-                            icon: const Icon(LucideIcons.chevronLeft,
-                                color: Colors.white, size: 28),
-                            onPressed: widget.onBackPressed ??
-                                () => Navigator.of(context).maybePop(),
-                          )
-                        : null,
+                    child: IconButton(
+                      icon: Icon(
+                        widget.isSubPage
+                            ? LucideIcons.chevronLeft
+                            : LucideIcons.menu,
+                        color: Colors.white,
+                        size: 28,
+                      ),
+                      onPressed: () {
+                        if (widget.isSubPage) {
+                          if (widget.onBackPressed != null) {
+                            widget.onBackPressed!();
+                          } else {
+                            Navigator.of(context).maybePop();
+                          }
+                        } else {
+                          Scaffold.of(context).openDrawer();
+                        }
+                      },
+                    ),
                   ),
 
                   // Center - Title

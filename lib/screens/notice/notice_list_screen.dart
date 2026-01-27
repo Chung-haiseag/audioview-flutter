@@ -97,10 +97,10 @@ class NoticeListScreen extends StatelessWidget {
             children: [
               // 1. Importance / New Badge / Category Badge
               if (notice.isImportant)
-                Padding(
-                  padding: const EdgeInsets.only(right: 8.0, top: 2),
+                const Padding(
+                  padding: EdgeInsets.only(right: 8.0, top: 2),
                   child: Icon(Icons.error_outline,
-                      color: const Color(0xFFE50914), size: 16),
+                      color: Color(0xFFE50914), size: 16),
                 )
               else if (notice.category == '이벤트')
                 Container(

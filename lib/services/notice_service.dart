@@ -8,6 +8,7 @@ class NoticeService {
     return _firestore
         .collection('notices')
         .orderBy('publishedAt', descending: true)
+        .limit(20)
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) => Notice.fromFirestore(doc)).toList();

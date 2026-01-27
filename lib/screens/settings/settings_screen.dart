@@ -103,11 +103,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
+                    const Row(
                       children: [
-                        const Icon(Icons.login, color: Colors.grey, size: 24),
-                        const SizedBox(width: 12),
-                        const Expanded(
+                        Icon(Icons.login, color: Colors.grey, size: 24),
+                        SizedBox(width: 12),
+                        Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -556,7 +556,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           Switch(
             value: value,
             onChanged: onChanged,
-            activeColor: Colors.red,
+            activeThumbColor: Colors.red,
             activeTrackColor: Colors.red.withOpacity(0.5),
             inactiveThumbColor: Colors.grey,
             inactiveTrackColor: Colors.grey.withOpacity(0.3),

@@ -9,7 +9,7 @@ import 'screens/search/search_screen.dart';
 import 'screens/downloads/downloads_screen.dart';
 import 'screens/notice/notice_list_screen.dart';
 import 'widgets/custom_header.dart';
-import 'widgets/bottom_navigation.dart';
+import 'widgets/custom_drawer.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -87,6 +87,28 @@ class _MainScreenState extends State<MainScreen> {
 
         return Scaffold(
           backgroundColor: const Color(0xFF0A0A0A),
+          drawer: CustomDrawer(
+            currentIndex: _currentIndex,
+            onItemTapped: (index) async {
+              if (index == 3) {
+                final auth = Provider.of<AuthProvider>(context, listen: false);
+                if (!auth.isAuthenticated) {
+                  await Navigator.pushNamed(context, '/login');
+                  if (mounted &&
+                      Provider.of<AuthProvider>(context, listen: false)
+                          .isAuthenticated) {
+                    setState(() {
+                      _currentIndex = index;
+                    });
+                  }
+                  return;
+                }
+              }
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+          ),
           body: Stack(
             children: [
               // 1. Content Layer
@@ -139,30 +161,6 @@ class _MainScreenState extends State<MainScreen> {
                 ),
               ),
             ],
-          ),
-          bottomNavigationBar: CustomBottomNavigation(
-            currentIndex: _currentIndex,
-            onTap: (index) async {
-              // made async
-              if (index == 3) {
-                final auth = Provider.of<AuthProvider>(context, listen: false);
-                if (!auth.isAuthenticated) {
-                  await Navigator.pushNamed(context, '/login');
-                  // After returning from login screen, check authentication status again
-                  if (mounted &&
-                      Provider.of<AuthProvider>(context, listen: false)
-                          .isAuthenticated) {
-                    setState(() {
-                      _currentIndex = index;
-                    });
-                  }
-                  return;
-                }
-              }
-              setState(() {
-                _currentIndex = index;
-              });
-            },
           ),
         );
       },

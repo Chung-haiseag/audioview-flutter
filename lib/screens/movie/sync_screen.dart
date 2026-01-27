@@ -170,9 +170,9 @@ class AudioBarsPainter extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     const barCount = 7;
-    final barWidth = 8.0;
-    final spacing = 6.0;
-    final totalWidth = (barCount * barWidth) + ((barCount - 1) * spacing);
+    const barWidth = 8.0;
+    const spacing = 6.0;
+    const totalWidth = (barCount * barWidth) + ((barCount - 1) * spacing);
     final startX = (size.width - totalWidth) / 2;
 
     for (int i = 0; i < barCount; i++) {
