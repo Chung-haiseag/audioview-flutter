@@ -6,7 +6,12 @@ import '../../providers/auth_provider.dart';
 import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  final bool isEmbedded;
+
+  const LoginScreen({
+    super.key,
+    this.isEmbedded = false,
+  });
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -30,7 +35,10 @@ class _LoginScreenState extends State<LoginScreen> {
           .login(_emailController.text, _passwordController.text);
 
       if (mounted) {
-        Navigator.pop(context);
+        // If embedded, we don't pop, we just let the parent rebuild (Consumer in MyPage will switch view)
+        if (!widget.isEmbedded) {
+          Navigator.pop(context);
+        }
       }
     } finally {
       if (mounted) {
@@ -68,11 +76,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       horizontal: 16.0, vertical: 12.0),
                   child: Row(
                     children: [
-                      IconButton(
-                        icon: const Icon(LucideIcons.chevronLeft,
-                            color: Colors.white, size: 28),
-                        onPressed: () => Navigator.of(context).maybePop(),
-                      ),
+                      if (!widget.isEmbedded)
+                        IconButton(
+                          icon: const Icon(LucideIcons.chevronLeft,
+                              color: Colors.white, size: 28),
+                          onPressed: () => Navigator.of(context).maybePop(),
+                        )
+                      else
+                        const SizedBox(
+                            width:
+                                48), // Spacer to balance if needed, or just nothing
                       const SizedBox(width: 8),
                       Image.asset(
                         'assets/images/logo_horizontal.png',
