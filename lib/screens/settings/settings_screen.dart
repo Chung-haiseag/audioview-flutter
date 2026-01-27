@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
-import '../help/privacy_policy_screen.dart';
-import '../help/terms_of_service_screen.dart';
-import '../help/faq_screen.dart';
-import '../help/user_guide_screen.dart';
 import '../help/request_content_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
