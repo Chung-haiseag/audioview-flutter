@@ -70,6 +70,7 @@ class _MainScreenState extends State<MainScreen> {
     SettingsScreen(),
     SearchScreen(),
     MyPageScreen(),
+    NoticeListScreen(),
   ];
 
   final List<String> _titles = [
@@ -77,6 +78,7 @@ class _MainScreenState extends State<MainScreen> {
     '설정',
     '검색',
     '마이페이지',
+    '공지/이벤트',
   ];
 
   @override
