@@ -17,7 +17,8 @@ class HeroSection extends StatelessWidget {
       genres: ['액션', '범죄'],
       description:
           '괴물형사 ‘마석도’(마동석)가 다시 돌아왔다! 대규모 온라인 불법 도박 조직을 소탕하기 위해 대한민국 광수대와 사이버팀이 뭉쳤다. 이번엔 더 커진 판, 더 강력해진 웃음으로 돌아왔다!',
-      posterUrl: 'https://cdn.hancinema.net/photos/photo1799732.jpg',
+      posterUrl:
+          'https://image.tmdb.org/t/p/original/6vK69S3h0T9I1dJ4Z5yW3p5sY.jpg',
       hasAD: true,
       hasCC: true,
       hasMultiLang: false,
