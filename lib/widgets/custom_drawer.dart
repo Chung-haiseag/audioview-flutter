@@ -68,21 +68,27 @@ class CustomDrawer extends StatelessWidget {
                   context: context,
                 ),
                 _buildDrawerItem(
+                  icon: LucideIcons.list,
+                  label: '장르',
+                  index: 1,
+                  context: context,
+                ),
+                _buildDrawerItem(
                   icon: LucideIcons.user,
                   label: '마이페이지',
-                  index: 3, // MyPageScreen index in MainScreen
+                  index: 4, // MyPageScreen index in MainScreen
                   context: context,
                 ),
                 _buildDrawerItem(
                   icon: LucideIcons.settings,
                   label: '설정',
-                  index: 1, // SettingsScreen index in MainScreen
+                  index: 2, // SettingsScreen index in MainScreen
                   context: context,
                 ),
                 _buildDrawerItem(
                   icon: LucideIcons.megaphone,
                   label: '공지/이벤트',
-                  index: 4, // NoticeListScreen index in MainScreen
+                  index: 5, // NoticeListScreen index in MainScreen
                   context: context,
                 ),
               ],
