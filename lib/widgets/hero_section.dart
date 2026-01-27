@@ -18,7 +18,7 @@ class HeroSection extends StatelessWidget {
       description:
           '괴물형사 ‘마석도’(마동석)가 다시 돌아왔다! 대규모 온라인 불법 도박 조직을 소탕하기 위해 대한민국 광수대와 사이버팀이 뭉쳤다. 이번엔 더 커진 판, 더 강력해진 웃음으로 돌아왔다!',
       posterUrl:
-          'https://search.pstatic.net/common?quality=75&direct=true&src=https%3A%2F%2Fmovie-phinf.pstatic.net%2F20240328_111%2F1711587839843Q6qLO_JPEG%2Fmovie_image.jpg',
+          'https://phinf.pstatic.net/movie/20240328_111/1711587839843Q6qLO_JPEG/movie_image.jpg',
       hasAD: true,
       hasCC: true,
       hasMultiLang: false,
