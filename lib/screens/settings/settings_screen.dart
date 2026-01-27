@@ -181,7 +181,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        // Help section header
         Row(
           children: [
             Container(
@@ -207,59 +206,35 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ],
         ),
-
         const SizedBox(height: 16),
-
-        // Help menu items
-        _buildHelpMenuItem(
+        _buildHelpAccordionItem(
           icon: Icons.shield_outlined,
           title: '개인정보 처리방침',
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const PrivacyPolicyScreen(),
-              ),
-            );
-          },
+          content:
+              '회사는 회원 가입 및 관리, 서비스 제공 및 개선, 고객 문의 응대 등을 위해 개인정보를 수집 및 이용합니다.\n\n'
+              '• 필수항목: 이메일, 비밀번호, 이름\n'
+              '• 선택항목: 전화번호, 주소\n\n'
+              '개인정보는 원칙적으로 보유 및 이용기간이 경과하면 지체 없이 파기합니다.',
         ),
-        _buildHelpMenuItem(
+        _buildHelpAccordionItem(
           icon: Icons.description_outlined,
           title: '이용약관',
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const TermsOfServiceScreen(),
-              ),
-            );
-          },
+          content:
+              '본 약관은 AudioView가 제공하는 배리어프리 영상 서비스의 이용과 관련하여 회사와 이용자의 권리, 의무 및 책임사항을 규정함을 목적으로 합니다.\n\n'
+              '회사는 화면해설(AD), 문자자막(CC), 다국어자막 스트리밍 서비스를 제공하며 이용자는 타인의 정보 도용이나 저작권 침해 행위를 하여서는 안 됩니다.',
         ),
-        _buildHelpMenuItem(
+        _buildHelpAccordionItem(
           icon: Icons.chat_bubble_outline,
           title: '자주 묻는 질문',
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const FAQScreen(),
-              ),
-            );
-          },
+          isFAQ: true,
         ),
-        _buildHelpMenuItem(
+        _buildHelpAccordionItem(
           icon: Icons.info_outline,
           title: '이용안내',
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const UserGuideScreen(),
-              ),
-            );
-          },
+          content: 'AudioView는 시청각장애인과 비장애인 모두가 즐길 수 있는 배리어프리 콘텐츠 플랫폼입니다.\n\n'
+              '앱 하단의 내비게이션이나 햄버거 메뉴를 통해 다양한 장르의 영화를 감상하실 수 있으며, 설정 메뉴에서 스마트 안경 연동 및 접근성 기능을 조절할 수 있습니다.',
         ),
-        _buildHelpMenuItem(
+        _buildHelpAccordionItem(
           icon: Icons.add_circle_outline,
           title: '새로운 작품 요청하기',
           onTap: () {
@@ -271,10 +246,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             );
           },
         ),
-
         const SizedBox(height: 32),
-
-        // Production info
         const Text(
           'PRODUCTION',
           style: TextStyle(
@@ -292,107 +264,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
-
         const SizedBox(height: 24),
-
-        // Contact info
-        Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: const Color(0xFF1A1A1A),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: const Color(0xFF333333)),
-          ),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF2A2A2A),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Icon(
-                      Icons.email_outlined,
-                      color: Colors.grey,
-                      size: 20,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'EMAIL',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 10,
-                          letterSpacing: 1.2,
-                        ),
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        'kbu1004@hanmail.com',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF2A2A2A),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Icon(
-                      Icons.phone_outlined,
-                      color: Colors.grey,
-                      size: 20,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'PHONE',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 10,
-                          letterSpacing: 1.2,
-                        ),
-                      ),
-                      SizedBox(height: 4),
-                      Text(
-                        '02-799-1000',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
+        _buildContactInfo(),
       ],
     );
   }
 
-  Widget _buildHelpMenuItem({
+  Widget _buildHelpAccordionItem({
     required IconData icon,
     required String title,
-    required VoidCallback onTap,
+    String? content,
+    bool isFAQ = false,
+    VoidCallback? onTap,
   }) {
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
@@ -401,21 +284,133 @@ class _SettingsScreenState extends State<SettingsScreen> {
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: const Color(0xFF333333)),
       ),
-      child: ListTile(
-        leading: Icon(icon, color: Colors.grey, size: 20),
-        title: Text(
-          title,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 14,
+      child: Theme(
+        data: ThemeData(dividerColor: Colors.transparent),
+        child: onTap != null
+            ? ListTile(
+                leading: Icon(icon, color: Colors.grey, size: 20),
+                title: Text(title,
+                    style: const TextStyle(color: Colors.white, fontSize: 14)),
+                trailing: const Icon(Icons.chevron_right,
+                    color: Colors.grey, size: 20),
+                onTap: onTap,
+              )
+            : ExpansionTile(
+                leading: Icon(icon, color: Colors.grey, size: 20),
+                title: Text(title,
+                    style: const TextStyle(color: Colors.white, fontSize: 14)),
+                iconColor: Colors.white,
+                collapsedIconColor: Colors.grey,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                    child: isFAQ
+                        ? Column(
+                            children: [
+                              _buildFAQBrief(
+                                  '화면해설(AD)이란?', '시각장애인을 위한 장면 및 동작 음성 설명'),
+                              _buildFAQBrief(
+                                  '문자자막(CC)이란?', '청각장애인을 위한 대사 및 효과음 자막'),
+                              _buildFAQBrief(
+                                  '스마트 안경 연동?', '블루투스 페어링 후 설정에서 활성화'),
+                            ],
+                          )
+                        : Text(
+                            content ?? '',
+                            style: const TextStyle(
+                                color: Colors.grey, fontSize: 13, height: 1.5),
+                          ),
+                  ),
+                ],
+              ),
+      ),
+    );
+  }
+
+  Widget _buildFAQBrief(String q, String a) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(q,
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 13,
+                  fontWeight: FontWeight.bold)),
+          const SizedBox(height: 4),
+          Text(a, style: const TextStyle(color: Colors.grey, fontSize: 12)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildContactInfo() {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1A1A1A),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFF333333)),
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF2A2A2A),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(Icons.email_outlined,
+                    color: Colors.grey, size: 20),
+              ),
+              const SizedBox(width: 16),
+              const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('EMAIL',
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 10,
+                          letterSpacing: 1.2)),
+                  SizedBox(height: 4),
+                  Text('kbu1004@hanmail.com',
+                      style: TextStyle(color: Colors.blue, fontSize: 14)),
+                ],
+              ),
+            ],
           ),
-        ),
-        trailing: const Icon(
-          Icons.chevron_right,
-          color: Colors.grey,
-          size: 20,
-        ),
-        onTap: onTap,
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF2A2A2A),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(Icons.phone_outlined,
+                    color: Colors.grey, size: 20),
+              ),
+              const SizedBox(width: 16),
+              const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('PHONE',
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 10,
+                          letterSpacing: 1.2)),
+                  SizedBox(height: 4),
+                  Text('02-799-1000',
+                      style: TextStyle(color: Colors.blue, fontSize: 14)),
+                ],
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
