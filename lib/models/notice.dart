@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../utils/type_parser.dart';
 
 enum NoticeType { notice, event }
 
@@ -50,7 +51,7 @@ class Notice {
     bool isImportant = data['isImportant'] ?? false;
 
     // 6. ViewCount
-    int viewCount = data['viewCount'] ?? 0;
+    int viewCount = TypeParser.parseInt(data['viewCount']);
 
     return Notice(
       id: doc.id,

@@ -105,3 +105,4 @@ migrate_working_dir/
 # Compressed files (압축 파일 제외)
 *.tar.gz
 *.zip
+admin-tool-backup/
