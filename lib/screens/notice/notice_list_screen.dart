@@ -13,55 +13,52 @@ class NoticeListScreen extends StatelessWidget {
       length: 2,
       child: Scaffold(
         backgroundColor: Colors.black,
-        appBar: AppBar(
-          backgroundColor: Colors.black,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () => Navigator.pop(context),
-          ),
-          title: const Text(
-            '공지사항',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-          bottom: const TabBar(
-            indicatorColor: Color(0xFFE50914),
-            labelColor: Color(0xFFE50914),
-            unselectedLabelColor: Colors.grey,
-            tabs: [
-              Tab(text: '공지사항'),
-              Tab(text: '이벤트'),
-            ],
-          ),
-        ),
-        body: StreamBuilder<List<Notice>>(
-          stream: NoticeService().getNotices(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
-
-            if (snapshot.hasError) {
-              return Center(
-                child: Text(
-                  '오류가 발생했습니다: ${snapshot.error}',
-                  style: const TextStyle(color: Colors.white),
-                ),
-              );
-            }
-
-            final allNotices = snapshot.data ?? [];
-            final notices =
-                allNotices.where((n) => n.type == NoticeType.notice).toList();
-            final events =
-                allNotices.where((n) => n.type == NoticeType.event).toList();
-
-            return TabBarView(
-              children: [
-                _buildNoticeList(notices),
-                _buildNoticeList(events),
+        body: Column(
+          children: [
+            const TabBar(
+              indicatorColor: Color(0xFFE50914),
+              labelColor: Color(0xFFE50914),
+              unselectedLabelColor: Colors.grey,
+              tabs: [
+                Tab(text: '공지사항'),
+                Tab(text: '이벤트'),
               ],
-            );
-          },
+            ),
+            Expanded(
+              child: StreamBuilder<List<Notice>>(
+                stream: NoticeService().getNotices(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text(
+                        '오류가 발생했습니다: ${snapshot.error}',
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    );
+                  }
+
+                  final allNotices = snapshot.data ?? [];
+                  final notices = allNotices
+                      .where((n) => n.type == NoticeType.notice)
+                      .toList();
+                  final events = allNotices
+                      .where((n) => n.type == NoticeType.event)
+                      .toList();
+
+                  return TabBarView(
+                    children: [
+                      _buildNoticeList(notices),
+                      _buildNoticeList(events),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
