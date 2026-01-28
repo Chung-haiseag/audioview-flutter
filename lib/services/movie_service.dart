@@ -29,12 +29,13 @@ class MovieService {
     });
   }
 
-  // Search movies by title (prefix search)
+  // Search movies by title, director, or actors
   Future<List<Movie>> searchMovies(String query) async {
     if (query.isEmpty) return [];
 
     try {
-      final snapshot = await _firestore
+      // Step 1: Query by title
+      final titleSnapshot = await _firestore
           .collection('movies')
           .orderBy('title')
           .startAt([query])
@@ -42,7 +43,44 @@ class MovieService {
           .limit(20)
           .get();
 
-      return snapshot.docs.map((doc) => Movie.fromFirestore(doc)).toList();
+      // Step 2: Query by director
+      final directorSnapshot = await _firestore
+          .collection('movies')
+          .orderBy('director')
+          .startAt([query])
+          .endAt(['$query\uf8ff'])
+          .limit(20)
+          .get();
+
+      // Step 3: Combine and deduplicate
+      Map<String, Movie> resultsMap = {};
+
+      for (var doc in titleSnapshot.docs) {
+        resultsMap[doc.id] = Movie.fromFirestore(doc);
+      }
+
+      for (var doc in directorSnapshot.docs) {
+        resultsMap[doc.id] = Movie.fromFirestore(doc);
+      }
+
+      // Step 4: Actor search (Actor is a list, so we might need a different approach or fetch more)
+      // Since Firestore doesn't support 'array-contains' with prefix,
+      // for now we'll do an exact match or fetch all and filter client-side if needed.
+      // Alternatively, check matching in actors field if those docs were already fetched.
+
+      // Let's add a separate query for exact actor match if possible,
+      // or just filter the rest of the docs.
+      final actorSnapshot = await _firestore
+          .collection('movies')
+          .where('actors', arrayContains: query)
+          .limit(20)
+          .get();
+
+      for (var doc in actorSnapshot.docs) {
+        resultsMap[doc.id] = Movie.fromFirestore(doc);
+      }
+
+      return resultsMap.values.toList();
     } catch (e) {
       // print('Search error: $e');
       return [];

@@ -199,7 +199,6 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 12),
                     Text(
                       '${widget.movie.duration}분',
                       style: const TextStyle(
@@ -209,6 +208,39 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                     ),
                   ],
                 ),
+
+                const SizedBox(height: 16),
+
+                // Director and Actors
+                if (widget.movie.director != null &&
+                    widget.movie.director!.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                    child: Text(
+                      '감독: ${widget.movie.director}',
+                      style: TextStyle(
+                        color: Colors.grey[400],
+                        fontSize: 14,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+
+                if (widget.movie.actors.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 24.0, vertical: 4),
+                    child: Text(
+                      '출연: ${widget.movie.actors.join(", ")}',
+                      style: TextStyle(
+                        color: Colors.grey[400],
+                        fontSize: 14,
+                      ),
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
 
                 const SizedBox(height: 40),
 
