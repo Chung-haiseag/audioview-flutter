@@ -35,32 +35,28 @@ tasks.register("clean", Delete) {
 
 subprojects {
     def configureProject = { p ->
-        if (p.hasProperty('android')) {
-            p.android {
-                if (namespace == null) {
-                    namespace p.group
-                }
-                compileSdkVersion 36
-                compileOptions {
-                    sourceCompatibility JavaVersion.VERSION_17
-                    targetCompatibility JavaVersion.VERSION_17
-                }
+        p.android {
+            compileSdk 36
+            if (namespace == null) {
+                namespace p.group
             }
-        }
-        
-        // JVM Target Consistency Fix
-        p.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
-            kotlinOptions {
-                jvmTarget = "17"
+            compileOptions {
+                sourceCompatibility JavaVersion.VERSION_17
+                targetCompatibility JavaVersion.VERSION_17
             }
         }
     }
 
-    if (project.state.executed) {
+    plugins.withId('com.android.library') {
         configureProject(project)
-    } else {
-        project.afterEvaluate {
-            configureProject(it)
+    }
+    plugins.withId('com.android.application') {
+        configureProject(project)
+    }
+
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            jvmTarget = "17"
         }
     }
 }
