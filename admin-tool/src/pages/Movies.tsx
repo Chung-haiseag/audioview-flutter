@@ -50,7 +50,6 @@ const Movies: React.FC = () => {
     const [editingMovie, setEditingMovie] = useState<Movie | null>(null);
     const [formData, setFormData] = useState<Partial<Movie>>({
         title: '',
-        originalTitle: '',
         directorName: '',
         runningTime: 120,
         synopsis: '',
@@ -64,7 +63,6 @@ const Movies: React.FC = () => {
         isPopular: false,
         releaseDate: new Date(),
         genreId: '',
-        productionCompany: '',
         productionCountry: '',
         searchKeywords: [],
     });
@@ -116,7 +114,6 @@ const Movies: React.FC = () => {
         setEditingMovie(null);
         setFormData({
             title: '',
-            originalTitle: '',
             directorName: '',
             runningTime: 120,
             synopsis: '',
@@ -130,7 +127,6 @@ const Movies: React.FC = () => {
             isPopular: false,
             releaseDate: new Date(),
             genreId: '',
-            productionCompany: '',
             productionCountry: '',
             searchKeywords: [],
         });
@@ -257,8 +253,7 @@ const Movies: React.FC = () => {
                                         </TableCell>
                                         <TableCell>
                                             <Typography variant="body2">{movie.directorName || '-'}</Typography>
-                                            <Typography variant="caption" color="text.secondary">{movie.productionCompany || '-'}</Typography>
-                                            {movie.productionCountry && <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>({movie.productionCountry})</Typography>}
+                                            {movie.productionCountry && <Typography variant="caption" color="text.secondary">({movie.productionCountry})</Typography>}
                                         </TableCell>
                                         <TableCell>
                                             <Chip label={movie.rating} size="small" variant="outlined" sx={{ mr: 0.5 }} />
@@ -301,11 +296,8 @@ const Movies: React.FC = () => {
                                 />
                             </Grid>
                         )}
-                        <Grid size={{ xs: 12, sm: 6 }}>
+                        <Grid size={{ xs: 12 }}>
                             <TextField fullWidth label="영화 제목*" name="title" value={formData.title} onChange={handleInputChange} required />
-                        </Grid>
-                        <Grid size={{ xs: 12, sm: 6 }}>
-                            <TextField fullWidth label="원제" name="originalTitle" value={formData.originalTitle} onChange={handleInputChange} />
                         </Grid>
                         <Grid size={{ xs: 12, sm: 6 }}>
                             <FormControl fullWidth>
@@ -321,10 +313,7 @@ const Movies: React.FC = () => {
                                 </Select>
                             </FormControl>
                         </Grid>
-                        <Grid size={{ xs: 12, sm: 4 }}>
-                            <TextField fullWidth label="제작사" name="productionCompany" value={formData.productionCompany || ''} onChange={handleInputChange} />
-                        </Grid>
-                        <Grid size={{ xs: 12, sm: 4 }}>
+                        <Grid size={{ xs: 12, sm: 8 }}>
                             <TextField fullWidth label="제작국가" name="productionCountry" value={formData.productionCountry || ''} onChange={handleInputChange} />
                         </Grid>
                         <Grid size={{ xs: 12, sm: 4 }}>
