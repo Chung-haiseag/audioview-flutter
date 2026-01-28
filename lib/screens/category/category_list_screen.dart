@@ -3,6 +3,8 @@ import '../../models/movie.dart';
 import '../../services/movie_service.dart';
 import '../../widgets/movie_card.dart';
 import '../movie/movie_detail_screen.dart';
+import '../../widgets/custom_header.dart';
+import '../../widgets/custom_drawer.dart';
 
 import '../../models/genre.dart'; // Add import
 
@@ -23,7 +25,14 @@ class CategoryListScreen extends StatelessWidget {
 
         return Scaffold(
           backgroundColor: const Color(0xFF0A0A0A),
-          drawer: const CustomDrawer(),
+          drawer: CustomDrawer(
+            currentIndex: 4, // 장르 선택된 상태로 표시
+            onItemTapped: (index) {
+              // 메인 화면으로 돌아가서 인덱스 변경 (MainScreen 로직에 맡김)
+              Navigator.pop(context); // 드로어 닫기
+              Navigator.pop(context); // 장르 서브메뉴 닫기
+            },
+          ),
           body: Column(
             children: [
               CustomHeader(
