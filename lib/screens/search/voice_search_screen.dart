@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'dart:async';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:permission_handler/permission_handler.dart';
 import '../../services/movie_service.dart';
@@ -77,6 +78,8 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
   String _text = '듣고 있습니다...';
   Movie? _matchedMovie;
   final MovieService _movieService = MovieService();
+  bool _isNavigating = false;
+  Timer? _navigationTimer;
 
   @override
   void initState() {
@@ -155,7 +158,10 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
             if (_text != '듣고 있습니다...' &&
                 _text.isNotEmpty &&
                 !_text.startsWith('오류')) {
-              _navigateToResults(_text);
+              // Only navigate if we're not already doing so
+              if (!_isNavigating) {
+                _navigateToResults(_text);
+              }
             }
           }
         },
@@ -192,6 +198,11 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
                 _text = val.recognizedWords;
               });
               _searchMovie(_text);
+
+              // If it's the final result, navigate immediately
+              if (val.finalResult && !_isNavigating) {
+                _navigateToResults(_text);
+              }
             }
           },
           localeId: koreanLocale.localeId,
@@ -230,8 +241,18 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
           });
         }
 
+        // Reset and start timer for automatic navigation when a match is found
+        _navigationTimer?.cancel();
+        if (!_isNavigating) {
+          _navigationTimer = Timer(const Duration(milliseconds: 1500), () {
+            if (mounted && !_isNavigating && _matchedMovie != null) {
+              _navigateToResults(_text);
+            }
+          });
+        }
+
         // If it's a very clear match (title matches exactly or closely),
-        // we can navigate immediately.
+        // we can navigate even faster.
         if (results.first.title.replaceAll(' ', '') ==
             query.replaceAll(' ', '')) {
           _navigateToResults(query);
@@ -243,7 +264,10 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
   }
 
   void _navigateToResults(String resultText) {
-    if (!mounted) return;
+    if (!mounted || _isNavigating) return;
+
+    _isNavigating = true;
+    _navigationTimer?.cancel();
 
     // Stop speech if still listening
     if (_isListening) {
@@ -260,6 +284,7 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
 
   @override
   void dispose() {
+    _navigationTimer?.cancel();
     _speech.stop();
     _waveController.dispose();
     _pulseController.dispose();
