@@ -14,4 +14,12 @@ class NoticeService {
       return snapshot.docs.map((doc) => Notice.fromFirestore(doc)).toList();
     });
   }
+
+  Future<Notice?> getNoticeById(String noticeId) async {
+    final doc = await _firestore.collection('notices').doc(noticeId).get();
+    if (doc.exists) {
+      return Notice.fromFirestore(doc);
+    }
+    return null;
+  }
 }

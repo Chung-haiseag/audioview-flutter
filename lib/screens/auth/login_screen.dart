@@ -183,6 +183,181 @@ class _LoginScreenState extends State<LoginScreen> {
 
                         const SizedBox(height: 16),
 
+                        // OR Divider
+                        Row(
+                          children: [
+                            const Expanded(child: Divider(color: Colors.grey)),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              child: Text('또는',
+                                  style: TextStyle(
+                                      color: Colors.grey[400], fontSize: 12)),
+                            ),
+                            const Expanded(child: Divider(color: Colors.grey)),
+                          ],
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        // Kakao Login Button
+                        ElevatedButton(
+                          onPressed: _isLoading
+                              ? null
+                              : () async {
+                                  setState(() => _isLoading = true);
+                                  try {
+                                    await Provider.of<AuthProvider>(context,
+                                            listen: false)
+                                        .signInWithKakao();
+                                    if (mounted && !widget.isEmbedded)
+                                      Navigator.pop(context);
+                                  } catch (e) {
+                                    if (mounted) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                              content:
+                                                  Text('카카오 로그인에 실패했습니다.')));
+                                    }
+                                  } finally {
+                                    if (mounted)
+                                      setState(() => _isLoading = false);
+                                  }
+                                },
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            backgroundColor: const Color(0xFFFEE500),
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8)),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.network(
+                                'https://developers.kakao.com/tool/resource/static/img/button/login/kakao_login_medium_narrow.png',
+                                height: 20,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    const Icon(Icons.chat_bubble,
+                                        color: Colors.black, size: 20),
+                              ),
+                              const SizedBox(width: 8),
+                              const Text('카카오 로그인',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87)),
+                            ],
+                          ),
+                        ),
+
+                        const SizedBox(height: 12),
+
+                        // Naver Login Button
+                        ElevatedButton(
+                          onPressed: _isLoading
+                              ? null
+                              : () async {
+                                  setState(() => _isLoading = true);
+                                  try {
+                                    await Provider.of<AuthProvider>(context,
+                                            listen: false)
+                                        .signInWithNaver();
+                                    if (mounted && !widget.isEmbedded)
+                                      Navigator.pop(context);
+                                  } catch (e) {
+                                    if (mounted) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                              content:
+                                                  Text('네이버 로그인에 실패했습니다.')));
+                                    }
+                                  } finally {
+                                    if (mounted)
+                                      setState(() => _isLoading = false);
+                                  }
+                                },
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            backgroundColor: const Color(0xFF03C75A),
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8)),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text('N',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18)),
+                              const SizedBox(width: 8),
+                              const Text('네이버 로그인',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white)),
+                            ],
+                          ),
+                        ),
+
+                        const SizedBox(height: 12),
+
+                        // Google Login Button
+                        ElevatedButton(
+                          onPressed: _isLoading
+                              ? null
+                              : () async {
+                                  setState(() => _isLoading = true);
+                                  try {
+                                    await Provider.of<AuthProvider>(context,
+                                            listen: false)
+                                        .signInWithGoogle();
+                                    if (mounted && !widget.isEmbedded)
+                                      Navigator.pop(context);
+                                  } catch (e) {
+                                    if (mounted) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                              content:
+                                                  Text('구글 로그인에 실패했습니다.')));
+                                    }
+                                  } finally {
+                                    if (mounted)
+                                      setState(() => _isLoading = false);
+                                  }
+                                },
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            backgroundColor: Colors.white,
+                            elevation: 0,
+                            side: const BorderSide(color: Colors.grey),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8)),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.network(
+                                'https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg',
+                                height: 20,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    const Icon(Icons.g_mobiledata,
+                                        color: Colors.blue, size: 28),
+                              ),
+                              const SizedBox(width: 8),
+                              const Text('구글 로그인',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87)),
+                            ],
+                          ),
+                        ),
+
+                        const SizedBox(height: 16),
+
                         Align(
                           alignment: Alignment.center,
                           child: TextButton(

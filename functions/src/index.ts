@@ -6,6 +6,8 @@ admin.initializeApp();
 
 const db = admin.firestore();
 
+export * from "./social_auth";
+
 /**
  * 영화 시청 완료 시 포인트 적립
  * 트리거: viewing_history 컬렉션에 새 문서 추가
@@ -140,8 +142,8 @@ export const onNoticeCreate = functions.firestore
       // 사용자가 많아지면 배치 처리로 변경해야 함.
       const message = {
         notification: {
-          title: noticeData.title || "새 공지사항",
-          body: noticeData.content ? noticeData.content.substring(0, 100) : "내용 없음",
+          title: noticeData.pushTitle || noticeData.title || "새 공지사항",
+          body: noticeData.pushMessage || (noticeData.content ? noticeData.content.substring(0, 100) : "내용 없음"),
         },
         data: {
           notice_id: snap.id,
@@ -151,7 +153,8 @@ export const onNoticeCreate = functions.firestore
       };
 
       // 푸시 알림 전송
-      functions.logger.info("FCM 멀티캐스트 전송 시도...");
+      functions.logger.info(`FCM 멀티캐스트 전송 시도... 대상 토큰 수: ${tokens.length}`);
+      functions.logger.info("대상 토큰 목록 (보안 주의):", tokens);
       const response = await admin.messaging().sendEachForMulticast(message);
       functions.logger.info(`푸시 알림 전송 결과 - 성공: ${response.successCount}, 실패: ${response.failureCount}`);
 

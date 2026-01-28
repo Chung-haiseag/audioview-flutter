@@ -104,6 +104,7 @@ export interface Notice {
     pushMessage?: string;
     thumbnailUrl?: string;
     linkUrl?: string;
+    movieId?: string;
     viewCount: number;
     publishedAt?: Date;
     expiresAt?: Date;

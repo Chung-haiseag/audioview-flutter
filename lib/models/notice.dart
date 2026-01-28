@@ -13,6 +13,7 @@ class Notice {
   final bool isImportant;
   final int viewCount;
   final String category; // '일반', '이벤트', etc.
+  final String? movieId;
 
   Notice({
     required this.id,
@@ -24,6 +25,7 @@ class Notice {
     this.isImportant = false,
     this.viewCount = 0,
     required this.category,
+    this.movieId,
   });
 
   factory Notice.fromFirestore(DocumentSnapshot doc) {
@@ -53,6 +55,11 @@ class Notice {
     // 6. ViewCount
     int viewCount = TypeParser.parseInt(data['viewCount']);
 
+    // 7. Movie ID (Optional)
+    String? movieId = data['movieId'];
+    // print('Notice Detail - ID: ${doc.id}, Title: $title, MovieId: $movieId');
+    // print('Full data keys: ${data.keys.toList()}');
+
     return Notice(
       id: doc.id,
       title: title,
@@ -63,6 +70,7 @@ class Notice {
       isImportant: isImportant,
       viewCount: viewCount,
       category: category,
+      movieId: movieId,
     );
   }
 }
