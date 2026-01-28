@@ -23,8 +23,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Kakao SDK 초기화
-  // TODO: 카카오 개발자 센터에서 발급받은 Native App Key를 여기에 넣으세요.
-  KakaoSdk.init(nativeAppKey: 'YOUR_NATIVE_APP_KEY');
+  KakaoSdk.init(nativeAppKey: '4538351b8dd330e9f41491a83effc087');
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
