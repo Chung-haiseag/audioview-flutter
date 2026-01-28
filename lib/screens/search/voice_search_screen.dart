@@ -155,9 +155,7 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
             if (_text != '듣고 있습니다...' &&
                 _text.isNotEmpty &&
                 !_text.startsWith('오류')) {
-              Future.delayed(const Duration(milliseconds: 1000), () {
-                if (mounted) Navigator.pop(context, _text);
-              });
+              _navigateToResults(_text);
             }
           }
         },
@@ -231,10 +229,33 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
             _matchedMovie = results.first;
           });
         }
+
+        // If it's a very clear match (title matches exactly or closely),
+        // we can navigate immediately.
+        if (results.first.title.replaceAll(' ', '') ==
+            query.replaceAll(' ', '')) {
+          _navigateToResults(query);
+        }
       }
     } catch (e) {
       // Ignore search errors during voice recognition
     }
+  }
+
+  void _navigateToResults(String resultText) {
+    if (!mounted) return;
+
+    // Stop speech if still listening
+    if (_isListening) {
+      _speech.stop();
+    }
+
+    // Brief delay for UX so user can see the poster if matched
+    Future.delayed(const Duration(milliseconds: 800), () {
+      if (mounted) {
+        Navigator.pop(context, resultText);
+      }
+    });
   }
 
   @override

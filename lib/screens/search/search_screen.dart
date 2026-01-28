@@ -90,31 +90,37 @@ class _SearchScreenState extends State<SearchScreen> {
               hintText: '영화, 시리즈, 배우 검색',
               hintStyle: TextStyle(color: Colors.grey[600]),
               prefixIcon: Icon(Icons.search, color: Colors.grey[600]),
-              suffixIcon: _searchQuery.isNotEmpty
-                  ? IconButton(
+              suffixIcon: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (_searchQuery.isNotEmpty)
+                    IconButton(
                       icon: const Icon(Icons.close, color: Colors.grey),
                       onPressed: () {
                         _searchController.clear();
-                      },
-                    )
-                  : IconButton(
-                      icon: const Icon(Icons.keyboard_voice,
-                          color: Colors.yellow),
-                      onPressed: () async {
-                        final result = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const VoiceSearchScreen(),
-                          ),
-                        );
-                        if (result != null &&
-                            result is String &&
-                            result.isNotEmpty) {
-                          _searchController.text = result;
-                          _performSearch(result);
-                        }
+                        _performSearch('');
                       },
                     ),
+                  IconButton(
+                    icon:
+                        const Icon(Icons.keyboard_voice, color: Colors.yellow),
+                    onPressed: () async {
+                      final result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const VoiceSearchScreen(),
+                        ),
+                      );
+                      if (result != null &&
+                          result is String &&
+                          result.isNotEmpty) {
+                        _searchController.text = result;
+                        _performSearch(result);
+                      }
+                    },
+                  ),
+                ],
+              ),
               filled: true,
               fillColor: const Color(0xFF1E1E1E),
               border: OutlineInputBorder(
@@ -259,7 +265,7 @@ class _SearchScreenState extends State<SearchScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
-        childAspectRatio: 0.67,
+        childAspectRatio: 0.55,
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
       ),
