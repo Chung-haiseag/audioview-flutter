@@ -15,59 +15,61 @@ class CustomDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       backgroundColor: const Color(0xFF141414),
-      child: Column(
-        children: [
-          // Menu Items
-          Expanded(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: [
-                _buildDrawerItem(
-                  icon: LucideIcons.home,
-                  label: '홈',
-                  index: 0,
-                  context: context,
-                ),
-                _buildDrawerItem(
-                  icon: LucideIcons.list,
-                  label: '장르',
-                  index: 1,
-                  context: context,
-                ),
-                _buildDrawerItem(
-                  icon: LucideIcons.user,
-                  label: '마이페이지',
-                  index: 4, // MyPageScreen index in MainScreen
-                  context: context,
-                ),
-                _buildDrawerItem(
-                  icon: LucideIcons.megaphone,
-                  label: '공지/이벤트',
-                  index: 5, // NoticeListScreen index in MainScreen
-                  context: context,
-                ),
-                _buildDrawerItem(
-                  icon: LucideIcons.settings,
-                  label: '설정',
-                  index: 2, // SettingsScreen index in MainScreen
-                  context: context,
-                ),
-              ],
-            ),
-          ),
-
-          // Optional: Footer or version info
-          Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Text(
-              'v1.0.0',
-              style: TextStyle(
-                color: Colors.grey[600],
-                fontSize: 12,
+      child: SafeArea(
+        child: Column(
+          children: [
+            // Menu Items
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  _buildDrawerItem(
+                    icon: LucideIcons.home,
+                    label: '홈',
+                    index: 0,
+                    context: context,
+                  ),
+                  _buildDrawerItem(
+                    icon: LucideIcons.list,
+                    label: '장르',
+                    index: 1,
+                    context: context,
+                  ),
+                  _buildDrawerItem(
+                    icon: LucideIcons.user,
+                    label: '마이페이지',
+                    index: 4, // MyPageScreen index in MainScreen
+                    context: context,
+                  ),
+                  _buildDrawerItem(
+                    icon: LucideIcons.megaphone,
+                    label: '공지/이벤트',
+                    index: 5, // NoticeListScreen index in MainScreen
+                    context: context,
+                  ),
+                  _buildDrawerItem(
+                    icon: LucideIcons.settings,
+                    label: '설정',
+                    index: 2, // SettingsScreen index in MainScreen
+                    context: context,
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
+
+            // Optional: Footer or version info
+            Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Text(
+                'v1.0.0',
+                style: TextStyle(
+                  color: Colors.grey[600],
+                  fontSize: 12,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
