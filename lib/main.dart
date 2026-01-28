@@ -12,8 +12,6 @@ import 'screens/notice/notice_list_screen.dart';
 import 'screens/category/genre_list_screen.dart';
 import 'widgets/custom_header.dart';
 import 'widgets/custom_drawer.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'screens/onboarding/accessibility_onboarding_screen.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -31,15 +29,11 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(
       NotificationService.firebaseMessagingBackgroundHandler);
 
-  final prefs = await SharedPreferences.getInstance();
-  final bool isFirstRun = prefs.getBool('is_first_run') ?? true;
-
-  runApp(MyApp(isFirstRun: isFirstRun));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final bool isFirstRun;
-  const MyApp({super.key, required this.isFirstRun});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -51,9 +45,7 @@ class MyApp extends StatelessWidget {
         title: 'AudioView',
         theme: AppTheme.darkTheme,
         debugShowCheckedModeBanner: false,
-        home: isFirstRun
-            ? const AccessibilityOnboardingScreen()
-            : const MainScreen(),
+        home: const MainScreen(),
         routes: {
           '/login': (context) => const LoginScreen(),
           '/notice': (context) => const NoticeListScreen(),
