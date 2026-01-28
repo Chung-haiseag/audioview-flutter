@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:math';
 import 'dart:async';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
@@ -167,8 +168,13 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
         },
         onError: (errorNotification) {
           if (mounted) {
+            String errorMsg = errorNotification.errorMsg;
+            if (errorMsg == 'network' && kIsWeb) {
+              errorMsg =
+                  '네트워크 상의 이유로 인식을 시작할 수 없습니다. 인터넷 연결을 확인하거나 잠시 후 다시 시도해 주세요.';
+            }
             setState(() {
-              _text = '오류: ${errorNotification.errorMsg}';
+              _text = '오류: $errorMsg';
               _isListening = false;
             });
           }
@@ -180,7 +186,8 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
         var systemLocale = await _speech.systemLocale();
         var locales = await _speech.locales();
 
-        String targetLocaleId = 'ko_KR'; // Default fallback
+        String targetLocaleId =
+            kIsWeb ? 'ko-KR' : 'ko_KR'; // Web usually uses hyphen
 
         if (locales.isNotEmpty) {
           try {
@@ -268,10 +275,8 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
           });
         }
 
-        // If it's a very clear match (title matches exactly or closely),
-        // we can navigate even faster.
-        if (results.first.title.replaceAll(' ', '') ==
-            query.replaceAll(' ', '')) {
+        // 2글자 이상 일치하면 즉시 결과 화면으로 이동 (사용자 요청)
+        if (query.length >= 2) {
           _navigateToResults(query);
         }
       }
