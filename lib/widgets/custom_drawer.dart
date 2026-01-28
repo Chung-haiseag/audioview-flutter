@@ -18,11 +18,11 @@ class CustomDrawer extends StatelessWidget {
       child: Column(
         children: [
           // Drawer Header
-          SizedBox(
-            height: 180, // Adjust height as needed
+          const SizedBox(
+            height: 80, // Reduced height for minimalist look
             child: DrawerHeader(
-              decoration: const BoxDecoration(
-                color: Color(0xFF000000), // Slightly darker header
+              decoration: BoxDecoration(
+                color: Color(0xFF000000),
                 border: Border(
                   bottom: BorderSide(
                     color: Color(0xFF222222),
@@ -30,29 +30,7 @@ class CustomDrawer extends StatelessWidget {
                   ),
                 ),
               ),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/images/logo_horizontal.png',
-                      height: 40,
-                      fit: BoxFit.contain,
-                      errorBuilder: (context, error, stackTrace) {
-                        return const Text(
-                          'AUDIOVIEW',
-                          style: TextStyle(
-                            color: Color(0xFFE50914),
-                            fontSize: 24,
-                            fontWeight: FontWeight.w900,
-                            letterSpacing: -0.5,
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
+              child: SizedBox.shrink(), // No logo as requested
             ),
           ),
 
