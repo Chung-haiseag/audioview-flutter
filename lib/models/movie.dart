@@ -13,6 +13,8 @@ class Movie {
   final bool hasAD; // Audio Description
   final bool hasCC; // Closed Caption
   final bool hasMultiLang; // Multi-language subtitles
+  final String? director;
+  final List<String> actors;
 
   Movie({
     required this.id,
@@ -26,6 +28,8 @@ class Movie {
     required this.hasAD,
     required this.hasCC,
     required this.hasMultiLang,
+    this.director,
+    this.actors = const [],
   });
 
   factory Movie.fromFirestore(DocumentSnapshot doc) {
@@ -61,6 +65,8 @@ class Movie {
           data['hasAudioCommentary'] ?? data['has_audio_commentary'] ?? false,
       hasCC: data['hasClosedCaption'] ?? data['has_closed_caption'] ?? false,
       hasMultiLang: false,
+      director: data['director'] ?? '',
+      actors: data['actors'] is List ? List<String>.from(data['actors']) : [],
     );
   }
 
@@ -95,6 +101,8 @@ class Movie {
       'hasAD': hasAD,
       'hasCC': hasCC,
       'hasMultiLang': hasMultiLang,
+      'director': director,
+      'actors': actors,
     };
   }
 }
