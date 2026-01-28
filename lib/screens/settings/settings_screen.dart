@@ -199,29 +199,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ],
         ),
         const SizedBox(height: 16),
-        _buildHelpAccordionItem(
+        _buildHelpSection(
           icon: Icons.shield_outlined,
           title: '개인정보 처리방침',
           content: _buildPrivacyPolicyContent(),
         ),
-        _buildHelpAccordionItem(
+        _buildHelpSection(
           icon: Icons.description_outlined,
           title: '이용약관',
           content: _buildTermsOfServiceContent(),
         ),
-        _buildHelpAccordionItem(
+        _buildHelpSection(
           icon: Icons.chat_bubble_outline,
           title: '자주 묻는 질문',
           content: _buildFAQContent(),
         ),
-        _buildHelpAccordionItem(
+        _buildHelpSection(
           icon: Icons.info_outline,
           title: '이용안내',
           content: _buildUserGuideContent(),
         ),
-        _buildHelpAccordionItem(
-          icon: Icons.add_circle_outline,
+        _buildSettingItem(
           title: '새로운 작품 요청하기',
+          subtitle: '보고 싶은 작품이 있다면 요청해 주세요',
+          value: false,
+          showSwitch: false,
           onTap: () {
             Navigator.push(
               context,
@@ -341,43 +343,39 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Widget _buildHelpAccordionItem({
+  Widget _buildHelpSection({
     required IconData icon,
     required String title,
-    Widget? content,
-    VoidCallback? onTap,
+    required Widget content,
   }) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 8),
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: const Color(0xFF1A1A1A),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: const Color(0xFF333333)),
       ),
-      child: Theme(
-        data: ThemeData(dividerColor: Colors.transparent),
-        child: onTap != null
-            ? ListTile(
-                leading: Icon(icon, color: Colors.grey, size: 20),
-                title: Text(title,
-                    style: const TextStyle(color: Colors.white, fontSize: 14)),
-                trailing: const Icon(Icons.chevron_right,
-                    color: Colors.grey, size: 20),
-                onTap: onTap,
-              )
-            : ExpansionTile(
-                leading: Icon(icon, color: Colors.grey, size: 20),
-                title: Text(title,
-                    style: const TextStyle(color: Colors.white, fontSize: 14)),
-                iconColor: Colors.white,
-                collapsedIconColor: Colors.grey,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                    child: content ?? const SizedBox.shrink(),
-                  ),
-                ],
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(icon, color: Colors.red, size: 20),
+              const SizedBox(width: 12),
+              Text(
+                title,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          content,
+        ],
       ),
     );
   }
@@ -473,77 +471,86 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget _buildSettingItem({
     required String title,
     required String subtitle,
-    required bool value,
-    required ValueChanged<bool> onChanged,
+    bool value = false,
+    ValueChanged<bool>? onChanged,
     String? badge,
+    bool showSwitch = true,
+    VoidCallback? onTap,
   }) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: const Color(0xFF1A1A1A),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFF333333)),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: const Color(0xFF1A1A1A),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: const Color(0xFF333333)),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        title,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    if (badge != null) ...[
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 2,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Text(
-                          badge,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
+                      if (badge != null) ...[
+                        const SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 2,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Text(
+                            badge,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ],
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  subtitle,
-                  style: const TextStyle(
-                    color: Colors.grey,
-                    fontSize: 12,
                   ),
-                ),
-              ],
+                  const SizedBox(height: 4),
+                  Text(
+                    subtitle,
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(width: 16),
-          Switch(
-            value: value,
-            onChanged: onChanged,
-            activeThumbColor: Colors.red,
-            activeTrackColor: Colors.red.withValues(alpha: 0.5),
-            inactiveThumbColor: Colors.grey,
-            inactiveTrackColor: Colors.grey.withValues(alpha: 0.3),
-          ),
-        ],
+            if (showSwitch && onChanged != null) ...[
+              const SizedBox(width: 16),
+              Switch(
+                value: value,
+                onChanged: onChanged,
+                activeThumbColor: Colors.red,
+                activeTrackColor: Colors.red.withValues(alpha: 0.5),
+                inactiveThumbColor: Colors.grey,
+                inactiveTrackColor: Colors.grey.withValues(alpha: 0.3),
+              ),
+            ] else if (onTap != null) ...[
+              const Icon(Icons.chevron_right, color: Colors.grey),
+            ],
+          ],
+        ),
       ),
     );
   }
