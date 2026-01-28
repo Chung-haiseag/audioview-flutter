@@ -234,13 +234,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Image.network(
-                                'https://developers.kakao.com/tool/resource/static/img/button/login/kakao_login_medium_narrow.png',
-                                height: 20,
-                                errorBuilder: (context, error, stackTrace) =>
-                                    const Icon(Icons.chat_bubble,
-                                        color: Colors.black, size: 20),
-                              ),
+                              const Icon(Icons.chat_bubble,
+                                  color: Colors.black, size: 20),
                               const SizedBox(width: 8),
                               const Text('카카오 로그인',
                                   style: TextStyle(
@@ -339,13 +334,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Image.network(
-                                'https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg',
-                                height: 20,
-                                errorBuilder: (context, error, stackTrace) =>
-                                    const Icon(Icons.g_mobiledata,
-                                        color: Colors.blue, size: 28),
-                              ),
+                              // Use a more reliable icon source or fallback
+                              Icon(Icons.g_mobiledata,
+                                  color: Colors.blue, size: 28),
                               const SizedBox(width: 8),
                               const Text('구글 로그인',
                                   style: TextStyle(
