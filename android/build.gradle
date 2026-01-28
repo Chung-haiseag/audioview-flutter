@@ -34,28 +34,32 @@ tasks.register("clean", Delete) {
 }
 
 subprojects {
-    def configureNamespace = { p ->
+    def configureProject = { p ->
         if (p.hasProperty('android')) {
             p.android {
                 if (namespace == null) {
                     namespace p.group
                 }
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_17
+                    targetCompatibility JavaVersion.VERSION_17
+                }
             }
         }
-
-        // JVM Target Compatibility Fix
+        
+        // JVM Target Consistency Fix
         p.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
             kotlinOptions {
-                jvmTarget = "1.8"
+                jvmTarget = "17"
             }
         }
     }
 
     if (project.state.executed) {
-        configureNamespace(project)
+        configureProject(project)
     } else {
         project.afterEvaluate {
-            configureNamespace(it)
+            configureProject(it)
         }
     }
 }
