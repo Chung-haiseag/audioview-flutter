@@ -176,13 +176,30 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
       );
 
       if (available) {
-        // Find Korean locale
+        // Find Korean locale safely
         var systemLocale = await _speech.systemLocale();
         var locales = await _speech.locales();
-        var koreanLocale = locales.firstWhere(
-          (locale) => locale.localeId.contains('ko'),
-          orElse: () => systemLocale ?? locales.first,
-        );
+
+        String targetLocaleId = 'ko_KR'; // Default fallback
+
+        if (locales.isNotEmpty) {
+          try {
+            var found = locales.firstWhere(
+              (locale) => locale.localeId.contains('ko'),
+              orElse: () => systemLocale ?? locales.first,
+            );
+            targetLocaleId = found.localeId;
+          } catch (e) {
+            // Fallback if anything goes wrong during selection
+            if (systemLocale != null) {
+              targetLocaleId = systemLocale.localeId;
+            } else if (locales.isNotEmpty) {
+              targetLocaleId = locales.first.localeId;
+            }
+          }
+        } else if (systemLocale != null) {
+          targetLocaleId = systemLocale.localeId;
+        }
 
         if (mounted) {
           setState(() {
@@ -205,7 +222,7 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
               }
             }
           },
-          localeId: koreanLocale.localeId,
+          localeId: targetLocaleId,
           pauseFor: const Duration(seconds: 3),
           listenFor: const Duration(seconds: 10),
           // cancelOnError: true, // Deprecated in 6.x
