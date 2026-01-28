@@ -86,24 +86,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(
                             width:
                                 48), // Spacer to balance if needed, or just nothing
-                      const SizedBox(width: 8),
-                      Image.asset(
-                        'assets/images/logo_horizontal.png',
-                        height: 48, // Larger height for login screen
-                        fit: BoxFit.contain,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Text(
-                            '오디오뷰',
-                            style: TextStyle(
-                              color: Color(0xFFE50914),
-                              fontSize: 24,
-                              fontWeight: FontWeight.w900,
-                              fontStyle: FontStyle.italic,
-                              letterSpacing: 1,
-                            ),
-                          );
-                        },
-                      ),
                     ],
                   ),
                 ),
