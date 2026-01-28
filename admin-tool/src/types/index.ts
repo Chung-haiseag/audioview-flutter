@@ -21,7 +21,6 @@ export interface ProductionCompany {
 export interface Movie {
     movieId: string;
     title: string;
-    originalTitle?: string;
     releaseDate: Date;
     directorName?: string;
     runningTime?: number;
@@ -35,7 +34,6 @@ export interface Movie {
     isLatest: boolean;
     isPopular: boolean;
     genreId?: string;
-    productionCompany?: string;
     productionCountry?: string;
     searchKeywords?: string[];
     createdAt: Date;
