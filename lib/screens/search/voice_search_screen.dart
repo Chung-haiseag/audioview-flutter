@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:permission_handler/permission_handler.dart';
+import '../../services/movie_service.dart';
+import '../../models/movie.dart';
 
 // Custom painter for audio visualizer
 class AudioVisualizerPainter extends CustomPainter {
@@ -73,6 +75,8 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
   late stt.SpeechToText _speech;
   bool _isListening = false;
   String _text = '듣고 있습니다...';
+  Movie? _matchedMovie;
+  final MovieService _movieService = MovieService();
 
   @override
   void initState() {
@@ -189,6 +193,7 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
               setState(() {
                 _text = val.recognizedWords;
               });
+              _searchMovie(_text);
             }
           },
           localeId: koreanLocale.localeId,
@@ -212,6 +217,23 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
           _isListening = false;
         });
       }
+    }
+  }
+
+  Future<void> _searchMovie(String query) async {
+    if (query.length < 2) return;
+
+    try {
+      final results = await _movieService.searchMovies(query);
+      if (results.isNotEmpty) {
+        if (mounted) {
+          setState(() {
+            _matchedMovie = results.first;
+          });
+        }
+      }
+    } catch (e) {
+      // Ignore search errors during voice recognition
     }
   }
 
@@ -315,7 +337,52 @@ class _VoiceSearchScreenState extends State<VoiceSearchScreen>
                     },
                   ),
 
-                  const SizedBox(height: 60),
+                  const SizedBox(height: 32),
+
+                  // Movie Poster Result
+                  if (_matchedMovie != null)
+                    Container(
+                      height: 180,
+                      width: 120,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.5),
+                            blurRadius: 10,
+                            spreadRadius: 2,
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.network(
+                          _matchedMovie!.posterUrl,
+                          fit: BoxFit.cover,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Container(
+                              color: Colors.grey[900],
+                              child: const Center(
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: Color(0xFFE50914),
+                                ),
+                              ),
+                            );
+                          },
+                          errorBuilder: (context, error, stackTrace) =>
+                              Container(
+                            color: Colors.grey[900],
+                            child: const Icon(Icons.movie, color: Colors.grey),
+                          ),
+                        ),
+                      ),
+                    )
+                  else
+                    const SizedBox(height: 180),
+
+                  const SizedBox(height: 24),
 
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24.0),
