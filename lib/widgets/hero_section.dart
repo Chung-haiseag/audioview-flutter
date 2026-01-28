@@ -18,7 +18,7 @@ class HeroSection extends StatelessWidget {
       description:
           '괴물형사 ‘마석도’(마동석)가 다시 돌아왔다! 대규모 온라인 불법 도박 조직을 소탕하기 위해 대한민국 광수대와 사이버팀이 뭉쳤다. 이번엔 더 커진 판, 더 강력해진 웃음으로 돌아왔다!',
       posterUrl:
-          'https://image.tmdb.org/t/p/w1280/7UatN0084m7HhG670atfL3B6mH1.jpg',
+          'https://image.tmdb.org/t/p/w500/vL0D1S4Z5p9yYt6vK69S3h0T9I.jpg',
       hasAD: true,
       hasCC: true,
       hasMultiLang: false,
@@ -42,8 +42,7 @@ class HeroSection extends StatelessWidget {
             child: Image.network(
               heroMovie.posterUrl,
               fit: BoxFit.cover,
-              alignment:
-                  Alignment.topCenter, // Align top to show faces properly
+              alignment: Alignment.center, // Align center for posters
               errorBuilder: (context, error, stackTrace) => Container(
                 color: Colors.grey[900],
                 child: const Icon(Icons.movie, size: 50, color: Colors.white24),
