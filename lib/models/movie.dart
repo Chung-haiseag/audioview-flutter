@@ -15,6 +15,7 @@ class Movie {
   final bool hasMultiLang; // Multi-language subtitles
   final String? director;
   final List<String> actors;
+  final List<String> searchKeywords;
 
   Movie({
     required this.id,
@@ -30,6 +31,7 @@ class Movie {
     required this.hasMultiLang,
     this.director,
     this.actors = const [],
+    this.searchKeywords = const [],
   });
 
   factory Movie.fromFirestore(DocumentSnapshot doc) {
@@ -67,6 +69,9 @@ class Movie {
       hasMultiLang: false,
       director: data['director'] ?? '',
       actors: data['actors'] is List ? List<String>.from(data['actors']) : [],
+      searchKeywords: data['searchKeywords'] is List
+          ? List<String>.from(data['searchKeywords'])
+          : [],
     );
   }
 
@@ -103,6 +108,7 @@ class Movie {
       'hasMultiLang': hasMultiLang,
       'director': director,
       'actors': actors,
+      'searchKeywords': searchKeywords,
     };
   }
 }
