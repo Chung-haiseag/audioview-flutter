@@ -17,23 +17,6 @@ class CustomDrawer extends StatelessWidget {
       backgroundColor: const Color(0xFF141414),
       child: Column(
         children: [
-          // Drawer Header
-          const SizedBox(
-            height: 80, // Reduced height for minimalist look
-            child: DrawerHeader(
-              decoration: BoxDecoration(
-                color: Color(0xFF000000),
-                border: Border(
-                  bottom: BorderSide(
-                    color: Color(0xFF222222),
-                    width: 1,
-                  ),
-                ),
-              ),
-              child: SizedBox.shrink(), // No logo as requested
-            ),
-          ),
-
           // Menu Items
           Expanded(
             child: ListView(
