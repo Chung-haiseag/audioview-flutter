@@ -22,40 +22,47 @@ allprojects {
 }
 
 rootProject.buildDir = '../build'
+
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
-}
-subprojects {
     project.evaluationDependsOn(':app')
+
+    def configureProject = { p ->
+        p.plugins.withId('com.android.library') {
+            p.android {
+                compileSdkVersion 34 // Minimum 30+ required for Java 17
+                if (namespace == null) {
+                    namespace p.group
+                }
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_17
+                    targetCompatibility JavaVersion.VERSION_17
+                }
+            }
+        }
+        p.plugins.withId('com.android.application') {
+            p.android {
+                compileSdkVersion 34
+                if (namespace == null) {
+                    namespace p.group
+                }
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_17
+                    targetCompatibility JavaVersion.VERSION_17
+                }
+            }
+        }
+
+        p.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+            kotlinOptions {
+                jvmTarget = "17"
+            }
+        }
+    }
+
+    configureProject(project)
 }
 
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
-}
-
-subprojects {
-    def configureProject = { p ->
-        p.android {
-            if (namespace == null) {
-                namespace p.group
-            }
-            compileOptions {
-                sourceCompatibility JavaVersion.VERSION_1_8
-                targetCompatibility JavaVersion.VERSION_1_8
-            }
-        }
-    }
-
-    plugins.withId('com.android.library') {
-        configureProject(project)
-    }
-    plugins.withId('com.android.application') {
-        configureProject(project)
-    }
-
-    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
-        kotlinOptions {
-            jvmTarget = "1.8"
-        }
-    }
 }
