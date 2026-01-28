@@ -81,22 +81,14 @@ class _CustomHeaderState extends State<CustomHeader> {
                                 letterSpacing: -0.5,
                               ),
                             )
-                          : Image.asset(
-                              'assets/images/logo_horizontal.png',
-                              height: 38,
-                              fit: BoxFit.contain,
-                              errorBuilder: (context, error, stackTrace) {
-                                // Fallback to text if image fails
-                                return const Text(
-                                  '오디오뷰',
-                                  style: TextStyle(
-                                    color: Color(0xFFE50914),
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w900,
-                                    letterSpacing: -0.5,
-                                  ),
-                                );
-                              },
+                          : const Text(
+                              'AudioView',
+                              style: TextStyle(
+                                color: Color(0xFFE50914),
+                                fontSize: 22,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: -0.5,
+                              ),
                             ),
                     ),
                   ),
