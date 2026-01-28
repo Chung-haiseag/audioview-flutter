@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart' as kakao;
 import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import '../services/notification_service.dart';
 
 class AuthProvider with ChangeNotifier {
@@ -179,34 +180,59 @@ class AuthProvider with ChangeNotifier {
   // Social Login: Google
   Future<void> signInWithGoogle() async {
     try {
-      // 1. Trigger the authentication flow
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      if (googleUser == null) return; // Cancelled
+      if (kIsWeb) {
+        // 1. Web: Use Firebase's native popup sign-in
+        final GoogleAuthProvider googleProvider = GoogleAuthProvider();
+        final UserCredential userCredential =
+            await _auth.signInWithPopup(googleProvider);
 
-      // 2. Obtain the auth details from the request
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
+        // 2. Update Firestore user record
+        if (userCredential.user != null) {
+          await _firestore
+              .collection('users')
+              .doc(userCredential.user!.uid)
+              .set({
+            'username': userCredential.user!.displayName,
+            'email': userCredential.user!.email,
+            'profileImage': userCredential.user!.photoURL,
+            'authProvider': 'google',
+            'lastLogin': FieldValue.serverTimestamp(),
+            'isActive': true,
+          }, SetOptions(merge: true));
+        }
+      } else {
+        // 1. Native: Trigger the authentication flow
+        final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+        if (googleUser == null) return; // Cancelled
 
-      // 3. Create a new credential
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
+        // 2. Obtain the auth details from the request
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
 
-      // 4. Once signed in, return the UserCredential
-      final UserCredential userCredential =
-          await _auth.signInWithCredential(credential);
+        // 3. Create a new credential
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
 
-      // 5. Update Firestore user record if it's a new or existing user
-      if (userCredential.user != null) {
-        await _firestore.collection('users').doc(userCredential.user!.uid).set({
-          'username': googleUser.displayName,
-          'email': googleUser.email,
-          'profileImage': googleUser.photoUrl,
-          'authProvider': 'google',
-          'lastLogin': FieldValue.serverTimestamp(),
-          'isActive': true,
-        }, SetOptions(merge: true));
+        // 4. Sign in with credential
+        final UserCredential userCredential =
+            await _auth.signInWithCredential(credential);
+
+        // 5. Update Firestore user record
+        if (userCredential.user != null) {
+          await _firestore
+              .collection('users')
+              .doc(userCredential.user!.uid)
+              .set({
+            'username': googleUser.displayName,
+            'email': googleUser.email,
+            'profileImage': googleUser.photoUrl,
+            'authProvider': 'google',
+            'lastLogin': FieldValue.serverTimestamp(),
+            'isActive': true,
+          }, SetOptions(merge: true));
+        }
       }
     } catch (e) {
       // print('Google Login Error: $e');
