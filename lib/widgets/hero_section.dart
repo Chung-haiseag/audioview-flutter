@@ -17,7 +17,7 @@ class HeroSection extends StatelessWidget {
       genres: ['액션', '범죄'],
       description:
           '괴물형사 ‘마석도’(마동석)가 다시 돌아왔다! 대규모 온라인 불법 도박 조직을 소탕하기 위해 대한민국 광수대와 사이버팀이 뭉쳤다. 이번엔 더 커진 판, 더 강력해진 웃음으로 돌아왔다!',
-      posterUrl: 'https://img.youtube.com/vi/rY2o7d-308A/maxresdefault.jpg',
+      posterUrl: 'https://img.youtube.com/vi/rY2o7d-308A/hqdefault.jpg',
       hasAD: true,
       hasCC: true,
       hasMultiLang: false,
@@ -50,16 +50,22 @@ class HeroSection extends StatelessWidget {
                   ),
                 );
               },
-              errorBuilder: (context, error, stackTrace) => Container(
-                color: Colors.grey[900],
-                child: const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.movie, size: 50, color: Colors.white24),
-                    SizedBox(height: 8),
-                    Text('이미지를 불러올 수 없습니다',
-                        style: TextStyle(color: Colors.white24, fontSize: 12)),
-                  ],
+              errorBuilder: (context, error, stackTrace) => Image.network(
+                'https://images.unsplash.com/photo-1594909122845-11baa439b7bf?q=80&w=1280&auto=format&fit=crop',
+                fit: BoxFit.cover,
+                alignment: Alignment.center,
+                errorBuilder: (context, error, stackTrace) => Container(
+                  color: Colors.grey[900],
+                  child: const Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.movie, size: 50, color: Colors.white24),
+                      SizedBox(height: 8),
+                      Text('이미지를 불러올 수 없습니다',
+                          style:
+                              TextStyle(color: Colors.white24, fontSize: 12)),
+                    ],
+                  ),
                 ),
               ),
             ),
