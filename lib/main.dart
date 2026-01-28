@@ -17,9 +17,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'services/notification_service.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Kakao SDK 초기화
+  // TODO: 카카오 개발자 센터에서 발급받은 Native App Key를 여기에 넣으세요.
+  KakaoSdk.init(nativeAppKey: 'YOUR_NATIVE_APP_KEY');
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -45,6 +51,7 @@ class MyApp extends StatelessWidget {
         title: 'AudioView',
         theme: AppTheme.darkTheme,
         debugShowCheckedModeBanner: false,
+        navigatorKey: NotificationService.navigatorKey,
         home: const MainScreen(),
         routes: {
           '/login': (context) => const LoginScreen(),
@@ -65,6 +72,15 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
   double _brightness = 100.0;
+
+  @override
+  void initState() {
+    super.initState();
+    // Check if the app was opened via a notification
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      NotificationService.checkInitialMessage();
+    });
+  }
 
   final List<Widget> _screens = const [
     HomeScreen(),

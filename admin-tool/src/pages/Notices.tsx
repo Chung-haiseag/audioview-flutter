@@ -40,6 +40,7 @@ import { getNotices, addNotice, updateNotice, deleteNotice } from '../services/n
 import { Notice } from '../types';
 import { format } from 'date-fns';
 import { auth } from '../services/firebase';
+import MovieSelector from '../components/MovieSelector';
 
 const Notices: React.FC = () => {
     const [notices, setNotices] = useState<Notice[]>([]);
@@ -55,6 +56,7 @@ const Notices: React.FC = () => {
         noticeType: 'general',
         isImportant: false,
         publishedAt: new Date(),
+        movieId: '',
     });
 
     useEffect(() => {
@@ -81,6 +83,7 @@ const Notices: React.FC = () => {
             noticeType: 'general',
             isImportant: false,
             publishedAt: new Date(),
+            movieId: '',
         });
         setOpenDialog(true);
     };
@@ -115,17 +118,19 @@ const Notices: React.FC = () => {
         }
 
         try {
+            const isPushRequested = formData.pushTitle !== undefined;
+            const notificationData = {
+                ...formData,
+                push_enabled: isPushRequested,
+            };
+
+            console.log('공지사항 저장 데이터:', notificationData);
+
             if (editingNotice) {
-                await updateNotice(editingNotice.noticeId, {
-                    ...formData,
-                    push_enabled: !!formData.pushTitle,
-                } as any);
+                await updateNotice(editingNotice.noticeId, notificationData);
             } else {
                 await addNotice(
-                    {
-                        ...(formData as any),
-                        push_enabled: !!formData.pushTitle, // Trigger for Cloud Functions
-                    },
+                    notificationData as any,
                     currentUser.uid
                 );
             }
@@ -201,6 +206,7 @@ const Notices: React.FC = () => {
                                 <TableCell width="80">중요</TableCell>
                                 <TableCell width="100">분류</TableCell>
                                 <TableCell>제목</TableCell>
+                                <TableCell width="150">연결 영화 ID</TableCell>
                                 <TableCell width="120">조회수</TableCell>
                                 <TableCell width="150">게시일</TableCell>
                                 <TableCell width="120" align="center">액션</TableCell>
@@ -229,6 +235,11 @@ const Notices: React.FC = () => {
                                         <TableCell>
                                             <Typography variant="body2" fontWeight={notice.isImportant ? "bold" : "regular"}>
                                                 {notice.title}
+                                            </Typography>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Typography variant="caption" color="text.secondary">
+                                                {notice.movieId || '-'}
                                             </Typography>
                                         </TableCell>
                                         <TableCell>{notice.viewCount || 0}</TableCell>
@@ -303,6 +314,12 @@ const Notices: React.FC = () => {
                                 value={formData.publishedAt instanceof Date && !isNaN(formData.publishedAt.getTime()) ? format(formData.publishedAt, 'yyyy-MM-dd') : ''}
                                 onChange={(e) => setFormData(prev => ({ ...prev, publishedAt: new Date(e.target.value) }))}
                                 InputLabelProps={{ shrink: true }}
+                            />
+                        </Grid>
+                        <Grid size={{ xs: 12, sm: 6 }}>
+                            <MovieSelector
+                                value={formData.movieId}
+                                onChange={(movieId) => setFormData(prev => ({ ...prev, movieId }))}
                             />
                         </Grid>
                         <Grid size={12}>

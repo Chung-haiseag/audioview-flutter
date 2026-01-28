@@ -1,34 +1,32 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart' show kIsWeb; // For web check
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/material.dart';
 import 'dart:io';
+import './notice_service.dart';
+import '../screens/notice/notice_detail_screen.dart';
 
 class NotificationService {
   static final FirebaseMessaging _messaging = FirebaseMessaging.instance;
   static final FlutterLocalNotificationsPlugin _localNotifications =
       FlutterLocalNotificationsPlugin();
 
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
+
   static Future<void> initialize() async {
-    // 1. Request permissions (especially for Android 13+ and iOS)
-    NotificationSettings settings = await _messaging.requestPermission(
+    // 1. Request permissions
+    await _messaging.requestPermission(
       alert: true,
       badge: true,
       sound: true,
     );
 
-    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      // print('User granted permission');
-    } else {
-      // print('User declined or has not accepted permission');
-    }
-
-    // 2. Initialize local notifications for foreground handling
-    // Android Initialization settings
+    // 2. Initialize local notifications
     const AndroidInitializationSettings androidSettings =
         AndroidInitializationSettings('@mipmap/ic_launcher');
 
-    // iOS Initialization settings
     const DarwinInitializationSettings iosSettings =
         DarwinInitializationSettings(
       requestAlertPermission: false,
@@ -36,7 +34,6 @@ class NotificationService {
       requestSoundPermission: false,
     );
 
-    // Initialization settings for all platforms
     const InitializationSettings initSettings = InitializationSettings(
       android: androidSettings,
       iOS: iosSettings,
@@ -45,7 +42,9 @@ class NotificationService {
     await _localNotifications.initialize(
       initSettings,
       onDidReceiveNotificationResponse: (NotificationResponse response) {
-        // Handle notification tap
+        if (response.payload != null) {
+          handleNotificationMessage(response.payload!);
+        }
       },
     );
 
@@ -66,7 +65,6 @@ class NotificationService {
 
     // 4. Handle foreground messages
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      // print('Got a message whilst in the foreground!');
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
 
@@ -84,6 +82,7 @@ class NotificationService {
               importance: Importance.max,
               priority: Priority.high,
               icon: android?.smallIcon ?? '@mipmap/ic_launcher',
+              autoCancel: false,
             ),
             iOS: const DarwinNotificationDetails(
               presentAlert: true,
@@ -91,27 +90,70 @@ class NotificationService {
               presentSound: true,
             ),
           ),
+          payload: message.data['notice_id'],
         );
       }
     });
 
-    // 5. Get and print FCM Token (for debugging) - Removed for production build
+    // 5. Handle Background Taps (App was in background, not terminated)
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      if (message.data['notice_id'] != null) {
+        handleNotificationMessage(message.data['notice_id']);
+      }
+    });
+  }
+
+  // Call this after runApp() or in the first screen's initState
+  static Future<void> checkInitialMessage() async {
+    final initialMessage = await _messaging.getInitialMessage();
+    if (initialMessage != null && initialMessage.data['notice_id'] != null) {
+      handleNotificationMessage(initialMessage.data['notice_id']);
+    }
+  }
+
+  static void handleNotificationMessage(String? noticeId) async {
+    if (noticeId == null || noticeId.isEmpty) return;
+
+    // print('--- Notification Received for Notice ID: $noticeId ---');
+
+    try {
+      // 1. Wait for Navigator to be ready (up to 5 seconds)
+      int retryCount = 0;
+      while (navigatorKey.currentState == null && retryCount < 10) {
+        // print('Waiting for Navigator... ($retryCount)');
+        await Future.delayed(const Duration(milliseconds: 500));
+        retryCount++;
+      }
+
+      if (navigatorKey.currentState == null) {
+        // print('Navigator not found after retries.');
+        return;
+      }
+
+      // 2. Fetch Notice Data
+      final notice = await NoticeService().getNoticeById(noticeId);
+      if (notice == null) {
+        // print('Notice not found in Firestore for ID: $noticeId');
+        return;
+      }
+
+      // 3. Navigate
+      // print('Navigating to detail screen for: ${notice.title}');
+      navigatorKey.currentState!.push(
+        MaterialPageRoute(
+          builder: (context) => NoticeDetailScreen(notice: notice),
+        ),
+      );
+    } catch (e) {
+      // print('Navigation failed with error: $e');
+    }
   }
 
   static Future<void> saveTokenToDatabase(String userId) async {
     try {
       String? token = await _messaging.getToken();
       if (token != null) {
-        String platformName;
-        if (kIsWeb) {
-          platformName = 'web';
-        } else {
-          try {
-            platformName = Platform.operatingSystem;
-          } catch (e) {
-            platformName = 'unknown';
-          }
-        }
+        String platformName = kIsWeb ? 'web' : Platform.operatingSystem;
 
         await FirebaseFirestore.instance
             .collection('users')
@@ -120,10 +162,8 @@ class NotificationService {
           'fcm_token': token,
           'platform': platformName,
         });
-        // print('FCM Token saved for user $userId');
       }
 
-      // Monitor token refresh
       _messaging.onTokenRefresh.listen((newToken) async {
         await FirebaseFirestore.instance
             .collection('users')
@@ -137,10 +177,9 @@ class NotificationService {
     }
   }
 
-  // This must be a top-level function or a static method
   @pragma('vm:entry-point')
   static Future<void> firebaseMessagingBackgroundHandler(
       RemoteMessage message) async {
-    // print("Handling a background message: ${message.messageId}");
+    // Background message handling logic
   }
 }

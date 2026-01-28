@@ -80,4 +80,13 @@ class MovieService {
       return snapshot.docs.map((doc) => Genre.fromFirestore(doc)).toList();
     });
   }
+
+  // Fetch a single movie by ID
+  Future<Movie?> getMovieById(String movieId) async {
+    final doc = await _firestore.collection('movies').doc(movieId).get();
+    if (doc.exists) {
+      return Movie.fromFirestore(doc);
+    }
+    return null;
+  }
 }
