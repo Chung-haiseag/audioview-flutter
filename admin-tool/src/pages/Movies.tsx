@@ -66,6 +66,7 @@ const Movies: React.FC = () => {
         genreId: '',
         productionCompany: '',
         productionCountry: '',
+        searchKeywords: [],
     });
 
     useEffect(() => {
@@ -131,6 +132,7 @@ const Movies: React.FC = () => {
             genreId: '',
             productionCompany: '',
             productionCountry: '',
+            searchKeywords: [],
         });
         setOpenDialog(true);
     };
@@ -153,10 +155,17 @@ const Movies: React.FC = () => {
 
     const handleSubmit = async () => {
         try {
+            const finalData = {
+                ...formData,
+                searchKeywords: typeof formData.searchKeywords === 'string'
+                    ? (formData.searchKeywords as string).split(',').map(s => s.trim()).filter(s => s !== '')
+                    : formData.searchKeywords
+            };
+
             if (editingMovie) {
-                await updateMovie(editingMovie.movieId, formData);
+                await updateMovie(editingMovie.movieId, finalData);
             } else {
-                await addMovie(formData as Omit<Movie, 'movieId' | 'createdAt' | 'updatedAt'>);
+                await addMovie(finalData as Omit<Movie, 'movieId' | 'createdAt' | 'updatedAt'>);
             }
             handleCloseDialog();
             fetchData();
@@ -361,6 +370,17 @@ const Movies: React.FC = () => {
                                 onChange={handleInputChange}
                                 multiline
                                 rows={4}
+                            />
+                        </Grid>
+                        <Grid size={12}>
+                            <TextField
+                                fullWidth
+                                label="검색 키워드"
+                                name="searchKeywords"
+                                value={Array.isArray(formData.searchKeywords) ? formData.searchKeywords.join(', ') : formData.searchKeywords || ''}
+                                onChange={handleInputChange}
+                                placeholder="키워드를 쉼표(,)로 구분하여 입력하세요 (예: 액션, 마동석, 범죄)"
+                                helperText="여기 입력된 키워드는 앱의 검색 엔진에서 최우선으로 검색됩니다."
                             />
                         </Grid>
                         <Grid size={12}>
