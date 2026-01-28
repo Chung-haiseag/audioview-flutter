@@ -74,7 +74,6 @@ export const getMovies = async (filters?: {
             return movies.filter(
                 (movie) =>
                     movie.title.toLowerCase().includes(searchLower) ||
-                    movie.originalTitle?.toLowerCase().includes(searchLower) ||
                     movie.directorName?.toLowerCase().includes(searchLower)
             );
         }
