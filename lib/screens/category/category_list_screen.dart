@@ -35,16 +35,18 @@ class CategoryListScreen extends StatelessWidget {
           ),
           body: Column(
             children: [
-              CustomHeader(
-                isSubPage: true,
-                customTitle: genre.name,
-                brightness: brightness,
-                onBrightnessChanged: (value) {
-                  setState(() {
-                    brightness = value;
-                  });
-                },
-                onBackPressed: null, // Shows hamburger menu
+              Builder(
+                builder: (context) => CustomHeader(
+                  isSubPage: true,
+                  customTitle: genre.name,
+                  brightness: brightness,
+                  onBrightnessChanged: (value) {
+                    setState(() {
+                      brightness = value;
+                    });
+                  },
+                  onBackPressed: null, // Shows hamburger menu
+                ),
               ),
               Expanded(
                 child: StreamBuilder<List<Movie>>(
