@@ -400,14 +400,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   });
                 },
                 children: [
-                  ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxHeight: MediaQuery.of(context).size.height * 0.45,
-                    ),
-                    child: SingleChildScrollView(
-                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                      child: content ?? const SizedBox.shrink(),
-                    ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                    child: content ?? const SizedBox.shrink(),
                   ),
                 ],
               ),
