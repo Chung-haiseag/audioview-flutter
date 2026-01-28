@@ -37,6 +37,7 @@ export interface Movie {
     genreId?: string;
     productionCompany?: string;
     productionCountry?: string;
+    searchKeywords?: string[];
     createdAt: Date;
     updatedAt: Date;
 }
