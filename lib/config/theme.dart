@@ -18,6 +18,7 @@ class AppTheme {
         secondary: brandRed,
         surface: brandDark,
       ),
+      splashFactory: InkRipple.splashFactory,
       textTheme: GoogleFonts.notoSansKrTextTheme(
         ThemeData.dark().textTheme,
       ).apply(
@@ -42,7 +43,8 @@ class AppTheme {
         ),
         labelStyle: const TextStyle(color: brandGray),
         hintStyle: const TextStyle(color: brandGray),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
