@@ -6,6 +6,7 @@ import '../help/privacy_policy_screen.dart';
 import '../help/terms_of_service_screen.dart';
 import '../help/faq_screen.dart';
 import '../help/user_guide_screen.dart';
+import 'point_history_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -91,6 +92,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
         return ListView(
           padding: const EdgeInsets.all(16),
           children: [
+            // Point Section
+            _buildPointSection(auth),
+
+            const SizedBox(height: 16),
+
             // Smart Glasses
             _buildSettingItem(
               title: '스마트 안경',
@@ -234,6 +240,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
           subtitle: '보고 싶은 작품이 있다면 요청해 주세요',
           screen: const RequestContentScreen(),
         ),
+        _buildHelpNavEntry(
+          context: context,
+          icon: Icons.history_outlined,
+          title: '마일리지 적립 내역',
+          subtitle: '포인트 획득 및 사용 이력을 확인하세요',
+          screen: const PointHistoryScreen(),
+        ),
         const SizedBox(height: 32),
         const Text(
           'PRODUCTION',
@@ -355,6 +368,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: const Color(0xFF1A1A1A),
@@ -426,6 +440,128 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ],
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildPointSection(AuthProvider auth) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Colors.red.withValues(alpha: 0.8),
+            const Color(0xFF1E1E1E),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.red.withValues(alpha: 0.2),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'MY MILEAGE',
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 12,
+                  letterSpacing: 1.5,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              GestureDetector(
+                onTap: () async {
+                  final result = await auth.performCheckIn();
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(result['message']),
+                        backgroundColor:
+                            result['success'] ? Colors.green : Colors.red,
+                      ),
+                    );
+                  }
+                },
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Text(
+                    '출석체크',
+                    style: TextStyle(color: Colors.white, fontSize: 11),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.baseline,
+                textBaseline: TextBaseline.alphabetic,
+                children: [
+                  Text(
+                    auth.points.toString(),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 36,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  const Text(
+                    'P',
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.star, color: Colors.amber, size: 16),
+                    const SizedBox(width: 4),
+                    Text(
+                      auth.points >= 1000 ? '골드 회원' : '실버 회원',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

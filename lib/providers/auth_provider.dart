@@ -21,6 +21,8 @@ class AuthProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   User? get user => _user;
   Map<String, dynamic>? get userData => _userData;
+  int get points => _userData?['points'] ?? 0;
+  String? get lastCheckIn => _userData?['last_check_in'];
 
   AuthProvider() {
     _loadAuthStatus();
@@ -31,18 +33,16 @@ class AuthProvider with ChangeNotifier {
       _user = user;
       if (user != null) {
         // Fetch user data from Firestore
-        try {
-          final doc = await _firestore.collection('users').doc(user.uid).get();
+        _firestore.collection('users').doc(user.uid).snapshots().listen((doc) {
           if (doc.exists) {
             _userData = doc.data();
-            // Update FCM Token
             NotificationService.saveTokenToDatabase(user.uid);
+            notifyListeners();
           }
-        } catch (e) {
-          // print('Error fetching user data: $e');
-        }
+        });
       } else {
         _userData = null;
+        notifyListeners();
       }
       _isLoading = false;
       notifyListeners();
@@ -162,7 +162,7 @@ class AuthProvider with ChangeNotifier {
       }
 
       final NaverAccessToken accessToken =
-          await FlutterNaverLogin.currentAccessToken;
+          await FlutterNaverLogin.getCurrentAccessToken();
 
       // 2. Call Cloud Function
       final HttpsCallable callable =
@@ -208,8 +208,7 @@ class AuthProvider with ChangeNotifier {
         if (googleUser == null) return; // Cancelled
 
         // 2. Obtain the auth details from the request
-        final GoogleSignInAuthentication googleAuth =
-            await googleUser.authentication;
+        final googleAuth = await googleUser.authentication;
 
         // 3. Create a new credential
         final AuthCredential credential = GoogleAuthProvider.credential(
@@ -239,6 +238,18 @@ class AuthProvider with ChangeNotifier {
     } catch (e) {
       // print('Google Login Error: $e');
       rethrow;
+    }
+  }
+
+  // 일일 체크인 실행
+  Future<Map<String, dynamic>> performCheckIn() async {
+    try {
+      final HttpsCallable callable =
+          FirebaseFunctions.instance.httpsCallable('dailyCheckIn');
+      final result = await callable.call();
+      return Map<String, dynamic>.from(result.data);
+    } catch (e) {
+      return {'success': false, 'message': '체크인 실패: $e'};
     }
   }
 }
