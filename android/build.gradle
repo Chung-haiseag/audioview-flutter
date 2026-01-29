@@ -9,7 +9,7 @@ buildscript {
         // START: FlutterFire Configuration
         classpath 'com.google.gms:google-services:4.3.15'
         // END: FlutterFire Configuration
-        classpath 'com.android.tools.build:gradle:8.1.0'
+        classpath 'com.android.tools.build:gradle:8.7.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -23,44 +23,49 @@ allprojects {
 
 rootProject.buildDir = '../build'
 
+ext {
+    compileSdkVersion = 34
+    targetSdkVersion = 34
+    minSdkVersion = 23
+    buildToolsVersion = "34.0.0"
+}
+
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
-    project.evaluationDependsOn(':app')
 
-    def configureProject = { p ->
-        p.plugins.withId('com.android.library') {
-            p.android {
-                compileSdkVersion 34 // Minimum 30+ required for Java 17
+    afterEvaluate { project ->
+        if (project.hasProperty('android')) {
+            project.android {
                 if (namespace == null) {
-                    namespace p.group
+                    try {
+                        namespace project.group
+                    } catch (Exception e) {
+                        namespace "com.audioview.generated.${project.name}"
+                    }
                 }
-                compileOptions {
-                    sourceCompatibility JavaVersion.VERSION_17
-                    targetCompatibility JavaVersion.VERSION_17
+                
+                // Allow :app to manage its own SDK versions if already configured
+                // For library plugins, ensure they meet minimum requirements
+                if (project.name != 'app') {
+                    compileSdkVersion rootProject.ext.compileSdkVersion
+                    buildToolsVersion rootProject.ext.buildToolsVersion
+                    
+                    compileOptions {
+                        sourceCompatibility JavaVersion.VERSION_11
+                        targetCompatibility JavaVersion.VERSION_11
+                    }
                 }
             }
-        }
-        p.plugins.withId('com.android.application') {
-            p.android {
-                compileSdkVersion 34
-                if (namespace == null) {
-                    namespace p.group
+            
+            if (project.plugins.hasPlugin('kotlin-android') || project.plugins.hasPlugin('org.jetbrains.kotlin.android')) {
+                project.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+                    kotlinOptions {
+                        jvmTarget = "11"
+                    }
                 }
-                compileOptions {
-                    sourceCompatibility JavaVersion.VERSION_17
-                    targetCompatibility JavaVersion.VERSION_17
-                }
-            }
-        }
-
-        p.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
-            kotlinOptions {
-                jvmTarget = "17"
             }
         }
     }
-
-    configureProject(project)
 }
 
 tasks.register("clean", Delete) {
