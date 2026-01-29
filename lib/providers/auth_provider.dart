@@ -156,12 +156,17 @@ class AuthProvider with ChangeNotifier {
   Future<void> signInWithNaver() async {
     try {
       // 1. Get Naver Token
-      final NaverLoginResult res = await FlutterNaverLogin.logIn();
-      if (res.status != NaverLoginStatus.loggedIn) {
-        throw Exception('Naver login failed or cancelled.');
+      final dynamic res = await FlutterNaverLogin.logIn();
+      if (res.status != 'loggedIn' && res.status.toString() != 'loggedIn') {
+        // We'll use toString() comparison as a fallback
+        if (res.status.toString().contains('loggedIn')) {
+          // Continue
+        } else {
+          throw Exception('Naver login failed or cancelled.');
+        }
       }
 
-      final NaverAccessToken accessToken =
+      final dynamic accessToken =
           await FlutterNaverLogin.getCurrentAccessToken();
 
       // 2. Call Cloud Function
