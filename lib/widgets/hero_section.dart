@@ -119,11 +119,11 @@ class HeroSection extends StatelessWidget {
                   children: [
                     ElevatedButton.icon(
                       onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('${heroMovie.title} 재생을 시작합니다.'),
-                            duration: const Duration(seconds: 2),
-                            backgroundColor: const Color(0xFFE50914),
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                MovieDetailScreen(movie: heroMovie),
                           ),
                         );
                       },
