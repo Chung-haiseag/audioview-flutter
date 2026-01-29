@@ -106,3 +106,8 @@ migrate_working_dir/
 *.tar.gz
 *.zip
 admin-tool-backup/
+
+# Firebase Admin SDK
+service-account.json
+node_modules/
+package-lock.json
