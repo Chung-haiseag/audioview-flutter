@@ -24,9 +24,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Load environmental variables
-  await dotenv.load(fileName: "assets/.env");
+  await dotenv.load(fileName: "assets/env.txt");
 
-  // Kakao SDK 초기화
+  // Kakao SDK 초기??
   KakaoSdk.init(nativeAppKey: '4538351b8dd330e9f41491a83effc087');
 
   await Firebase.initializeApp(
@@ -96,11 +96,11 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<String> _titles = [
     'AUDIOVIEW',
-    '장르',
-    '설정',
-    '검색',
-    '마이페이지',
-    '공지/이벤트',
+    '?�르',
+    '?�정',
+    '검??,
+    '마이?�이지',
+    '공�?/?�벤??,
   ];
 
   @override
