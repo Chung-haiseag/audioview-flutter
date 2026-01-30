@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../models/movie.dart';
 import '../../services/movie_service.dart';
-import '../../services/movie_service.dart';
 import '../movie/movie_detail_screen.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:permission_handler/permission_handler.dart';
@@ -16,12 +15,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   final MovieService _movieService = MovieService();
-  final MovieService _movieService = MovieService();
   final TextEditingController _searchController = TextEditingController();
-
-  List<Movie> _searchResults = [];
-  bool _isLoading = false;
-  Timer? _debounce;
 
   List<Movie> _searchResults = [];
   bool _isLoading = false;
