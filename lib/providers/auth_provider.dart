@@ -171,7 +171,8 @@ class AuthProvider with ChangeNotifier {
         }
       }
 
-      final dynamic accessToken = await FlutterNaverLogin.currentAccessToken;
+      final dynamic accessToken =
+          await FlutterNaverLogin.getCurrentAccessToken();
 
       // 2. Call Cloud Function
       final HttpsCallable callable =
