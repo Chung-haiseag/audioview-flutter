@@ -186,6 +186,15 @@ class _SearchScreenState extends State<SearchScreen> {
                 child: Switch(
                   value: _isSmartSearch,
                   onChanged: (value) {
+                    if (value && !_smartSearch.isAvailable) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('AI 검색을 위해 Gemini API 키 설정이 필요합니다.'),
+                          backgroundColor: Colors.orange,
+                        ),
+                      );
+                      return;
+                    }
                     setState(() {
                       _isSmartSearch = value;
                       if (!value) {
