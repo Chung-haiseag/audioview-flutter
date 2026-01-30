@@ -30,6 +30,7 @@ dependencies:
   google_generative_ai: ^0.4.5
   cached_network_image: ^3.4.1
   shimmer: ^3.0.0
+  sqflite: 2.3.3+2
 
 dev_dependencies:
   flutter_test:
@@ -47,6 +48,8 @@ dependency_overrides:
   matcher: any
   characters: any
   meta: any
+  sqflite: 2.3.3+2
+  sqflite_android: 2.4.0
 
 flutter_icons:
   android: "ic_launcher"
