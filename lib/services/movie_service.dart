@@ -5,27 +5,44 @@ import '../models/genre.dart';
 class MovieService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  // Cache for home screen lists
+  List<Movie>? _newMoviesCache;
+  List<Movie>? _popularMoviesCache;
+  List<Genre>? _genresCache;
+
   // Fetch "New" movies (isLatest or is_latest)
   Stream<List<Movie>> getNewMovies() {
+    if (_newMoviesCache != null) {
+      return Stream.value(_newMoviesCache!);
+    }
     return _firestore
         .collection('movies')
         .where('isLatest', isEqualTo: true)
         .limit(20)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) => Movie.fromFirestore(doc)).toList();
+      final movies =
+          snapshot.docs.map((doc) => Movie.fromFirestore(doc)).toList();
+      _newMoviesCache = movies;
+      return movies;
     });
   }
 
   // Fetch "Popular" movies (isPopular or is_popular)
   Stream<List<Movie>> getPopularMovies() {
+    if (_popularMoviesCache != null) {
+      return Stream.value(_popularMoviesCache!);
+    }
     return _firestore
         .collection('movies')
         .where('isPopular', isEqualTo: true)
         .limit(20)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) => Movie.fromFirestore(doc)).toList();
+      final movies =
+          snapshot.docs.map((doc) => Movie.fromFirestore(doc)).toList();
+      _popularMoviesCache = movies;
+      return movies;
     });
   }
 
@@ -78,8 +95,14 @@ class MovieService {
 
   // Fetch all genres from 'genres' collection
   Stream<List<Genre>> getGenres() {
+    if (_genresCache != null) {
+      return Stream.value(_genresCache!);
+    }
     return _firestore.collection('genres').snapshots().map((snapshot) {
-      return snapshot.docs.map((doc) => Genre.fromFirestore(doc)).toList();
+      final genres =
+          snapshot.docs.map((doc) => Genre.fromFirestore(doc)).toList();
+      _genresCache = genres;
+      return genres;
     });
   }
 
