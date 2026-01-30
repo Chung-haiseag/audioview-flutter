@@ -1,9 +1,8 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
 import './notice_service.dart';
 import '../screens/notice/notice_detail_screen.dart';
 
@@ -49,7 +48,7 @@ class NotificationService {
     );
 
     // 3. Create Android notification channel
-    if (!kIsWeb && Platform.isAndroid) {
+    if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
       const AndroidNotificationChannel channel = AndroidNotificationChannel(
         'high_importance_channel',
         'High Importance Notifications',
@@ -153,7 +152,7 @@ class NotificationService {
     try {
       String? token = await _messaging.getToken();
       if (token != null) {
-        String platformName = kIsWeb ? 'web' : Platform.operatingSystem;
+        String platformName = kIsWeb ? 'web' : defaultTargetPlatform.name;
 
         await FirebaseFirestore.instance
             .collection('users')
