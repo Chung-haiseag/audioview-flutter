@@ -2,8 +2,9 @@ from PIL import Image
 import os
 
 # Paths
-source_path = r"C:\Users\정해석\.gemini\antigravity\brain\12db5c10-f053-4d0e-b467-c3e1c13e832d\uploaded_media_1769403889766.jpg"
-output_dir = r"c:\audioview\assets\images"
+# source_path should be updated to a relative path or provided as an argument
+source_path = os.path.join(os.getcwd(), "original_asset.jpg") 
+output_dir = "assets/images"
 
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)

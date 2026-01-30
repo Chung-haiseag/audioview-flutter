@@ -24,7 +24,7 @@ flutter doctor --android-licenses
 
 #### 앱 실행
 ```bash
-cd C:\Users\정해석\Downloads\audioview
+cd <your-project-path> # 예: cd C:\projects\audioview
 
 # 의존성 설치
 flutter pub get
@@ -61,7 +61,7 @@ flutter run
 
 #### APK 빌드 (Flutter 설치 후)
 ```bash
-cd C:\Users\정해석\Downloads\audioview
+cd <your-project-path> # 예: cd C:\projects\audioview
 
 # Release APK 생성
 flutter build apk --release
@@ -72,7 +72,7 @@ flutter build apk --split-per-abi --release
 
 #### 빌드된 파일 위치
 ```
-C:\Users\정해석\Downloads\audioview\build\app\outputs\flutter-apk\
+<your-project-path>\build\app\outputs\flutter-apk\
 
 📦 파일:
 - app-release.apk (범용, 약 40-50MB)
@@ -107,7 +107,7 @@ flutter config --enable-web
 flutter build web --release
 
 # 빌드 결과
-# C:\Users\정해석\Downloads\audioview\build\web\
+# <your-project-path>\build\web\
 ```
 
 #### 웹 호스팅 옵션

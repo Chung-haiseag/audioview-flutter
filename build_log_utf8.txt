@@ -1,0 +1,1672 @@
+﻿[ +323 ms] Artifact Instance of 'MaterialFonts' is not required, skipping update.
+[        ] Artifact Instance of 'GradleWrapper' is not required, skipping update.
+[        ] Artifact Instance of 'AndroidGenSnapshotArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'AndroidInternalBuildArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IOSEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterWebSdk' is not required, skipping update.
+[   +1 ms] Artifact Instance of 'LegacyCanvasKitRemover' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterSdk' is not required, skipping update.
+[        ] Artifact Instance of 'WindowsEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'MacOSEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'LinuxEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'LinuxFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'MacOSFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterRunnerSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterRunnerDebugSymbols' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FontSubsetArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'PubDependencies' is not required, skipping update.
+[        ] executing: [C:\Users\?뺥빐??flutter/] git -c log.showSignature=false log HEAD -n 1 --pretty=format:%ad --date=iso
+[  +97 ms] Exit code 0 from: git -c log.showSignature=false log HEAD -n 1 --pretty=format:%ad --date=iso
+[        ] 2026-01-13 13:47:42 -0800
+[  +25 ms] Artifact Instance of 'AndroidGenSnapshotArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'AndroidInternalBuildArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IOSEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterWebSdk' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterEngineStamp' is not required, skipping update.
+[        ] Artifact Instance of 'LegacyCanvasKitRemover' is not required, skipping update.
+[   +3 ms] Artifact Instance of 'WindowsEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'MacOSEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'LinuxEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'LinuxFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'MacOSFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterRunnerSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterRunnerDebugSymbols' is not required, skipping update.
+[  +59 ms] Artifact Instance of 'MaterialFonts' is not required, skipping update.
+[        ] Artifact Instance of 'GradleWrapper' is not required, skipping update.
+[   +3 ms] Artifact Instance of 'AndroidInternalBuildArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IOSEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterWebSdk' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterEngineStamp' is not required, skipping update.
+[        ] Artifact Instance of 'LegacyCanvasKitRemover' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterSdk' is not required, skipping update.
+[        ] Artifact Instance of 'WindowsEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'MacOSEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'LinuxEngineArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'LinuxFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'MacOSFuchsiaSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterRunnerSDKArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FlutterRunnerDebugSymbols' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'IosUsbArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'FontSubsetArtifacts' is not required, skipping update.
+[        ] Artifact Instance of 'PubDependencies' is not required, skipping update.
+[  +51 ms] Skipping pub get: version match.
+[  +66 ms] Found plugin flutter_native_splash at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\flutter_native_splash-2.4.7\
+[  +27 ms] Found plugin speech_to_text at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\speech_to_text-7.3.0\
+[   +2 ms] Found plugin speech_to_text_windows at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\speech_to_text_windows-1.0.0+beta.8\
+[   +5 ms] Found plugin shared_preferences at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences-2.5.4\
+[   +1 ms] Found plugin shared_preferences_windows at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_windows-2.4.1\
+[   +2 ms] Found plugin path_provider_windows at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_windows-2.3.0\
+[   +4 ms] Found plugin shared_preferences_web at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_web-2.4.3\
+[   +1 ms] Found plugin shared_preferences_linux at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_linux-2.4.1\
+[   +2 ms] Found plugin path_provider_linux at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_linux-2.2.1\
+[   +2 ms] Found plugin shared_preferences_foundation at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_foundation-2.5.6\
+[   +1 ms] Found plugin shared_preferences_android at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_android-2.4.18\
+[   +6 ms] Found plugin permission_handler at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler-11.4.0\
+[   +1 ms] Found plugin permission_handler_windows at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_windows-0.2.1\
+[   +2 ms] Found plugin permission_handler_html at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_html-0.1.3+5\
+[   +2 ms] Found plugin permission_handler_apple at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_apple-9.4.7\
+[   +1 ms] Found plugin permission_handler_android at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_android-12.1.0\
+[   +8 ms] Found plugin kakao_flutter_sdk_common at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\kakao_flutter_sdk_common-1.10.0\
+[  +19 ms] Found plugin webview_flutter_wkwebview at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\webview_flutter_wkwebview-3.23.5\
+[   +2 ms] Found plugin webview_flutter at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\webview_flutter-4.13.1\
+[   +1 ms] Found plugin webview_flutter_android at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\webview_flutter_android-4.10.11\
+[   +2 ms] Found plugin google_sign_in at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\google_sign_in-6.3.0\
+[   +1 ms] Found plugin google_sign_in_web at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\google_sign_in_web-0.12.4+4\
+[   +2 ms] Found plugin google_sign_in_ios at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\google_sign_in_ios-5.9.0\
+[   +1 ms] Found plugin google_sign_in_android at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\google_sign_in_android-6.2.1\
+[   +2 ms] Found plugin path_provider at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\path_provider-2.1.5\
+[   +1 ms] Found plugin path_provider_foundation at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_foundation-2.6.0\
+[   +6 ms] Found plugin path_provider_android at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_android-2.2.22\
+[        ] Found plugin flutter_naver_login at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\flutter_naver_login-1.8.0\
+[   +1 ms] Found plugin flutter_local_notifications at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\flutter_local_notifications-17.2.4\
+[   +2 ms] Found plugin flutter_local_notifications_linux at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\flutter_local_notifications_linux-4.0.1\
+[   +4 ms] Found plugin firebase_messaging at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\firebase_messaging-16.1.1\
+[   +1 ms] Found plugin firebase_messaging_web at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\firebase_messaging_web-4.1.2\
+[   +1 ms] Found plugin firebase_core at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core-4.4.0\
+[        ] Found plugin firebase_core_web at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core_web-3.4.0\
+[   +2 ms] Found plugin firebase_auth at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth-6.1.4\
+[   +1 ms] Found plugin firebase_auth_web at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth_web-6.1.2\
+[   +1 ms] Found plugin cloud_functions at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\cloud_functions-6.0.6\
+[   +1 ms] Found plugin cloud_functions_web at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\cloud_functions_web-5.1.2\
+[   +2 ms] Found plugin cloud_firestore at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore-6.1.2\
+[   +1 ms] Found plugin cloud_firestore_web at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore_web-5.1.2\
+[  +46 ms] Found plugin flutter_native_splash at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\flutter_native_splash-2.4.7\
+[  +15 ms] Found plugin speech_to_text at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\speech_to_text-7.3.0\
+[   +1 ms] Found plugin speech_to_text_windows at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\speech_to_text_windows-1.0.0+beta.8\
+[   +2 ms] Found plugin shared_preferences at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences-2.5.4\
+[   +1 ms] Found plugin shared_preferences_windows at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_windows-2.4.1\
+[   +2 ms] Found plugin path_provider_windows at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_windows-2.3.0\
+[   +3 ms] Found plugin shared_preferences_web at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_web-2.4.3\
+[   +1 ms] Found plugin shared_preferences_linux at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_linux-2.4.1\
+[   +1 ms] Found plugin path_provider_linux at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_linux-2.2.1\
+[   +1 ms] Found plugin shared_preferences_foundation at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_foundation-2.5.6\
+[        ] Found plugin shared_preferences_android at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_android-2.4.18\
+[   +2 ms] Found plugin permission_handler at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler-11.4.0\
+[        ] Found plugin permission_handler_windows at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_windows-0.2.1\
+[   +1 ms] Found plugin permission_handler_html at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_html-0.1.3+5\
+[        ] Found plugin permission_handler_apple at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_apple-9.4.7\
+[        ] Found plugin permission_handler_android at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_android-12.1.0\
+[   +3 ms] Found plugin kakao_flutter_sdk_common at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\kakao_flutter_sdk_common-1.10.0\
+[  +15 ms] Found plugin webview_flutter_wkwebview at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\webview_flutter_wkwebview-3.23.5\
+[   +2 ms] Found plugin webview_flutter at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\webview_flutter-4.13.1\
+[   +1 ms] Found plugin webview_flutter_android at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\webview_flutter_android-4.10.11\
+[   +1 ms] Found plugin google_sign_in at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\google_sign_in-6.3.0\
+[        ] Found plugin google_sign_in_web at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\google_sign_in_web-0.12.4+4\
+[   +1 ms] Found plugin google_sign_in_ios at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\google_sign_in_ios-5.9.0\
+[        ] Found plugin google_sign_in_android at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\google_sign_in_android-6.2.1\
+[   +1 ms] Found plugin path_provider at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\path_provider-2.1.5\
+[        ] Found plugin path_provider_foundation at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_foundation-2.6.0\
+[   +5 ms] Found plugin path_provider_android at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_android-2.2.22\
+[   +1 ms] Found plugin flutter_naver_login at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\flutter_naver_login-1.8.0\
+[        ] Found plugin flutter_local_notifications at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\flutter_local_notifications-17.2.4\
+[   +2 ms] Found plugin flutter_local_notifications_linux at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\flutter_local_notifications_linux-4.0.1\
+[   +3 ms] Found plugin firebase_messaging at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\firebase_messaging-16.1.1\
+[        ] Found plugin firebase_messaging_web at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\firebase_messaging_web-4.1.2\
+[   +1 ms] Found plugin firebase_core at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core-4.4.0\
+[        ] Found plugin firebase_core_web at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core_web-3.4.0\
+[   +2 ms] Found plugin firebase_auth at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth-6.1.4\
+[        ] Found plugin firebase_auth_web at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth_web-6.1.2\
+[   +1 ms] Found plugin cloud_functions at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\cloud_functions-6.0.6\
+[   +1 ms] Found plugin cloud_functions_web at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\cloud_functions_web-5.1.2\
+[   +1 ms] Found plugin cloud_firestore at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore-6.1.2\
+[        ] Found plugin cloud_firestore_web at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore_web-5.1.2\
+[   +7 ms] Skipping generating web_plugin_registrant.dart because it is up-to-date.
+[  +23 ms] Found plugin flutter_native_splash at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\flutter_native_splash-2.4.7\
+[  +15 ms] Found plugin speech_to_text at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\speech_to_text-7.3.0\
+[   +1 ms] Found plugin speech_to_text_windows at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\speech_to_text_windows-1.0.0+beta.8\
+[   +2 ms] Found plugin shared_preferences at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences-2.5.4\
+[        ] Found plugin shared_preferences_windows at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_windows-2.4.1\
+[   +1 ms] Found plugin path_provider_windows at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_windows-2.3.0\
+[   +2 ms] Found plugin shared_preferences_web at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_web-2.4.3\
+[        ] Found plugin shared_preferences_linux at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_linux-2.4.1\
+[        ] Found plugin path_provider_linux at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_linux-2.2.1\
+[   +1 ms] Found plugin shared_preferences_foundation at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_foundation-2.5.6\
+[        ] Found plugin shared_preferences_android at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\shared_preferences_android-2.4.18\
+[   +1 ms] Found plugin permission_handler at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler-11.4.0\
+[        ] Found plugin permission_handler_windows at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_windows-0.2.1\
+[   +1 ms] Found plugin permission_handler_html at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_html-0.1.3+5\
+[        ] Found plugin permission_handler_apple at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_apple-9.4.7\
+[        ] Found plugin permission_handler_android at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_android-12.1.0\
+[   +2 ms] Found plugin kakao_flutter_sdk_common at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\kakao_flutter_sdk_common-1.10.0\
+[   +9 ms] Found plugin webview_flutter_wkwebview at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\webview_flutter_wkwebview-3.23.5\
+[   +1 ms] Found plugin webview_flutter at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\webview_flutter-4.13.1\
+[        ] Found plugin webview_flutter_android at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\webview_flutter_android-4.10.11\
+[   +1 ms] Found plugin google_sign_in at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\google_sign_in-6.3.0\
+[        ] Found plugin google_sign_in_web at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\google_sign_in_web-0.12.4+4\
+[   +1 ms] Found plugin google_sign_in_ios at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\google_sign_in_ios-5.9.0\
+[        ] Found plugin google_sign_in_android at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\google_sign_in_android-6.2.1\
+[   +1 ms] Found plugin path_provider at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\path_provider-2.1.5\
+[        ] Found plugin path_provider_foundation at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_foundation-2.6.0\
+[   +3 ms] Found plugin path_provider_android at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\path_provider_android-2.2.22\
+[        ] Found plugin flutter_naver_login at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\flutter_naver_login-1.8.0\
+[        ] Found plugin flutter_local_notifications at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\flutter_local_notifications-17.2.4\
+[   +1 ms] Found plugin flutter_local_notifications_linux at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\flutter_local_notifications_linux-4.0.1\
+[   +2 ms] Found plugin firebase_messaging at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\firebase_messaging-16.1.1\
+[        ] Found plugin firebase_messaging_web at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\firebase_messaging_web-4.1.2\
+[   +1 ms] Found plugin firebase_core at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core-4.4.0\
+[        ] Found plugin firebase_core_web at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\firebase_core_web-3.4.0\
+[   +1 ms] Found plugin firebase_auth at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth-6.1.4\
+[        ] Found plugin firebase_auth_web at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\firebase_auth_web-6.1.2\
+[   +1 ms] Found plugin cloud_functions at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\cloud_functions-6.0.6\
+[        ] Found plugin cloud_functions_web at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\cloud_functions_web-5.1.2\
+[   +1 ms] Found plugin cloud_firestore at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore-6.1.2\
+[        ] Found plugin cloud_firestore_web at C:\Users\?뺥빐??AppData\Local\Pub\Cache\hosted\pub.dev\cloud_firestore_web-5.1.2\
+[   +6 ms] Generating C:\audioview\android\app\src\main\java\io\flutter\plugins\GeneratedPluginRegistrant.java
+[   +1 ms] Skipping generating GeneratedPluginRegistrant.java because it is up-to-date.
+[   +3 ms] Skipping generating generated_plugin_registrant.h because it is up-to-date.
+[        ] Skipping generating generated_plugin_registrant.cc because it is up-to-date.
+[        ] Skipping generating generated_plugins.cmake because it is up-to-date.
+[   +1 ms] Skipping generating generated_plugin_registrant.h because it is up-to-date.
+[        ] Skipping generating generated_plugin_registrant.cc because it is up-to-date.
+[        ] Skipping generating generated_plugins.cmake because it is up-to-date.
+[   +1 ms] Skipping generating GeneratedPluginRegistrant.h because it is up-to-date.
+[        ] Skipping generating GeneratedPluginRegistrant.m because it is up-to-date.
+[        ] Skipping generating GeneratedPluginRegistrant.swift because it is up-to-date.
+[  +70 ms] executing: C:\Program Files\Android\Android Studio\jbr\bin\java -version
+[ +124 ms] Exit code 0 from: C:\Program Files\Android\Android Studio\jbr\bin\java -version
+[        ] openjdk version "21.0.8" 2025-07-15
+           OpenJDK Runtime Environment (build 21.0.8+-14196175-b1038.72)
+           OpenJDK 64-Bit Server VM (build 21.0.8+-14196175-b1038.72, mixed mode)
+[   +8 ms] executing: C:\Program Files\Android\Android Studio\jbr\bin\java --version
+[ +109 ms] Exit code 0 from: C:\Program Files\Android\Android Studio\jbr\bin\java --version
+[        ] openjdk 21.0.8 2025-07-15
+           OpenJDK Runtime Environment (build 21.0.8+-14196175-b1038.72)
+           OpenJDK 64-Bit Server VM (build 21.0.8+-14196175-b1038.72, mixed mode)
+[   +1 ms] Version of Java is different than impacted version, no migration attempted.
+[  +19 ms] CMake project not found, skipping support Android 15 16k page size migration.
+[   +5 ms] Using gradle from C:\audioview\android\gradlew.bat.
+[  +15 ms] LocalFile: 'C:\audioview\android\build.gradle' provides AGP version from classpath: 8.1.0
+[  +15 ms] Running Gradle task 'assembleRelease'...
+[   +1 ms] executing: [C:\audioview\android/] C:\audioview\android\gradlew.bat --full-stacktrace --info -Pverbose=true -Ptarget-platform=android-arm,android-arm64,android-x64 -Ptarget=lib\main.dart -Pbase-application-name=android.app.Application -Pdart-defines=RkxVVFRFUl9WRVJTSU9OPTMuMzguNw==,RkxVVFRFUl9DSEFOTkVMPXN0YWJsZQ==,RkxVVFRFUl9HSVRfVVJMPWh0dHBzOi8vZ2l0aHViLmNvbS9mbHV0dGVyL2ZsdXR0ZXIuZ2l0,RkxVVFRFUl9GUkFNRVdPUktfUkVWSVNJT049M2I2MmVmYzJhMw==,RkxVVFRFUl9FTkdJTkVfUkVWSVNJT049NzhmYzMwMTJlNA==,RkxVVFRFUl9EQVJUX1ZFUlNJT049My4xMC43 -Pdart-obfuscation=false -Ptrack-widget-creation=true -Ptree-shake-icons=true assembleRelease
+[ +611 ms] Initialized native services in: C:\Users\占쏙옙占쌔쇽옙\.gradle\native
+[        ] Initialized jansi services in: C:\Users\占쏙옙占쌔쇽옙\.gradle\native
+[ +120 ms] Received JVM installation metadata from 'C:\Program Files\Android\Android Studio\jbr': {JAVA_HOME=C:\Program Files\Android\Android Studio\jbr, JAVA_VERSION=21.0.8, JAVA_VENDOR=JetBrains s.r.o., RUNTIME_NAME=OpenJDK Runtime Environment, RUNTIME_VERSION=21.0.8+-14196175-b1038.72, VM_NAME=OpenJDK 64-Bit Server VM, VM_VERSION=21.0.8+-14196175-b1038.72, VM_VENDOR=JetBrains s.r.o., OS_ARCH=amd64}
+[ +192 ms] The client will now receive all logging from the daemon (pid: 125140). The daemon log file: C:\Users\占쏙옙占쌔쇽옙\.gradle\daemon\8.7\daemon-125140.out.log
+[        ] Starting 3rd build in daemon [uptime: 1 hrs 14 mins 57.635 secs, performance: 100%, GC rate: 0.00/s, heap usage: 5% of 2 GiB, non-heap usage: 32% of 512 MiB]
+[        ] Using 12 worker leases.
+[        ] Now considering [C:\audioview\android, C:\Users\占쏙옙占쌔쇽옙\flutter\packages\flutter_tools\gradle] as hierarchies to watch
+[        ] Watching the file system is configured to be enabled if available
+[ +500 ms] File system watching is active
+[        ] Starting Build
+[        ] Now considering [C:\Users\占쏙옙占쌔쇽옙\flutter\packages\flutter_tools\gradle, C:\audioview\android] as hierarchies to watch
+[ +197 ms] > Configure project :gradle
+[        ] Evaluating project ':gradle' using build file 'C:\Users\占쏙옙占쌔쇽옙\flutter\packages\flutter_tools\gradle\build.gradle.kts'.
+[        ] Transforming gradle-kotlin-dsl-plugins-4.3.0.jar (org.gradle.kotlin:gradle-kotlin-dsl-plugins:4.3.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-stdlib-1.9.22.jar (org.jetbrains.kotlin:kotlin-stdlib:1.9.22) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming annotations-13.0.jar (org.jetbrains:annotations:13.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-sam-with-receiver-1.9.22-gradle82.jar (org.jetbrains.kotlin:kotlin-sam-with-receiver:1.9.22) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-assignment-1.9.22-gradle82.jar (org.jetbrains.kotlin:kotlin-assignment:1.9.22) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-gradle-plugin-model-1.9.22.jar (org.jetbrains.kotlin:kotlin-gradle-plugin-model:1.9.22) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-gradle-plugin-api-1.9.22.jar (org.jetbrains.kotlin:kotlin-gradle-plugin-api:1.9.22) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-gradle-plugin-api-1.9.22-gradle82.jar (org.jetbrains.kotlin:kotlin-gradle-plugin-api:1.9.22) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-gradle-plugin-1.9.22-gradle82.jar (org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.22) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-gradle-plugin-idea-proto-1.9.22.jar (org.jetbrains.kotlin:kotlin-gradle-plugin-idea-proto:1.9.22) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-gradle-plugin-idea-1.9.22.jar (org.jetbrains.kotlin:kotlin-gradle-plugin-idea:1.9.22) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-klib-commonizer-api-1.9.22.jar (org.jetbrains.kotlin:kotlin-klib-commonizer-api:1.9.22) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-native-utils-1.9.22.jar (org.jetbrains.kotlin:kotlin-native-utils:1.9.22) with ExternalDependencyInstrumentingArtifactTransform
+[   +1 ms] Transforming kotlin-util-klib-1.9.22.jar (org.jetbrains.kotlin:kotlin-util-klib:1.9.22) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-build-tools-api-1.9.22.jar (org.jetbrains.kotlin:kotlin-build-tools-api:1.9.22) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-android-extensions-1.9.22.jar (org.jetbrains.kotlin:kotlin-android-extensions:1.9.22) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-compiler-runner-1.9.22.jar (org.jetbrains.kotlin:kotlin-compiler-runner:1.9.22) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-compiler-embeddable-1.9.22.jar (org.jetbrains.kotlin:kotlin-compiler-embeddable:1.9.22) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-scripting-compiler-embeddable-1.9.22.jar (org.jetbrains.kotlin:kotlin-scripting-compiler-embeddable:1.9.22) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-scripting-compiler-impl-embeddable-1.9.22.jar (org.jetbrains.kotlin:kotlin-scripting-compiler-impl-embeddable:1.9.22) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-gradle-plugin-annotations-1.9.22.jar (org.jetbrains.kotlin:kotlin-gradle-plugin-annotations:1.9.22) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-project-model-1.9.22.jar (org.jetbrains.kotlin:kotlin-project-model:1.9.22) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-tooling-core-1.9.22.jar (org.jetbrains.kotlin:kotlin-tooling-core:1.9.22) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-util-io-1.9.22.jar (org.jetbrains.kotlin:kotlin-util-io:1.9.22) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-daemon-embeddable-1.9.22.jar (org.jetbrains.kotlin:kotlin-daemon-embeddable:1.9.22) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming trove4j-1.0.20200330.jar (org.jetbrains.intellij.deps:trove4j:1.0.20200330) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-daemon-client-1.9.22.jar (org.jetbrains.kotlin:kotlin-daemon-client:1.9.22) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlinx-coroutines-core-jvm-1.5.0.jar (org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.5.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-scripting-jvm-1.9.22.jar (org.jetbrains.kotlin:kotlin-scripting-jvm:1.9.22) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-scripting-common-1.9.22.jar (org.jetbrains.kotlin:kotlin-scripting-common:1.9.22) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Using Kotlin Gradle Plugin gradle82 variant
+[        ] kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+[        ] kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+[        ] file or directory 'C:\Users\占쏙옙占쌔쇽옙\flutter\packages\flutter_tools\gradle\src\main\java', not found
+[        ] Resolve mutations for :gradle:checkKotlinGradlePluginConfigurationErrors (Thread[#355,Execution worker,5,main]) started.
+[        ] :gradle:checkKotlinGradlePluginConfigurationErrors (Thread[#355,Execution worker,5,main]) started.
+[        ] > Task :gradle:checkKotlinGradlePluginConfigurationErrors
+[        ] Caching disabled for task ':gradle:checkKotlinGradlePluginConfigurationErrors' because:
+[        ]   Build cache is disabled
+[        ] Task ':gradle:checkKotlinGradlePluginConfigurationErrors' is not up-to-date because:
+[        ]   Task has not declared any outputs despite executing actions.
+[        ] Resolve mutations for :gradle:compileKotlin (Thread[#355,Execution worker,5,main]) started.
+[        ] :gradle:compileKotlin (Thread[#355,Execution worker,5,main]) started.
+[  +95 ms] > Task :gradle:compileKotlin UP-TO-DATE
+[        ] Transforming gradle-api-8.7.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming groovy-3.0.17.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming groovy-ant-3.0.17.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming groovy-astbuilder-3.0.17.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming groovy-console-3.0.17.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming groovy-datetime-3.0.17.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming groovy-dateutil-3.0.17.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming groovy-groovydoc-3.0.17.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming groovy-json-3.0.17.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming groovy-nio-3.0.17.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming groovy-sql-3.0.17.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming groovy-templates-3.0.17.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming groovy-test-3.0.17.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming groovy-xml-3.0.17.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming javaparser-core-3.17.0.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming kotlin-stdlib-1.9.22.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming kotlin-reflect-1.9.22.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming gradle-installation-beacon-8.7.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming gradle-kotlin-dsl-extensions-8.7.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming gradle-kotlin-dsl-8.7.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming gradle-kotlin-dsl-shared-runtime-8.7.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming gradle-kotlin-dsl-tooling-models-8.7.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming annotation-jvm-1.9.1.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming gradle-8.11.1.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming kotlin-reflect-1.9.22.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming kotlinx-serialization-json-jvm-1.4.0.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming kotlinx-serialization-core-jvm-1.4.0.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming kotlin-stdlib-jdk8-1.8.0.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming kotlin-stdlib-jdk7-1.8.0.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming kotlin-stdlib-1.9.24.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming kotlin-gradle-plugin-1.8.0-gradle76.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming builder-8.11.1.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming builder-model-8.11.1.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming gradle-api-8.11.1.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming kotlin-gradle-plugin-model-1.8.0.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming kotlin-gradle-plugin-api-1.8.0-gradle76.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming kotlin-gradle-plugin-api-1.8.0.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming kotlin-tooling-core-1.8.0.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming annotations-13.0.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming manifest-merger-31.11.1.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming zipflinger-8.11.1.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming apksig-8.11.1.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming apkzlib-8.11.1.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming javawriter-2.5.0.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming asm-9.7.1.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming kotlin-native-utils-1.8.0.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming kotlin-project-model-1.8.0.jar with ClasspathEntrySnapshotTransform
+[        ] Transforming kotlin-util-io-1.8.0.jar with ClasspathEntrySnapshotTransform
+[        ] Caching disabled for task ':gradle:compileKotlin' because:
+[        ]   Build cache is disabled
+[        ] Skipping task ':gradle:compileKotlin' as it is up-to-date.
+[        ] Resolve mutations for :gradle:compileJava (Thread[#355,Execution worker,5,main]) started.
+[        ] :gradle:compileJava (Thread[#355,Execution worker,5,main]) started.
+[        ] > Task :gradle:compileJava NO-SOURCE
+[        ] Skipping task ':gradle:compileJava' as it has no source files and no previous output files.
+[        ] Resolve mutations for :gradle:compileGroovy (Thread[#355,Execution worker,5,main]) started.
+[        ] :gradle:compileGroovy (Thread[#355,Execution worker,5,main]) started.
+[        ] > Task :gradle:compileGroovy NO-SOURCE
+[        ] Skipping task ':gradle:compileGroovy' as it has no source files and no previous output files.
+[        ] Resolve mutations for :gradle:pluginDescriptors (Thread[#355,Execution worker,5,main]) started.
+[        ] :gradle:pluginDescriptors (Thread[#355,Execution worker,5,main]) started.
+[        ] > Task :gradle:pluginDescriptors UP-TO-DATE
+[        ] Caching disabled for task ':gradle:pluginDescriptors' because:
+[        ]   Build cache is disabled
+[        ]   Not worth caching
+[        ] Skipping task ':gradle:pluginDescriptors' as it is up-to-date.
+[        ] Resolve mutations for :gradle:processResources (Thread[#355,Execution worker,5,main]) started.
+[        ] :gradle:processResources (Thread[#355,Execution worker,5,main]) started.
+[        ] > Task :gradle:processResources UP-TO-DATE
+[        ] Caching disabled for task ':gradle:processResources' because:
+[        ]   Build cache is disabled
+[        ]   Not worth caching
+[        ] Skipping task ':gradle:processResources' as it is up-to-date.
+[        ] Resolve mutations for :gradle:classes (Thread[#355,Execution worker,5,main]) started.
+[        ] :gradle:classes (Thread[#355,Execution worker,5,main]) started.
+[        ] > Task :gradle:classes UP-TO-DATE
+[        ] Skipping task ':gradle:classes' as it has no actions.
+[        ] Resolve mutations for :gradle:jar (Thread[#355,Execution worker,5,main]) started.
+[        ] :gradle:jar (Thread[#355,Execution worker,5,main]) started.
+[        ] > Task :gradle:jar UP-TO-DATE
+[        ] Caching disabled for task ':gradle:jar' because:
+[        ]   Build cache is disabled
+[        ]   Not worth caching
+[        ] Skipping task ':gradle:jar' as it is up-to-date.
+[ +192 ms] Transforming kotlin-gradle-plugin-model-2.1.0.jar (org.jetbrains.kotlin:kotlin-gradle-plugin-model:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-gradle-plugin-api-2.1.0.jar (org.jetbrains.kotlin:kotlin-gradle-plugin-api:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[   +1 ms] Transforming kotlin-gradle-plugin-2.1.0-gradle85.jar (org.jetbrains.kotlin:kotlin-gradle-plugin:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming gradle-8.6.0.jar (com.android.tools.build:gradle:8.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming google-services-4.3.15.jar (com.google.gms:google-services:4.3.15) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlinx-serialization-json-jvm-1.4.0.jar (org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.4.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming gradle-settings-api-8.6.0.jar (com.android.tools.build:gradle-settings-api:8.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming lint-model-31.6.0.jar (com.android.tools.lint:lint-model:31.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming builder-8.6.0.jar (com.android.tools.build:builder:8.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming manifest-merger-31.6.0.jar (com.android.tools.build:manifest-merger:31.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming sdk-common-31.6.0.jar (com.android.tools:sdk-common:31.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming sdklib-31.6.0.jar (com.android.tools:sdklib:31.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming repository-31.6.0.jar (com.android.tools:repository:31.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming gradle-api-8.6.0.jar (com.android.tools.build:gradle-api:8.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming builder-test-api-8.6.0.jar (com.android.tools.build:builder-test-api:8.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming ddmlib-31.6.0.jar (com.android.tools.ddms:ddmlib:31.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming aaptcompiler-8.6.0.jar (com.android.tools.build:aaptcompiler:8.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming bundletool-1.16.0.jar (com.android.tools.build:bundletool:1.16.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming aapt2-proto-8.6.0-11315950.jar (com.android.tools.build:aapt2-proto:8.6.0-11315950) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming crash-31.6.0.jar (com.android.tools.analytics-library:crash:31.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming tracker-31.6.0.jar (com.android.tools.analytics-library:tracker:31.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming shared-31.6.0.jar (com.android.tools.analytics-library:shared:31.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming lint-typedef-remover-31.6.0.jar (com.android.tools.lint:lint-typedef-remover:31.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming databinding-compiler-common-8.6.0.jar (androidx.databinding:databinding-compiler-common:8.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming databinding-common-8.6.0.jar (androidx.databinding:databinding-common:8.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming baseLibrary-8.6.0.jar (com.android.databinding:baseLibrary:8.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming layoutlib-api-31.6.0.jar (com.android.tools.layoutlib:layoutlib-api:31.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming android-device-provider-ddmlib-proto-31.6.0.jar (com.android.tools.utp:android-device-provider-ddmlib-proto:31.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming android-device-provider-gradle-proto-31.6.0.jar (com.android.tools.utp:android-device-provider-gradle-proto:31.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming android-test-plugin-host-additional-test-output-proto-31.6.0.jar (com.android.tools.utp:android-test-plugin-host-additional-test-output-proto:31.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming android-test-plugin-host-coverage-proto-31.6.0.jar (com.android.tools.utp:android-test-plugin-host-coverage-proto:31.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming android-test-plugin-host-emulator-control-proto-31.6.0.jar (com.android.tools.utp:android-test-plugin-host-emulator-control-proto:31.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming android-test-plugin-host-logcat-proto-31.6.0.jar (com.android.tools.utp:android-test-plugin-host-logcat-proto:31.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming android-test-plugin-host-apk-installer-proto-31.6.0.jar (com.android.tools.utp:android-test-plugin-host-apk-installer-proto:31.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming android-test-plugin-host-retention-proto-31.6.0.jar (com.android.tools.utp:android-test-plugin-host-retention-proto:31.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming android-test-plugin-result-listener-gradle-proto-31.6.0.jar (com.android.tools.utp:android-test-plugin-result-listener-gradle-proto:31.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming builder-model-8.6.0.jar (com.android.tools.build:builder-model:8.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming strict-version-matcher-plugin-1.2.4.jar (com.google.android.gms:strict-version-matcher-plugin:1.2.4) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming dvlib-31.6.0.jar (com.android.tools:dvlib:31.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming common-31.6.0.jar (com.android.tools:common:31.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming jetifier-processor-1.0.0-beta10.jar (com.android.tools.build.jetifier:jetifier-processor:1.0.0-beta10) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming jetifier-core-1.0.0-beta10.jar (com.android.tools.build.jetifier:jetifier-core:1.0.0-beta10) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-reflect-1.9.20.jar (org.jetbrains.kotlin:kotlin-reflect:1.9.20) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-stdlib-jdk7-1.9.20.jar (org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.20) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlinx-serialization-core-jvm-1.4.0.jar (org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.4.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-stdlib-1.9.20.jar (org.jetbrains.kotlin:kotlin-stdlib:1.9.20) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-stdlib-jdk8-1.9.20.jar (org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming transform-api-2.0.0-deprecated-use-gradle-api.jar (com.android.tools.build:transform-api:2.0.0-deprecated-use-gradle-api) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming httpmime-4.5.6.jar (org.apache.httpcomponents:httpmime:4.5.6) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming commons-io-2.13.0.jar (commons-io:commons-io:2.13.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming asm-commons-9.6.jar (org.ow2.asm:asm-commons:9.6) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming asm-util-9.6.jar (org.ow2.asm:asm-util:9.6) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming asm-analysis-9.6.jar (org.ow2.asm:asm-analysis:9.6) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming asm-tree-9.6.jar (org.ow2.asm:asm-tree:9.6) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming asm-9.6.jar (org.ow2.asm:asm:9.6) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming apkzlib-8.6.0.jar (com.android.tools.build:apkzlib:8.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming bcpkix-jdk18on-1.77.jar (org.bouncycastle:bcpkix-jdk18on:1.77) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming jaxb-runtime-2.3.2.jar (org.glassfish.jaxb:jaxb-runtime:2.3.2) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming jopt-simple-4.9.jar (net.sf.jopt-simple:jopt-simple:4.9) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming javapoet-1.10.0.jar (com.squareup:javapoet:1.10.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming protobuf-java-util-3.22.3.jar (com.google.protobuf:protobuf-java-util:3.22.3) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming grpc-protobuf-1.57.0.jar (io.grpc:grpc-protobuf:1.57.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming tink-1.7.0.jar (com.google.crypto.tink:tink:1.7.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming protos-31.6.0.jar (com.android.tools.analytics-library:protos:31.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming proto-google-common-protos-2.17.0.jar (com.google.api.grpc:proto-google-common-protos:2.17.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming protobuf-java-3.22.3.jar (com.google.protobuf:protobuf-java:3.22.3) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming grpc-netty-1.57.0.jar (io.grpc:grpc-netty:1.57.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming grpc-core-1.57.0.jar (io.grpc:grpc-core:1.57.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-build-statistics-2.1.0.jar (org.jetbrains.kotlin:kotlin-build-statistics:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming gson-2.10.1.jar (com.google.code.gson:gson:2.10.1) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming grpc-stub-1.57.0.jar (io.grpc:grpc-stub:1.57.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming core-proto-0.0.9-alpha02.jar (com.google.testing.platform:core-proto:0.0.9-alpha02) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kxml2-2.3.0.jar (net.sf.kxml:kxml2:2.3.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming tensorflow-lite-metadata-0.1.0-rc2.jar (org.tensorflow:tensorflow-lite-metadata:0.1.0-rc2) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming flatbuffers-java-1.12.0.jar (com.google.flatbuffers:flatbuffers-java:1.12.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming jimfs-1.1.jar (com.google.jimfs:jimfs:1.1) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming grpc-context-1.57.0.jar (io.grpc:grpc-context:1.57.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming grpc-protobuf-lite-1.57.0.jar (io.grpc:grpc-protobuf-lite:1.57.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming grpc-api-1.57.0.jar (io.grpc:grpc-api:1.57.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming guava-32.0.1-jre.jar (com.google.guava:guava:32.0.1-jre) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-gradle-plugin-idea-proto-2.1.0.jar (org.jetbrains.kotlin:kotlin-gradle-plugin-idea-proto:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-gradle-plugin-idea-2.1.0.jar (org.jetbrains.kotlin:kotlin-gradle-plugin-idea:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-klib-commonizer-api-2.1.0.jar (org.jetbrains.kotlin:kotlin-klib-commonizer-api:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-util-klib-metadata-2.1.0.jar (org.jetbrains.kotlin:kotlin-util-klib-metadata:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[   +3 ms] Transforming kotlin-compiler-runner-2.1.0.jar (org.jetbrains.kotlin:kotlin-compiler-runner:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming dagger-2.28.3.jar (com.google.dagger:dagger:2.28.3) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming javax.inject-1.jar (javax.inject:javax.inject:1) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming bcutil-jdk18on-1.77.jar (org.bouncycastle:bcutil-jdk18on:1.77) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming bcprov-jdk18on-1.77.jar (org.bouncycastle:bcprov-jdk18on:1.77) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming trove4j-1.0.20200330.jar (org.jetbrains.intellij.deps:trove4j:1.0.20200330) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming commons-compress-1.21.jar (org.apache.commons:commons-compress:1.21) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming httpclient-4.5.14.jar (org.apache.httpcomponents:httpclient:4.5.14) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming httpcore-4.4.16.jar (org.apache.httpcomponents:httpcore:4.4.16) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming javax.activation-1.2.0.jar (com.sun.activation:javax.activation:1.2.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming annotations-23.0.0.jar (org.jetbrains:annotations:23.0.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming signflinger-8.6.0.jar (com.android:signflinger:8.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming zipflinger-8.6.0.jar (com.android:zipflinger:8.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming annotations-31.6.0.jar (com.android.tools:annotations:31.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming jna-platform-5.6.0.jar (net.java.dev.jna:jna-platform:5.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming juniversalchardet-1.0.3.jar (com.googlecode.juniversalchardet:juniversalchardet:1.0.3) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming javax.annotation-api-1.3.2.jar (javax.annotation:javax.annotation-api:1.3.2) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming stax-ex-1.8.1.jar (org.jvnet.staxex:stax-ex:1.8.1) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming jakarta.xml.bind-api-2.3.2.jar (jakarta.xml.bind:jakarta.xml.bind-api:2.3.2) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming txw2-2.3.2.jar (org.glassfish.jaxb:txw2:2.3.2) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming istack-commons-runtime-3.0.8.jar (com.sun.istack:istack-commons-runtime:3.0.8) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming FastInfoset-1.2.16.jar (com.sun.xml.fastinfoset:FastInfoset:1.2.16) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming jakarta.activation-api-1.2.1.jar (jakarta.activation:jakarta.activation-api:1.2.1) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming auto-value-annotations-1.6.2.jar (com.google.auto.value:auto-value-annotations:1.6.2) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming error_prone_annotations-2.18.0.jar (com.google.errorprone:error_prone_annotations:2.18.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming jose4j-0.9.5.jar (org.bitbucket.b_c:jose4j:0.9.5) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming slf4j-api-1.7.30.jar (org.slf4j:slf4j-api:1.7.30) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming jdom2-2.0.6.jar (org.jdom:jdom2:2.0.6) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming jsr305-3.0.2.jar (com.google.code.findbugs:jsr305:3.0.2) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming j2objc-annotations-2.8.jar (com.google.j2objc:j2objc-annotations:2.8) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming annotations-4.1.1.4.jar (com.google.android:annotations:4.1.1.4) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming animal-sniffer-annotations-1.23.jar (org.codehaus.mojo:animal-sniffer-annotations:1.23) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming perfmark-api-0.26.0.jar (io.perfmark:perfmark-api:0.26.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming netty-codec-http2-4.1.93.Final.jar (io.netty:netty-codec-http2:4.1.93.Final) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming netty-handler-proxy-4.1.93.Final.jar (io.netty:netty-handler-proxy:4.1.93.Final) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming netty-codec-http-4.1.93.Final.jar (io.netty:netty-codec-http:4.1.93.Final) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming netty-handler-4.1.93.Final.jar (io.netty:netty-handler:4.1.93.Final) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming netty-transport-native-unix-common-4.1.93.Final.jar (io.netty:netty-transport-native-unix-common:4.1.93.Final) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming checker-qual-3.33.0.jar (org.checkerframework:checker-qual:3.33.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming commons-codec-1.11.jar (commons-codec:commons-codec:1.11) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming apksig-8.6.0.jar (com.android.tools.build:apksig:8.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming javawriter-2.5.0.jar (com.squareup:javawriter:2.5.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-gradle-plugin-annotations-2.1.0.jar (org.jetbrains.kotlin:kotlin-gradle-plugin-annotations:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-native-utils-2.1.0.jar (org.jetbrains.kotlin:kotlin-native-utils:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-tooling-core-2.1.0.jar (org.jetbrains.kotlin:kotlin-tooling-core:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-build-tools-api-2.1.0.jar (org.jetbrains.kotlin:kotlin-build-tools-api:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-util-klib-2.1.0.jar (org.jetbrains.kotlin:kotlin-util-klib:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-util-io-2.1.0.jar (org.jetbrains.kotlin:kotlin-util-io:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-daemon-client-2.1.0.jar (org.jetbrains.kotlin:kotlin-daemon-client:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlinx-coroutines-core-jvm-1.6.4.jar (org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming failureaccess-1.0.1.jar (com.google.guava:failureaccess:1.0.1) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar (com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming commons-logging-1.2.jar (commons-logging:commons-logging:1.2) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming jna-5.6.0.jar (net.java.dev.jna:jna:5.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming netty-codec-socks-4.1.93.Final.jar (io.netty:netty-codec-socks:4.1.93.Final) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming netty-codec-4.1.93.Final.jar (io.netty:netty-codec:4.1.93.Final) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming netty-transport-4.1.93.Final.jar (io.netty:netty-transport:4.1.93.Final) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming netty-buffer-4.1.93.Final.jar (io.netty:netty-buffer:4.1.93.Final) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming netty-resolver-4.1.93.Final.jar (io.netty:netty-resolver:4.1.93.Final) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming netty-common-4.1.93.Final.jar (io.netty:netty-common:4.1.93.Final) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming gradle-1.0.0.jar (project :gradle) with ProjectDependencyInstrumentingArtifactTransform
+[        ] Settings evaluated using settings file 'C:\audioview\android\settings.gradle'.
+[        ] Projects loaded. Root project using build file 'C:\audioview\android\build.gradle'.
+[        ] Included projects: [root project 'android', project ':app', project ':cloud_firestore', project ':cloud_functions', project ':firebase_auth', project ':firebase_core', project ':firebase_messaging', project ':flutter_local_notifications', project ':flutter_native_splash', project ':flutter_naver_login', project ':google_sign_in_android', project ':kakao_flutter_sdk_common', project ':path_provider_android', project ':permission_handler_android', project ':shared_preferences_android', project ':speech_to_text', project ':webview_flutter_android']
+[ +373 ms] > Configure project :app
+[        ] Evaluating project ':app' using build file 'C:\audioview\android\app\build.gradle'.
+[        ] Using default execution profile
+[        ] Using Kotlin Gradle Plugin gradle85 variant
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\AndroidSDK\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\AndroidSDK\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\AndroidSDK\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\AndroidSDK\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\AndroidSDK\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\AndroidSDK\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\AndroidSDK\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\AndroidSDK\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\AndroidSDK\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\AndroidSDK\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\AndroidSDK\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\AndroidSDK\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\AndroidSDK\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\AndroidSDK\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\AndroidSDK\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\AndroidSDK\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\AndroidSDK\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\AndroidSDK\sdk
+[        ] C/C++: android.ndkVersion from module build.gradle is [28.2.13676358]
+[        ] C/C++: android.ndkPath from module build.gradle is not set
+[        ] C/C++: ndk.dir in local.properties is not set
+[        ] C/C++: Not considering ANDROID_NDK_HOME because support was removed after deprecation period.
+[        ] C/C++: sdkFolder is C:\AndroidSDK\sdk
+[        ] > Configure project :
+[        ] Evaluating root project 'android' using build file 'C:\audioview\android\build.gradle'.
+[        ] Transforming google-services-4.3.15.jar (com.google.gms:google-services:4.3.15) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming gradle-8.1.0.jar (com.android.tools.build:gradle:8.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-gradle-plugin-model-2.1.0.jar (org.jetbrains.kotlin:kotlin-gradle-plugin-model:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-gradle-plugin-api-2.1.0.jar (org.jetbrains.kotlin:kotlin-gradle-plugin-api:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-gradle-plugin-2.1.0-gradle85.jar (org.jetbrains.kotlin:kotlin-gradle-plugin:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming strict-version-matcher-plugin-1.2.4.jar (com.google.android.gms:strict-version-matcher-plugin:1.2.4) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming lint-model-31.1.0.jar (com.android.tools.lint:lint-model:31.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming builder-8.1.0.jar (com.android.tools.build:builder:8.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming manifest-merger-31.1.0.jar (com.android.tools.build:manifest-merger:31.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming sdk-common-31.1.0.jar (com.android.tools:sdk-common:31.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming sdklib-31.1.0.jar (com.android.tools:sdklib:31.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming repository-31.1.0.jar (com.android.tools:repository:31.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming tracker-31.1.0.jar (com.android.tools.analytics-library:tracker:31.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming shared-31.1.0.jar (com.android.tools.analytics-library:shared:31.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming databinding-compiler-common-8.1.0.jar (androidx.databinding:databinding-compiler-common:8.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming android-test-plugin-result-listener-gradle-proto-31.1.0.jar (com.android.tools.utp:android-test-plugin-result-listener-gradle-proto:31.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming jetifier-processor-1.0.0-beta10.jar (com.android.tools.build.jetifier:jetifier-processor:1.0.0-beta10) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming jetifier-core-1.0.0-beta10.jar (com.android.tools.build.jetifier:jetifier-core:1.0.0-beta10) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming bundletool-1.14.0.jar (com.android.tools.build:bundletool:1.14.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming protobuf-java-util-3.19.3.jar (com.google.protobuf:protobuf-java-util:3.19.3) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming grpc-netty-1.45.1.jar (io.grpc:grpc-netty:1.45.1) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming grpc-core-1.45.1.jar (io.grpc:grpc-core:1.45.1) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming tink-1.7.0.jar (com.google.crypto.tink:tink:1.7.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-build-statistics-2.1.0.jar (org.jetbrains.kotlin:kotlin-build-statistics:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming gson-2.8.9.jar (com.google.code.gson:gson:2.8.9) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming aaptcompiler-8.1.0.jar (com.android.tools.build:aaptcompiler:8.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming crash-31.1.0.jar (com.android.tools.analytics-library:crash:31.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming lint-typedef-remover-31.1.0.jar (com.android.tools.lint:lint-typedef-remover:31.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming gradle-api-8.1.0.jar (com.android.tools.build:gradle-api:8.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming builder-test-api-8.1.0.jar (com.android.tools.build:builder-test-api:8.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming grpc-protobuf-1.45.1.jar (io.grpc:grpc-protobuf:1.45.1) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming grpc-stub-1.45.1.jar (io.grpc:grpc-stub:1.45.1) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming ddmlib-31.1.0.jar (com.android.tools.ddms:ddmlib:31.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming layoutlib-api-31.1.0.jar (com.android.tools.layoutlib:layoutlib-api:31.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming dvlib-31.1.0.jar (com.android.tools:dvlib:31.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming common-31.1.0.jar (com.android.tools:common:31.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming jimfs-1.1.jar (com.google.jimfs:jimfs:1.1) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming grpc-protobuf-lite-1.45.1.jar (io.grpc:grpc-protobuf-lite:1.45.1) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming grpc-api-1.45.1.jar (io.grpc:grpc-api:1.45.1) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming apkzlib-8.1.0.jar (com.android.tools.build:apkzlib:8.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming guava-31.1-jre.jar (com.google.guava:guava:31.1-jre) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming gradle-settings-api-8.1.0.jar (com.android.tools.build:gradle-settings-api:8.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming aapt2-proto-8.1.0-10154469.jar (com.android.tools.build:aapt2-proto:8.1.0-10154469) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming databinding-common-8.1.0.jar (androidx.databinding:databinding-common:8.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming baseLibrary-8.1.0.jar (com.android.databinding:baseLibrary:8.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming android-device-provider-ddmlib-proto-31.1.0.jar (com.android.tools.utp:android-device-provider-ddmlib-proto:31.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming android-device-provider-gradle-proto-31.1.0.jar (com.android.tools.utp:android-device-provider-gradle-proto:31.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming android-test-plugin-host-additional-test-output-proto-31.1.0.jar (com.android.tools.utp:android-test-plugin-host-additional-test-output-proto:31.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming android-test-plugin-host-coverage-proto-31.1.0.jar (com.android.tools.utp:android-test-plugin-host-coverage-proto:31.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming android-test-plugin-host-emulator-control-proto-31.1.0.jar (com.android.tools.utp:android-test-plugin-host-emulator-control-proto:31.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming android-test-plugin-host-logcat-proto-31.1.0.jar (com.android.tools.utp:android-test-plugin-host-logcat-proto:31.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming android-test-plugin-host-apk-installer-proto-31.1.0.jar (com.android.tools.utp:android-test-plugin-host-apk-installer-proto:31.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming android-test-plugin-host-retention-proto-31.1.0.jar (com.android.tools.utp:android-test-plugin-host-retention-proto:31.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming builder-model-8.1.0.jar (com.android.tools.build:builder-model:8.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-stdlib-jdk8-1.8.20-RC2.jar (org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.20-RC2) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming transform-api-2.0.0-deprecated-use-gradle-api.jar (com.android.tools.build:transform-api:2.0.0-deprecated-use-gradle-api) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming httpmime-4.5.6.jar (org.apache.httpcomponents:httpmime:4.5.6) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming commons-io-2.4.jar (commons-io:commons-io:2.4) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming asm-commons-9.2.jar (org.ow2.asm:asm-commons:9.2) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming asm-util-9.2.jar (org.ow2.asm:asm-util:9.2) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming asm-analysis-9.2.jar (org.ow2.asm:asm-analysis:9.2) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming asm-tree-9.2.jar (org.ow2.asm:asm-tree:9.2) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming asm-9.2.jar (org.ow2.asm:asm:9.2) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming bcpkix-jdk15on-1.67.jar (org.bouncycastle:bcpkix-jdk15on:1.67) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming jaxb-runtime-2.3.2.jar (org.glassfish.jaxb:jaxb-runtime:2.3.2) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming jopt-simple-4.9.jar (net.sf.jopt-simple:jopt-simple:4.9) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming javapoet-1.10.0.jar (com.squareup:javapoet:1.10.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming protos-31.1.0.jar (com.android.tools.analytics-library:protos:31.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming proto-google-common-protos-2.0.1.jar (com.google.api.grpc:proto-google-common-protos:2.0.1) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming protobuf-java-3.19.3.jar (com.google.protobuf:protobuf-java:3.19.3) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming core-proto-0.0.8-alpha08.jar (com.google.testing.platform:core-proto:0.0.8-alpha08) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming tensorflow-lite-metadata-0.1.0-rc2.jar (org.tensorflow:tensorflow-lite-metadata:0.1.0-rc2) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming flatbuffers-java-1.12.0.jar (com.google.flatbuffers:flatbuffers-java:1.12.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-gradle-plugin-idea-proto-2.1.0.jar (org.jetbrains.kotlin:kotlin-gradle-plugin-idea-proto:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-gradle-plugin-idea-2.1.0.jar (org.jetbrains.kotlin:kotlin-gradle-plugin-idea:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-klib-commonizer-api-2.1.0.jar (org.jetbrains.kotlin:kotlin-klib-commonizer-api:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-util-klib-metadata-2.1.0.jar (org.jetbrains.kotlin:kotlin-util-klib-metadata:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-compiler-runner-2.1.0.jar (org.jetbrains.kotlin:kotlin-compiler-runner:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming jsr305-3.0.2.jar (com.google.code.findbugs:jsr305:3.0.2) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming failureaccess-1.0.1.jar (com.google.guava:failureaccess:1.0.1) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar (com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming checker-qual-3.12.0.jar (org.checkerframework:checker-qual:3.12.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming error_prone_annotations-2.11.0.jar (com.google.errorprone:error_prone_annotations:2.11.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming j2objc-annotations-1.3.jar (com.google.j2objc:j2objc-annotations:1.3) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming animal-sniffer-annotations-1.19.jar (org.codehaus.mojo:animal-sniffer-annotations:1.19) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming dagger-2.28.3.jar (com.google.dagger:dagger:2.28.3) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming javax.inject-1.jar (javax.inject:javax.inject:1) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kxml2-2.3.0.jar (net.sf.kxml:kxml2:2.3.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming bcprov-jdk15on-1.67.jar (org.bouncycastle:bcprov-jdk15on:1.67) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming trove4j-1.0.20200330.jar (org.jetbrains.intellij.deps:trove4j:1.0.20200330) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-reflect-1.8.20-RC2.jar (org.jetbrains.kotlin:kotlin-reflect:1.8.20-RC2) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming xercesImpl-2.12.0.jar (xerces:xercesImpl:2.12.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming commons-compress-1.21.jar (org.apache.commons:commons-compress:1.21) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming httpclient-4.5.13.jar (org.apache.httpcomponents:httpclient:4.5.13) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming httpcore-4.4.15.jar (org.apache.httpcomponents:httpcore:4.4.15) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming javax.activation-1.2.0.jar (com.sun.activation:javax.activation:1.2.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-stdlib-jdk7-1.8.20-RC2.jar (org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.20-RC2) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-stdlib-1.8.20-RC2.jar (org.jetbrains.kotlin:kotlin-stdlib:1.8.20-RC2) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming annotations-13.0.jar (org.jetbrains:annotations:13.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming signflinger-8.1.0.jar (com.android:signflinger:8.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming zipflinger-8.1.0.jar (com.android:zipflinger:8.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming annotations-31.1.0.jar (com.android.tools:annotations:31.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming jna-platform-5.6.0.jar (net.java.dev.jna:jna-platform:5.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming juniversalchardet-1.0.3.jar (com.googlecode.juniversalchardet:juniversalchardet:1.0.3) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming javax.annotation-api-1.3.2.jar (javax.annotation:javax.annotation-api:1.3.2) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming stax-ex-1.8.1.jar (org.jvnet.staxex:stax-ex:1.8.1) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming jakarta.xml.bind-api-2.3.2.jar (jakarta.xml.bind:jakarta.xml.bind-api:2.3.2) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming txw2-2.3.2.jar (org.glassfish.jaxb:txw2:2.3.2) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming istack-commons-runtime-3.0.8.jar (com.sun.istack:istack-commons-runtime:3.0.8) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming FastInfoset-1.2.16.jar (com.sun.xml.fastinfoset:FastInfoset:1.2.16) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming jakarta.activation-api-1.2.1.jar (jakarta.activation:jakarta.activation-api:1.2.1) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming auto-value-annotations-1.6.2.jar (com.google.auto.value:auto-value-annotations:1.6.2) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming jose4j-0.7.0.jar (org.bitbucket.b_c:jose4j:0.7.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming slf4j-api-1.7.30.jar (org.slf4j:slf4j-api:1.7.30) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming jdom2-2.0.6.jar (org.jdom:jdom2:2.0.6) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming annotations-4.1.1.4.jar (com.google.android:annotations:4.1.1.4) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming perfmark-api-0.23.0.jar (io.perfmark:perfmark-api:0.23.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming netty-codec-http2-4.1.72.Final.jar (io.netty:netty-codec-http2:4.1.72.Final) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming netty-handler-proxy-4.1.72.Final.jar (io.netty:netty-handler-proxy:4.1.72.Final) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming commons-codec-1.11.jar (commons-codec:commons-codec:1.11) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming apksig-8.1.0.jar (com.android.tools.build:apksig:8.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming javawriter-2.5.0.jar (com.squareup:javawriter:2.5.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-gradle-plugin-annotations-2.1.0.jar (org.jetbrains.kotlin:kotlin-gradle-plugin-annotations:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-native-utils-2.1.0.jar (org.jetbrains.kotlin:kotlin-native-utils:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-tooling-core-2.1.0.jar (org.jetbrains.kotlin:kotlin-tooling-core:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-build-tools-api-2.1.0.jar (org.jetbrains.kotlin:kotlin-build-tools-api:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-util-klib-2.1.0.jar (org.jetbrains.kotlin:kotlin-util-klib:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-util-io-2.1.0.jar (org.jetbrains.kotlin:kotlin-util-io:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-daemon-client-2.1.0.jar (org.jetbrains.kotlin:kotlin-daemon-client:2.1.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlinx-coroutines-core-jvm-1.6.4.jar (org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming xml-apis-1.4.01.jar (xml-apis:xml-apis:1.4.01) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming commons-logging-1.2.jar (commons-logging:commons-logging:1.2) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming jna-5.6.0.jar (net.java.dev.jna:jna:5.6.0) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming kotlin-stdlib-common-1.8.20-RC2.jar (org.jetbrains.kotlin:kotlin-stdlib-common:1.8.20-RC2) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming grpc-context-1.45.1.jar (io.grpc:grpc-context:1.45.1) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming netty-codec-http-4.1.72.Final.jar (io.netty:netty-codec-http:4.1.72.Final) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming netty-handler-4.1.72.Final.jar (io.netty:netty-handler:4.1.72.Final) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming netty-codec-socks-4.1.72.Final.jar (io.netty:netty-codec-socks:4.1.72.Final) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming netty-codec-4.1.72.Final.jar (io.netty:netty-codec:4.1.72.Final) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming netty-transport-4.1.72.Final.jar (io.netty:netty-transport:4.1.72.Final) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming netty-buffer-4.1.72.Final.jar (io.netty:netty-buffer:4.1.72.Final) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming netty-resolver-4.1.72.Final.jar (io.netty:netty-resolver:4.1.72.Final) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming netty-common-4.1.72.Final.jar (io.netty:netty-common:4.1.72.Final) with ExternalDependencyInstrumentingArtifactTransform
+[        ] Transforming netty-tcnative-classes-2.0.46.Final.jar (io.netty:netty-tcnative-classes:2.0.46.Final) with ExternalDependencyInstrumentingArtifactTransform
+flutter : [  +76 ms] FAILURE: Build failed with an excepti
+on.
+위치 줄:1 문자:1
++ flutter build apk --release --verbose > build_log.txt 2>
+&1
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~
+    + CategoryInfo          : NotSpecified: ([  +76 ms] F 
+   AIL...h an exception.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[   +1 ms] * Where:
+[        ] Build file 'C:\audioview\android\build.gradle' 
+line: 45
+[        ] * What went wrong:
+[        ] A problem occurred evaluating root project 'and
+roid'.
+[        ] > It is too late to set compileSdk
+[        ]   It has already been read to configure this pr
+oject.
+[        ]   Consider either moving this call to be during
+ evaluation,
+[        ]   or using the variant API.
+[        ] * Try:
+[        ] > Run with --debug option to get more log outpu
+t.
+[        ] > Run with --scan to get full insights.
+[        ] > Get more help at https://help.gradle.org.
+[        ] * Exception is:
+[        ] org.gradle.api.GradleScriptException: A problem
+ occurred evaluating root project 'android'.
+[        ] 	at org.gradle.groovy.scripts.internal.DefaultS
+criptRunnerFactory$ScriptRunnerImpl.run(DefaultScriptRunne
+rFactory.java:93)
+[        ] 	at org.gradle.configuration.DefaultScriptPlugi
+nFactory$ScriptPluginImpl.lambda$apply$0(DefaultScriptPlug
+inFactory.java:137)
+[        ] 	at org.gradle.configuration.ProjectScriptTarge
+t.addConfiguration(ProjectScriptTarget.java:79)
+[        ] 	at org.gradle.configuration.DefaultScriptPlugi
+nFactory$ScriptPluginImpl.apply(DefaultScriptPluginFactory
+.java:140)
+[        ] 	at org.gradle.configuration.BuildOperationScri
+ptPlugin$1.run(BuildOperationScriptPlugin.java:68)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$1.execute(DefaultBuildOperationRunner.java
+:29)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$1.execute(DefaultBuildOperationRunner.java
+:26)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$2.execute(DefaultBuildOperationRunner.java
+:66)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$2.execute(DefaultBuildOperationRunner.java
+:59)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner.execute(DefaultBuildOperationRunner.java:1
+57)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner.execute(DefaultBuildOperationRunner.java:5
+9)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner.run(DefaultBuildOperationRunner.java:47)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationExecutor.run(DefaultBuildOperationExecutor.java:6
+8)
+[        ] 	at org.gradle.configuration.BuildOperationScri
+ptPlugin.lambda$apply$0(BuildOperationScriptPlugin.java:65
+)
+[        ] 	at org.gradle.internal.code.DefaultUserCodeApp
+licationContext.apply(DefaultUserCodeApplicationContext.ja
+va:43)
+[        ] 	at org.gradle.configuration.BuildOperationScri
+ptPlugin.apply(BuildOperationScriptPlugin.java:65)
+[        ] 	at org.gradle.api.internal.project.DefaultProj
+ectStateRegistry$ProjectStateImpl.lambda$applyToMutableSta
+te$1(DefaultProjectStateRegistry.java:407)
+[        ] 	at org.gradle.api.internal.project.DefaultProj
+ectStateRegistry$ProjectStateImpl.fromMutableState(Default
+ProjectStateRegistry.java:425)
+[        ] 	at org.gradle.api.internal.project.DefaultProj
+ectStateRegistry$ProjectStateImpl.applyToMutableState(Defa
+ultProjectStateRegistry.java:406)
+[        ] 	at org.gradle.configuration.project.BuildScrip
+tProcessor.execute(BuildScriptProcessor.java:46)
+[        ] 	at org.gradle.configuration.project.BuildScrip
+tProcessor.execute(BuildScriptProcessor.java:27)
+[        ] 	at org.gradle.configuration.project.ConfigureA
+ctionsProjectEvaluator.evaluate(ConfigureActionsProjectEva
+luator.java:35)
+[        ] 	at org.gradle.configuration.project.LifecycleP
+rojectEvaluator$EvaluateProject.lambda$run$0(LifecycleProj
+ectEvaluator.java:109)
+[        ] 	at org.gradle.api.internal.project.DefaultProj
+ectStateRegistry$ProjectStateImpl.lambda$applyToMutableSta
+te$1(DefaultProjectStateRegistry.java:407)
+[        ] 	at org.gradle.api.internal.project.DefaultProj
+ectStateRegistry$ProjectStateImpl.lambda$fromMutableState$
+2(DefaultProjectStateRegistry.java:430)
+[        ] 	at org.gradle.internal.work.DefaultWorkerLease
+Service.withReplacedLocks(DefaultWorkerLeaseService.java:3
+60)
+[        ] 	at org.gradle.api.internal.project.DefaultProj
+ectStateRegistry$ProjectStateImpl.fromMutableState(Default
+ProjectStateRegistry.java:430)
+[        ] 	at org.gradle.api.internal.project.DefaultProj
+ectStateRegistry$ProjectStateImpl.applyToMutableState(Defa
+ultProjectStateRegistry.java:406)
+[        ] 	at org.gradle.configuration.project.LifecycleP
+rojectEvaluator$EvaluateProject.run(LifecycleProjectEvalua
+tor.java:100)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$1.execute(DefaultBuildOperationRunner.java
+:29)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$1.execute(DefaultBuildOperationRunner.java
+:26)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$2.execute(DefaultBuildOperationRunner.java
+:66)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$2.execute(DefaultBuildOperationRunner.java
+:59)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner.execute(DefaultBuildOperationRunner.java:1
+57)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner.execute(DefaultBuildOperationRunner.java:5
+9)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner.run(DefaultBuildOperationRunner.java:47)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationExecutor.run(DefaultBuildOperationExecutor.java:6
+8)
+[        ] 	at org.gradle.configuration.project.LifecycleP
+rojectEvaluator.evaluate(LifecycleProjectEvaluator.java:72
+)
+[        ] 	at org.gradle.api.internal.project.DefaultProj
+ect.evaluate(DefaultProject.java:785)
+[        ] 	at org.gradle.api.internal.project.DefaultProj
+ect.evaluate(DefaultProject.java:155)
+[        ] 	at org.gradle.api.internal.project.ProjectLife
+cycleController.lambda$ensureSelfConfigured$2(ProjectLifec
+ycleController.java:84)
+[        ] 	at org.gradle.internal.model.StateTransitionCo
+ntroller.lambda$doTransition$14(StateTransitionController.
+java:255)
+[        ] 	at org.gradle.internal.model.StateTransitionCo
+ntroller.doTransition(StateTransitionController.java:266)
+[        ] 	at org.gradle.internal.model.StateTransitionCo
+ntroller.doTransition(StateTransitionController.java:254)
+[        ] 	at org.gradle.internal.model.StateTransitionCo
+ntroller.lambda$maybeTransitionIfNotCurrentlyTransitioning
+$10(StateTransitionController.java:199)
+[        ] 	at org.gradle.internal.work.DefaultSynchronize
+r.withLock(DefaultSynchronizer.java:34)
+[        ] 	at org.gradle.internal.model.StateTransitionCo
+ntroller.maybeTransitionIfNotCurrentlyTransitioning(StateT
+ransitionController.java:195)
+[        ] 	at org.gradle.api.internal.project.ProjectLife
+cycleController.ensureSelfConfigured(ProjectLifecycleContr
+oller.java:84)
+[        ] 	at org.gradle.api.internal.project.DefaultProj
+ectStateRegistry$ProjectStateImpl.ensureConfigured(Default
+ProjectStateRegistry.java:381)
+[        ] 	at org.gradle.execution.TaskPathProjectEvaluat
+or.configure(TaskPathProjectEvaluator.java:34)
+[        ] 	at org.gradle.execution.TaskPathProjectEvaluat
+or.configureHierarchy(TaskPathProjectEvaluator.java:48)
+[        ] 	at org.gradle.configuration.DefaultProjectsPre
+parer.prepareProjects(DefaultProjectsPreparer.java:42)
+[        ] 	at org.gradle.configuration.BuildTreePreparing
+ProjectsPreparer.prepareProjects(BuildTreePreparingProject
+sPreparer.java:65)
+[        ] 	at org.gradle.configuration.BuildOperationFiri
+ngProjectsPreparer$ConfigureBuild.run(BuildOperationFiring
+ProjectsPreparer.java:52)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$1.execute(DefaultBuildOperationRunner.java
+:29)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$1.execute(DefaultBuildOperationRunner.java
+:26)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$2.execute(DefaultBuildOperationRunner.java
+:66)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$2.execute(DefaultBuildOperationRunner.java
+:59)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner.execute(DefaultBuildOperationRunner.java:1
+57)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner.execute(DefaultBuildOperationRunner.java:5
+9)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner.run(DefaultBuildOperationRunner.java:47)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationExecutor.run(DefaultBuildOperationExecutor.java:6
+8)
+[        ] 	at org.gradle.configuration.BuildOperationFiri
+ngProjectsPreparer.prepareProjects(BuildOperationFiringPro
+jectsPreparer.java:40)
+[        ] 	at org.gradle.initialization.VintageBuildModel
+Controller.lambda$prepareProjects$2(VintageBuildModelContr
+oller.java:84)
+[        ] 	at org.gradle.internal.model.StateTransitionCo
+ntroller.lambda$doTransition$14(StateTransitionController.
+java:255)
+[        ] 	at org.gradle.internal.model.StateTransitionCo
+ntroller.doTransition(StateTransitionController.java:266)
+[        ] 	at org.gradle.internal.model.StateTransitionCo
+ntroller.doTransition(StateTransitionController.java:254)
+[        ] 	at org.gradle.internal.model.StateTransitionCo
+ntroller.lambda$transitionIfNotPreviously$11(StateTransiti
+onController.java:213)
+[        ] 	at org.gradle.internal.work.DefaultSynchronize
+r.withLock(DefaultSynchronizer.java:34)
+[        ] 	at org.gradle.internal.model.StateTransitionCo
+ntroller.transitionIfNotPreviously(StateTransitionControll
+er.java:209)
+[        ] 	at org.gradle.initialization.VintageBuildModel
+Controller.prepareProjects(VintageBuildModelController.jav
+a:84)
+[        ] 	at org.gradle.initialization.VintageBuildModel
+Controller.prepareToScheduleTasks(VintageBuildModelControl
+ler.java:71)
+[        ] 	at org.gradle.internal.build.DefaultBuildLifec
+ycleController.lambda$prepareToScheduleTasks$6(DefaultBuil
+dLifecycleController.java:175)
+[        ] 	at org.gradle.internal.model.StateTransitionCo
+ntroller.lambda$doTransition$14(StateTransitionController.
+java:255)
+[        ] 	at org.gradle.internal.model.StateTransitionCo
+ntroller.doTransition(StateTransitionController.java:266)
+[        ] 	at org.gradle.internal.model.StateTransitionCo
+ntroller.doTransition(StateTransitionController.java:254)
+[        ] 	at org.gradle.internal.model.StateTransitionCo
+ntroller.lambda$maybeTransition$9(StateTransitionControlle
+r.java:190)
+[        ] 	at org.gradle.internal.work.DefaultSynchronize
+r.withLock(DefaultSynchronizer.java:34)
+[        ] 	at org.gradle.internal.model.StateTransitionCo
+ntroller.maybeTransition(StateTransitionController.java:18
+6)
+[        ] 	at org.gradle.internal.build.DefaultBuildLifec
+ycleController.prepareToScheduleTasks(DefaultBuildLifecycl
+eController.java:173)
+[        ] 	at org.gradle.internal.buildtree.DefaultBuildT
+reeWorkPreparer.scheduleRequestedTasks(DefaultBuildTreeWor
+kPreparer.java:36)
+[        ] 	at org.gradle.configurationcache.VintageBuildT
+reeWorkController$scheduleAndRunRequestedTasks$1.apply(Vin
+tageBuildTreeWorkController.kt:36)
+[        ] 	at org.gradle.configurationcache.VintageBuildT
+reeWorkController$scheduleAndRunRequestedTasks$1.apply(Vin
+tageBuildTreeWorkController.kt:35)
+[        ] 	at org.gradle.composite.internal.DefaultInclud
+edBuildTaskGraph.withNewWorkGraph(DefaultIncludedBuildTask
+Graph.java:112)
+[        ] 	at org.gradle.configurationcache.VintageBuildT
+reeWorkController.scheduleAndRunRequestedTasks(VintageBuil
+dTreeWorkController.kt:35)
+[        ] 	at org.gradle.internal.buildtree.DefaultBuildT
+reeLifecycleController.lambda$scheduleAndRunTasks$1(Defaul
+tBuildTreeLifecycleController.java:77)
+[        ] 	at org.gradle.internal.buildtree.DefaultBuildT
+reeLifecycleController.lambda$runBuild$4(DefaultBuildTreeL
+ifecycleController.java:120)
+[        ] 	at org.gradle.internal.model.StateTransitionCo
+ntroller.lambda$transition$6(StateTransitionController.jav
+a:169)
+[        ] 	at org.gradle.internal.model.StateTransitionCo
+ntroller.doTransition(StateTransitionController.java:266)
+[        ] 	at org.gradle.internal.model.StateTransitionCo
+ntroller.lambda$transition$7(StateTransitionController.jav
+a:169)
+[        ] 	at org.gradle.internal.work.DefaultSynchronize
+r.withLock(DefaultSynchronizer.java:44)
+[        ] 	at org.gradle.internal.model.StateTransitionCo
+ntroller.transition(StateTransitionController.java:169)
+[        ] 	at org.gradle.internal.buildtree.DefaultBuildT
+reeLifecycleController.runBuild(DefaultBuildTreeLifecycleC
+ontroller.java:117)
+[        ] 	at org.gradle.internal.buildtree.DefaultBuildT
+reeLifecycleController.scheduleAndRunTasks(DefaultBuildTre
+eLifecycleController.java:77)
+[        ] 	at org.gradle.internal.buildtree.DefaultBuildT
+reeLifecycleController.scheduleAndRunTasks(DefaultBuildTre
+eLifecycleController.java:72)
+[        ] 	at org.gradle.tooling.internal.provider.Execut
+eBuildActionRunner.run(ExecuteBuildActionRunner.java:31)
+[        ] 	at org.gradle.launcher.exec.ChainingBuildActio
+nRunner.run(ChainingBuildActionRunner.java:35)
+[        ] 	at org.gradle.internal.buildtree.ProblemReport
+ingBuildActionRunner.run(ProblemReportingBuildActionRunner
+.java:49)
+[        ] 	at org.gradle.launcher.exec.BuildOutcomeReport
+ingBuildActionRunner.run(BuildOutcomeReportingBuildActionR
+unner.java:65)
+[        ] 	at org.gradle.tooling.internal.provider.FileSy
+stemWatchingBuildActionRunner.run(FileSystemWatchingBuildA
+ctionRunner.java:140)
+[        ] 	at org.gradle.launcher.exec.BuildCompletionNot
+ifyingBuildActionRunner.run(BuildCompletionNotifyingBuildA
+ctionRunner.java:41)
+[        ] 	at org.gradle.launcher.exec.RootBuildLifecycle
+BuildActionExecutor.lambda$execute$0(RootBuildLifecycleBui
+ldActionExecutor.java:40)
+[        ] 	at org.gradle.composite.internal.DefaultRootBu
+ildState.run(DefaultRootBuildState.java:123)
+[        ] 	at org.gradle.launcher.exec.RootBuildLifecycle
+BuildActionExecutor.execute(RootBuildLifecycleBuildActionE
+xecutor.java:40)
+[        ] 	at org.gradle.internal.buildtree.InitDeprecati
+onLoggingActionExecutor.execute(InitDeprecationLoggingActi
+onExecutor.java:66)
+[        ] 	at org.gradle.internal.buildtree.InitProblems.
+execute(InitProblems.java:36)
+[        ] 	at org.gradle.internal.buildtree.DefaultBuildT
+reeContext.execute(DefaultBuildTreeContext.java:40)
+[        ] 	at org.gradle.launcher.exec.BuildTreeLifecycle
+BuildActionExecutor.lambda$execute$0(BuildTreeLifecycleBui
+ldActionExecutor.java:71)
+[        ] 	at org.gradle.internal.buildtree.BuildTreeStat
+e.run(BuildTreeState.java:60)
+[        ] 	at org.gradle.launcher.exec.BuildTreeLifecycle
+BuildActionExecutor.execute(BuildTreeLifecycleBuildActionE
+xecutor.java:71)
+[        ] 	at org.gradle.launcher.exec.RunAsBuildOperatio
+nBuildActionExecutor$3.call(RunAsBuildOperationBuildAction
+Executor.java:61)
+[        ] 	at org.gradle.launcher.exec.RunAsBuildOperatio
+nBuildActionExecutor$3.call(RunAsBuildOperationBuildAction
+Executor.java:57)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$CallableBuildOperationWorker.execute(Defau
+ltBuildOperationRunner.java:200)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$CallableBuildOperationWorker.execute(Defau
+ltBuildOperationRunner.java:195)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$2.execute(DefaultBuildOperationRunner.java
+:66)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$2.execute(DefaultBuildOperationRunner.java
+:59)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner.execute(DefaultBuildOperationRunner.java:1
+57)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner.execute(DefaultBuildOperationRunner.java:5
+9)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner.call(DefaultBuildOperationRunner.java:53)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationExecutor.call(DefaultBuildOperationExecutor.java:
+73)
+[        ] 	at org.gradle.launcher.exec.RunAsBuildOperatio
+nBuildActionExecutor.execute(RunAsBuildOperationBuildActio
+nExecutor.java:57)
+[        ] 	at org.gradle.launcher.exec.RunAsWorkerThreadB
+uildActionExecutor.lambda$execute$0(RunAsWorkerThreadBuild
+ActionExecutor.java:36)
+[        ] 	at org.gradle.internal.work.DefaultWorkerLease
+Service.withLocks(DefaultWorkerLeaseService.java:264)
+[        ] 	at org.gradle.internal.work.DefaultWorkerLease
+Service.runAsWorkerThread(DefaultWorkerLeaseService.java:1
+28)
+[        ] 	at org.gradle.launcher.exec.RunAsWorkerThreadB
+uildActionExecutor.execute(RunAsWorkerThreadBuildActionExe
+cutor.java:36)
+[        ] 	at org.gradle.tooling.internal.provider.contin
+uous.ContinuousBuildActionExecutor.execute(ContinuousBuild
+ActionExecutor.java:110)
+[        ] 	at org.gradle.tooling.internal.provider.Subscr
+ibableBuildActionExecutor.execute(SubscribableBuildActionE
+xecutor.java:64)
+[        ] 	at org.gradle.internal.session.DefaultBuildSes
+sionContext.execute(DefaultBuildSessionContext.java:46)
+[        ] 	at org.gradle.tooling.internal.provider.BuildS
+essionLifecycleBuildActionExecuter$ActionImpl.apply(BuildS
+essionLifecycleBuildActionExecuter.java:92)
+[        ] 	at org.gradle.tooling.internal.provider.BuildS
+essionLifecycleBuildActionExecuter$ActionImpl.apply(BuildS
+essionLifecycleBuildActionExecuter.java:80)
+[        ] 	at org.gradle.internal.session.BuildSessionSta
+te.run(BuildSessionState.java:71)
+[        ] 	at org.gradle.tooling.internal.provider.BuildS
+essionLifecycleBuildActionExecuter.execute(BuildSessionLif
+ecycleBuildActionExecuter.java:62)
+[        ] 	at org.gradle.tooling.internal.provider.BuildS
+essionLifecycleBuildActionExecuter.execute(BuildSessionLif
+ecycleBuildActionExecuter.java:41)
+[        ] 	at org.gradle.tooling.internal.provider.StartP
+aramsValidatingActionExecuter.execute(StartParamsValidatin
+gActionExecuter.java:64)
+[        ] 	at org.gradle.tooling.internal.provider.StartP
+aramsValidatingActionExecuter.execute(StartParamsValidatin
+gActionExecuter.java:32)
+[        ] 	at org.gradle.tooling.internal.provider.Sessio
+nFailureReportingActionExecuter.execute(SessionFailureRepo
+rtingActionExecuter.java:51)
+[        ] 	at org.gradle.tooling.internal.provider.Sessio
+nFailureReportingActionExecuter.execute(SessionFailureRepo
+rtingActionExecuter.java:39)
+[        ] 	at org.gradle.tooling.internal.provider.SetupL
+oggingActionExecuter.execute(SetupLoggingActionExecuter.ja
+va:47)
+[        ] 	at org.gradle.tooling.internal.provider.SetupL
+oggingActionExecuter.execute(SetupLoggingActionExecuter.ja
+va:31)
+[        ] 	at org.gradle.launcher.daemon.server.exec.Exec
+uteBuild.doBuild(ExecuteBuild.java:65)
+[        ] 	at org.gradle.launcher.daemon.server.exec.Buil
+dCommandOnly.execute(BuildCommandOnly.java:37)
+[        ] 	at org.gradle.launcher.daemon.server.api.Daemo
+nCommandExecution.proceed(DaemonCommandExecution.java:104)
+[        ] 	at org.gradle.launcher.daemon.server.exec.Watc
+hForDisconnection.execute(WatchForDisconnection.java:39)
+[        ] 	at org.gradle.launcher.daemon.server.api.Daemo
+nCommandExecution.proceed(DaemonCommandExecution.java:104)
+[        ] 	at org.gradle.launcher.daemon.server.exec.Rese
+tDeprecationLogger.execute(ResetDeprecationLogger.java:29)
+[        ] 	at org.gradle.launcher.daemon.server.api.Daemo
+nCommandExecution.proceed(DaemonCommandExecution.java:104)
+[        ] 	at org.gradle.launcher.daemon.server.exec.Requ
+estStopIfSingleUsedDaemon.execute(RequestStopIfSingleUsedD
+aemon.java:35)
+[        ] 	at org.gradle.launcher.daemon.server.api.Daemo
+nCommandExecution.proceed(DaemonCommandExecution.java:104)
+[  +45 ms] 	at org.gradle.launcher.daemon.server.exec.Forw
+ardClientInput$2.create(ForwardClientInput.java:78)
+[        ] 	at org.gradle.launcher.daemon.server.exec.Forw
+ardClientInput$2.create(ForwardClientInput.java:75)
+[        ] 	at org.gradle.util.internal.Swapper.swap(Swapp
+er.java:38)
+[        ] 	at org.gradle.launcher.daemon.server.exec.Forw
+ardClientInput.execute(ForwardClientInput.java:75)
+[        ] 	at org.gradle.launcher.daemon.server.api.Daemo
+nCommandExecution.proceed(DaemonCommandExecution.java:104)
+[        ] 	at org.gradle.launcher.daemon.server.exec.LogA
+ndCheckHealth.execute(LogAndCheckHealth.java:64)
+[        ] 	at org.gradle.launcher.daemon.server.api.Daemo
+nCommandExecution.proceed(DaemonCommandExecution.java:104)
+[        ] 	at org.gradle.launcher.daemon.server.exec.LogT
+oClient.doBuild(LogToClient.java:63)
+[        ] 	at org.gradle.launcher.daemon.server.exec.Buil
+dCommandOnly.execute(BuildCommandOnly.java:37)
+[        ] 	at org.gradle.launcher.daemon.server.api.Daemo
+nCommandExecution.proceed(DaemonCommandExecution.java:104)
+[        ] 	at org.gradle.launcher.daemon.server.exec.Esta
+blishBuildEnvironment.doBuild(EstablishBuildEnvironment.ja
+va:84)
+[        ] 	at org.gradle.launcher.daemon.server.exec.Buil
+dCommandOnly.execute(BuildCommandOnly.java:37)
+[        ] 	at org.gradle.launcher.daemon.server.api.Daemo
+nCommandExecution.proceed(DaemonCommandExecution.java:104)
+[        ] 	at org.gradle.launcher.daemon.server.exec.Star
+tBuildOrRespondWithBusy$1.run(StartBuildOrRespondWithBusy.
+java:52)
+[        ] 	at org.gradle.launcher.daemon.server.DaemonSta
+teCoordinator$1.run(DaemonStateCoordinator.java:297)
+[        ] 	at org.gradle.internal.concurrent.ExecutorPoli
+cy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64
+)
+[        ] 	at org.gradle.internal.concurrent.AbstractMana
+gedExecutor$1.run(AbstractManagedExecutor.java:47)
+[        ] 	at java.base/java.util.concurrent.ThreadPoolEx
+ecutor.runWorker(Unknown Source)
+[        ] 	at java.base/java.util.concurrent.ThreadPoolEx
+ecutor$Worker.run(Unknown Source)
+[        ] 	at java.base/java.lang.Thread.run(Unknown Sour
+ce)
+[        ] Caused by: com.android.build.gradle.internal.ds
+l.AgpDslLockedException: It is too late to set compileSdk
+[        ] It has already been read to configure this proj
+ect.
+[        ] Consider either moving this call to be during e
+valuation,
+[        ] or using the variant API.
+[        ] 	at com.android.build.gradle.internal.dsl.Appli
+cationExtensionImpl$AgpDecorated.set_compileSdk(Unknown So
+urce)
+[        ] 	at com.android.build.gradle.internal.dsl.Appli
+cationExtensionImpl$AgpDecorated_Decorated.set_compileSdk(
+Unknown Source)
+[        ] 	at com.android.build.gradle.internal.dsl.Commo
+nExtensionImpl.setCompileSdk(CommonExtensionImpl.kt:185)
+[        ] 	at com.android.build.gradle.internal.dsl.Appli
+cationExtensionImpl$AgpDecorated_Decorated.setCompileSdk(U
+nknown Source)
+[        ] 	at com.android.build.gradle.internal.dsl.Commo
+nExtensionImpl.compileSdkVersion(CommonExtensionImpl.kt:27
+0)
+[        ] 	at com.android.build.gradle.internal.dsl.Appli
+cationExtensionImpl$AgpDecorated_Decorated.compileSdkVersi
+on(Unknown Source)
+[        ] 	at com.android.build.gradle.internal.dsl.BaseA
+ppModuleExtension.compileSdkVersion(BaseAppModuleExtension
+.kt)
+[        ] 	at com.android.build.gradle.internal.dsl.BaseA
+ppModuleExtension_Decorated.compileSdkVersion(Unknown Sour
+ce)
+[        ] 	at java.base/jdk.internal.reflect.DirectMethod
+HandleAccessor.invoke(Unknown Source)
+[        ] 	at java.base/java.lang.reflect.Method.invoke(U
+nknown Source)
+[        ] 	at org.codehaus.groovy.reflection.CachedMethod
+.invoke(CachedMethod.java:107)
+[        ] 	at groovy.lang.MetaMethod.doMethodInvoke(MetaM
+ethod.java:323)
+[        ] 	at org.gradle.internal.metaobject.BeanDynamicO
+bject$MetaClassAdapter.invokeMethod(BeanDynamicObject.java
+:541)
+[        ] 	at org.gradle.internal.metaobject.BeanDynamicO
+bject.tryInvokeMethod(BeanDynamicObject.java:218)
+[        ] 	at org.gradle.internal.metaobject.CompositeDyn
+amicObject.tryInvokeMethod(CompositeDynamicObject.java:99)
+[   +4 ms] 	at org.gradle.internal.extensibility.MixInClos
+urePropertiesAsMethodsDynamicObject.tryInvokeMethod(MixInC
+losurePropertiesAsMethodsDynamicObject.java:38)
+[        ] 	at org.gradle.internal.metaobject.ConfigureDel
+egate.invokeMethod(ConfigureDelegate.java:65)
+[        ] 	at org.codehaus.groovy.runtime.metaclass.Closu
+reMetaClass.invokeOnDelegationObjects(ClosureMetaClass.jav
+a:408)
+[        ] 	at org.codehaus.groovy.runtime.metaclass.Closu
+reMetaClass.invokeMethod(ClosureMetaClass.java:348)
+[        ] 	at org.codehaus.groovy.runtime.callsite.PogoMe
+taClassSite.callCurrent(PogoMetaClassSite.java:61)
+[        ] 	at org.codehaus.groovy.runtime.callsite.Abstra
+ctCallSite.callCurrent(AbstractCallSite.java:185)
+[        ] 	at build_729qz2sxdd11axmp3d6jmn6xn$_run_closur
+e2$_closure5$_closure7$_closure11.doCall$original(C:\audio
+view\android\build.gradle:45)
+[        ] 	at build_729qz2sxdd11axmp3d6jmn6xn$_run_closur
+e2$_closure5$_closure7$_closure11.doCall(C:\audioview\andr
+oid\build.gradle)
+[        ] 	at java.base/jdk.internal.reflect.DirectMethod
+HandleAccessor.invoke(Unknown Source)
+[        ] 	at java.base/java.lang.reflect.Method.invoke(U
+nknown Source)
+[        ] 	at org.codehaus.groovy.reflection.CachedMethod
+.invoke(CachedMethod.java:107)
+[        ] 	at groovy.lang.MetaMethod.doMethodInvoke(MetaM
+ethod.java:323)
+[        ] 	at org.codehaus.groovy.runtime.metaclass.Closu
+reMetaClass.invokeMethod(ClosureMetaClass.java:274)
+[        ] 	at groovy.lang.MetaClassImpl.invokeMethod(Meta
+ClassImpl.java:1035)
+[        ] 	at groovy.lang.Closure.call(Closure.java:412)
+[        ] 	at groovy.lang.Closure.call(Closure.java:428)
+[        ] 	at org.gradle.util.internal.ClosureBackedActio
+n.execute(ClosureBackedAction.java:73)
+[        ] 	at org.gradle.util.internal.ConfigureUtil.conf
+igureTarget(ConfigureUtil.java:155)
+[        ] 	at org.gradle.util.internal.ConfigureUtil.conf
+igure(ConfigureUtil.java:106)
+[        ] 	at org.gradle.util.internal.ConfigureUtil$Wrap
+pedConfigureAction.execute(ConfigureUtil.java:167)
+[        ] 	at org.gradle.internal.extensibility.Extension
+sStorage$ExtensionHolder.configure(ExtensionsStorage.java:
+177)
+[        ] 	at org.gradle.internal.extensibility.Extension
+sStorage.configureExtension(ExtensionsStorage.java:64)
+[        ] 	at org.gradle.internal.extensibility.DefaultCo
+nvention.configureExtension(DefaultConvention.java:385)
+[        ] 	at org.gradle.internal.extensibility.DefaultCo
+nvention.access$500(DefaultConvention.java:49)
+[        ] 	at org.gradle.internal.extensibility.DefaultCo
+nvention$ExtensionsDynamicObject.tryInvokeMethod(DefaultCo
+nvention.java:315)
+[        ] 	at org.gradle.internal.metaobject.CompositeDyn
+amicObject.tryInvokeMethod(CompositeDynamicObject.java:99)
+[        ] 	at org.gradle.internal.extensibility.MixInClos
+urePropertiesAsMethodsDynamicObject.tryInvokeMethod(MixInC
+losurePropertiesAsMethodsDynamicObject.java:38)
+[        ] 	at org.gradle.internal.metaobject.AbstractDyna
+micObject.invokeMethod(AbstractDynamicObject.java:163)
+[        ] 	at org.gradle.api.internal.project.DefaultDyna
+micLookupRoutine.invokeMethod(DefaultDynamicLookupRoutine.
+java:58)
+[        ] 	at org.gradle.api.internal.project.DefaultProj
+ect.invokeMethod(DefaultProject.java:1147)
+[        ] 	at org.codehaus.groovy.runtime.callsite.PogoMe
+taClassSite.call(PogoMetaClassSite.java:44)
+[        ] 	at org.codehaus.groovy.runtime.callsite.Abstra
+ctCallSite.call(AbstractCallSite.java:139)
+[        ] 	at build_729qz2sxdd11axmp3d6jmn6xn$_run_closur
+e2$_closure5$_closure7.doCall$original(C:\audioview\androi
+d\build.gradle:44)
+[        ] 	at build_729qz2sxdd11axmp3d6jmn6xn$_run_closur
+e2$_closure5$_closure7.doCall(C:\audioview\android\build.g
+radle)
+[        ] 	at java.base/jdk.internal.reflect.DirectMethod
+HandleAccessor.invoke(Unknown Source)
+[        ] 	at java.base/java.lang.reflect.Method.invoke(U
+nknown Source)
+[        ] 	at org.codehaus.groovy.reflection.CachedMethod
+.invoke(CachedMethod.java:107)
+[        ] 	at groovy.lang.MetaMethod.doMethodInvoke(MetaM
+ethod.java:323)
+[        ] 	at org.codehaus.groovy.runtime.metaclass.Closu
+reMetaClass.invokeMethod(ClosureMetaClass.java:274)
+[   +6 ms] 	at groovy.lang.MetaClassImpl.invokeMethod(Meta
+ClassImpl.java:1035)
+[        ] 	at groovy.lang.Closure.call(Closure.java:412)
+[        ] 	at org.codehaus.groovy.runtime.ConvertedClosur
+e.invokeCustom(ConvertedClosure.java:50)
+[        ] 	at org.codehaus.groovy.runtime.ConversionHandl
+er.invoke(ConversionHandler.java:112)
+[        ] 	at jdk.proxy1/jdk.proxy1.$Proxy158.execute(Unk
+nown Source)
+[        ] 	at org.gradle.internal.code.DefaultUserCodeApp
+licationContext$CurrentApplication$1.execute(DefaultUserCo
+deApplicationContext.java:122)
+[        ] 	at org.gradle.api.internal.DefaultCollectionCa
+llbackActionDecorator$BuildOperationEmittingAction$1.run(D
+efaultCollectionCallbackActionDecorator.java:110)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$1.execute(DefaultBuildOperationRunner.java
+:29)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$1.execute(DefaultBuildOperationRunner.java
+:26)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$2.execute(DefaultBuildOperationRunner.java
+:66)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$2.execute(DefaultBuildOperationRunner.java
+:59)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner.execute(DefaultBuildOperationRunner.java:1
+57)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner.execute(DefaultBuildOperationRunner.java:5
+9)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner.run(DefaultBuildOperationRunner.java:47)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationExecutor.run(DefaultBuildOperationExecutor.java:6
+8)
+[        ] 	at org.gradle.api.internal.DefaultCollectionCa
+llbackActionDecorator$BuildOperationEmittingAction.execute
+(DefaultCollectionCallbackActionDecorator.java:107)
+[        ] 	at org.gradle.api.internal.collections.Collect
+ionFilter$1.execute(CollectionFilter.java:62)
+[        ] 	at org.gradle.api.internal.DefaultDomainObject
+Collection.all(DefaultDomainObjectCollection.java:161)
+[        ] 	at org.gradle.api.internal.plugins.DefaultPlug
+inContainer$2.execute(DefaultPluginContainer.java:163)
+[        ] 	at org.gradle.api.internal.plugins.DefaultPlug
+inContainer$2.execute(DefaultPluginContainer.java:154)
+[        ] 	at org.gradle.internal.code.DefaultUserCodeApp
+licationContext$CurrentApplication$1.execute(DefaultUserCo
+deApplicationContext.java:122)
+[        ] 	at org.gradle.api.internal.DefaultCollectionCa
+llbackActionDecorator$BuildOperationEmittingAction$1.run(D
+efaultCollectionCallbackActionDecorator.java:110)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$1.execute(DefaultBuildOperationRunner.java
+:29)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$1.execute(DefaultBuildOperationRunner.java
+:26)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$2.execute(DefaultBuildOperationRunner.java
+:66)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$2.execute(DefaultBuildOperationRunner.java
+:59)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner.execute(DefaultBuildOperationRunner.java:1
+57)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner.execute(DefaultBuildOperationRunner.java:5
+9)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner.run(DefaultBuildOperationRunner.java:47)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationExecutor.run(DefaultBuildOperationExecutor.java:6
+8)
+[        ] 	at org.gradle.api.internal.DefaultCollectionCa
+llbackActionDecorator$BuildOperationEmittingAction.execute
+(DefaultCollectionCallbackActionDecorator.java:107)
+[        ] 	at org.gradle.api.internal.DefaultDomainObject
+Collection.all(DefaultDomainObjectCollection.java:161)
+[        ] 	at org.gradle.api.internal.plugins.DefaultPlug
+inContainer.withId(DefaultPluginContainer.java:167)
+[        ] 	at java.base/jdk.internal.reflect.DirectMethod
+HandleAccessor.invoke(Unknown Source)
+[   +9 ms] 	at java.base/java.lang.reflect.Method.invoke(U
+nknown Source)
+[        ] 	at org.codehaus.groovy.runtime.callsite.PlainO
+bjectMetaMethodSite.doInvoke(PlainObjectMetaMethodSite.jav
+a:48)
+[        ] 	at org.codehaus.groovy.runtime.callsite.PojoMe
+taMethodSite$PojoCachedMethodSiteNoUnwrap.invoke(PojoMetaM
+ethodSite.java:198)
+[        ] 	at org.codehaus.groovy.runtime.callsite.PojoMe
+taMethodSite.call(PojoMetaMethodSite.java:51)
+[        ] 	at org.codehaus.groovy.runtime.callsite.Abstra
+ctCallSite.call(AbstractCallSite.java:148)
+[        ] 	at build_729qz2sxdd11axmp3d6jmn6xn$_run_closur
+e2$_closure5.doCall$original(C:\audioview\android\build.gr
+adle:43)
+[        ] 	at build_729qz2sxdd11axmp3d6jmn6xn$_run_closur
+e2$_closure5.doCall(C:\audioview\android\build.gradle)
+[        ] 	at java.base/jdk.internal.reflect.DirectMethod
+HandleAccessor.invoke(Unknown Source)
+[        ] 	at java.base/java.lang.reflect.Method.invoke(U
+nknown Source)
+[        ] 	at org.codehaus.groovy.reflection.CachedMethod
+.invoke(CachedMethod.java:107)
+[        ] 	at groovy.lang.MetaMethod.doMethodInvoke(MetaM
+ethod.java:323)
+[        ] 	at org.codehaus.groovy.runtime.metaclass.Closu
+reMetaClass.invokeMethod(ClosureMetaClass.java:274)
+[        ] 	at groovy.lang.MetaClassImpl.invokeMethod(Meta
+ClassImpl.java:1035)
+[        ] 	at org.codehaus.groovy.runtime.callsite.PogoMe
+taClassSite.call(PogoMetaClassSite.java:38)
+[        ] 	at org.codehaus.groovy.runtime.callsite.Abstra
+ctCallSite.call(AbstractCallSite.java:139)
+[        ] 	at build_729qz2sxdd11axmp3d6jmn6xn$_run_closur
+e2.doCall$original(C:\audioview\android\build.gradle:63)
+[        ] 	at build_729qz2sxdd11axmp3d6jmn6xn$_run_closur
+e2.doCall(C:\audioview\android\build.gradle)
+[        ] 	at java.base/jdk.internal.reflect.DirectMethod
+HandleAccessor.invoke(Unknown Source)
+[        ] 	at java.base/java.lang.reflect.Method.invoke(U
+nknown Source)
+[        ] 	at org.codehaus.groovy.reflection.CachedMethod
+.invoke(CachedMethod.java:107)
+[        ] 	at groovy.lang.MetaMethod.doMethodInvoke(MetaM
+ethod.java:323)
+[        ] 	at org.codehaus.groovy.runtime.metaclass.Closu
+reMetaClass.invokeMethod(ClosureMetaClass.java:274)
+[        ] 	at groovy.lang.MetaClassImpl.invokeMethod(Meta
+ClassImpl.java:1035)
+[        ] 	at groovy.lang.Closure.call(Closure.java:412)
+[        ] 	at groovy.lang.Closure.call(Closure.java:428)
+[        ] 	at org.gradle.util.internal.ClosureBackedActio
+n.execute(ClosureBackedAction.java:73)
+[        ] 	at org.gradle.util.internal.ConfigureUtil.conf
+igureTarget(ConfigureUtil.java:155)
+[        ] 	at org.gradle.util.internal.ConfigureUtil.conf
+igure(ConfigureUtil.java:106)
+[        ] 	at org.gradle.util.internal.ConfigureUtil$Wrap
+pedConfigureAction.execute(ConfigureUtil.java:167)
+[        ] 	at org.gradle.api.internal.DefaultMutationGuar
+d$1.execute(DefaultMutationGuard.java:45)
+[        ] 	at org.gradle.internal.Actions.with(Actions.ja
+va:206)
+[        ] 	at org.gradle.api.internal.project.BuildOperat
+ionCrossProjectConfigurator$1.run(BuildOperationCrossProje
+ctConfigurator.java:69)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$1.execute(DefaultBuildOperationRunner.java
+:29)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$1.execute(DefaultBuildOperationRunner.java
+:26)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$2.execute(DefaultBuildOperationRunner.java
+:66)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$2.execute(DefaultBuildOperationRunner.java
+:59)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner.execute(DefaultBuildOperationRunner.java:1
+57)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner.execute(DefaultBuildOperationRunner.java:5
+9)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner.run(DefaultBuildOperationRunner.java:47)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationExecutor.run(DefaultBuildOperationExecutor.java:6
+8)
+[        ] 	at org.gradle.api.internal.project.BuildOperat
+ionCrossProjectConfigurator.lambda$runProjectConfigureActi
+on$0(BuildOperationCrossProjectConfigurator.java:66)
+[        ] 	at org.gradle.api.internal.project.DefaultProj
+ectStateRegistry$ProjectStateImpl.lambda$applyToMutableSta
+te$1(DefaultProjectStateRegistry.java:407)
+[        ] 	at org.gradle.api.internal.project.DefaultProj
+ectStateRegistry$ProjectStateImpl.fromMutableState(Default
+ProjectStateRegistry.java:425)
+[        ] 	at org.gradle.api.internal.project.DefaultProj
+ectStateRegistry$ProjectStateImpl.applyToMutableState(Defa
+ultProjectStateRegistry.java:406)
+[        ] 	at org.gradle.api.internal.project.BuildOperat
+ionCrossProjectConfigurator.runProjectConfigureAction(Buil
+dOperationCrossProjectConfigurator.java:66)
+[        ] 	at org.gradle.api.internal.project.BuildOperat
+ionCrossProjectConfigurator.access$100(BuildOperationCross
+ProjectConfigurator.java:32)
+[        ] 	at org.gradle.api.internal.project.BuildOperat
+ionCrossProjectConfigurator$BlockConfigureBuildOperation.r
+un(BuildOperationCrossProjectConfigurator.java:111)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$1.execute(DefaultBuildOperationRunner.java
+:29)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$1.execute(DefaultBuildOperationRunner.java
+:26)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$2.execute(DefaultBuildOperationRunner.java
+:66)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner$2.execute(DefaultBuildOperationRunner.java
+:59)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner.execute(DefaultBuildOperationRunner.java:1
+57)
+[        ] 5 actionable tasks: 1 executed, 4 up-to-date
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner.execute(DefaultBuildOperationRunner.java:5
+9)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationRunner.run(DefaultBuildOperationRunner.java:47)
+[        ] 	at org.gradle.internal.operations.DefaultBuild
+OperationExecutor.run(DefaultBuildOperationExecutor.java:6
+8)
+[        ] 	at org.gradle.api.internal.project.BuildOperat
+ionCrossProjectConfigurator.runBlockConfigureAction(BuildO
+perationCrossProjectConfigurator.java:62)
+[        ] 	at org.gradle.api.internal.project.BuildOperat
+ionCrossProjectConfigurator.subprojects(BuildOperationCros
+sProjectConfigurator.java:48)
+[        ] 	at org.gradle.api.internal.project.DefaultProj
+ect.subprojects(DefaultProject.java:751)
+[        ] 	at org.gradle.api.internal.project.DefaultProj
+ect.subprojects(DefaultProject.java:741)
+[        ] 	at java.base/jdk.internal.reflect.DirectMethod
+HandleAccessor.invoke(Unknown Source)
+[        ] 	at java.base/java.lang.reflect.Method.invoke(U
+nknown Source)
+[        ] 	at org.codehaus.groovy.reflection.CachedMethod
+.invoke(CachedMethod.java:107)
+[        ] 	at groovy.lang.MetaMethod.doMethodInvoke(MetaM
+ethod.java:323)
+[        ] 	at org.gradle.internal.metaobject.BeanDynamicO
+bject$MetaClassAdapter.invokeMethod(BeanDynamicObject.java
+:541)
+[        ] 	at org.gradle.internal.metaobject.BeanDynamicO
+bject.tryInvokeMethod(BeanDynamicObject.java:218)
+[        ] 	at org.gradle.internal.metaobject.CompositeDyn
+amicObject.tryInvokeMethod(CompositeDynamicObject.java:99)
+[        ] 	at org.gradle.internal.extensibility.MixInClos
+urePropertiesAsMethodsDynamicObject.tryInvokeMethod(MixInC
+losurePropertiesAsMethodsDynamicObject.java:38)
+[        ] 	at org.gradle.groovy.scripts.BasicScript$Scrip
+tDynamicObject.tryInvokeMethod(BasicScript.java:138)
+[        ] 	at org.gradle.internal.metaobject.AbstractDyna
+micObject.invokeMethod(AbstractDynamicObject.java:163)
+[        ] 	at org.gradle.api.internal.project.DefaultDyna
+micLookupRoutine.invokeMethod(DefaultDynamicLookupRoutine.
+java:58)
+[        ] 	at org.gradle.groovy.scripts.BasicScript.invok
+eMethod(BasicScript.java:87)
+[        ] 	at org.codehaus.groovy.runtime.callsite.PogoMe
+taClassSite.callCurrent(PogoMetaClassSite.java:68)
+[        ] 	at org.codehaus.groovy.runtime.callsite.Abstra
+ctCallSite.callCurrent(AbstractCallSite.java:185)
+[        ] 	at build_729qz2sxdd11axmp3d6jmn6xn.run(C:\audi
+oview\android\build.gradle:26)
+[        ] 	at org.gradle.groovy.scripts.internal.DefaultS
+criptRunnerFactory$ScriptRunnerImpl.run(DefaultScriptRunne
+rFactory.java:91)
+[        ] 	... 167 more
+[        ] BUILD FAILED in 2s
+[   +1 ms] Watched directory hierarchies: [C:\Users\占쏙옙占쌔쇽옙\flutter\packages\flutter_tools\gradle, C:\audioview\android]
+[ +512 ms] Running Gradle task 'assembleRelease'... (completed in 3.0s)
+[  +30 ms] "flutter apk" took 4,029ms.
+[  +89 ms] Gradle task assembleRelease failed with exit co
+de 1
+[        ] 
+           #0      throwToolExit (package:flutter_tools/sr
+c/base/common.dart:34:3)
+           #1      AndroidGradleBuilder.buildGradleApp (pa
+ckage:flutter_tools/src/android/gradle.dart:592:7)
+           <asynchronous suspension>
+           #2      AndroidGradleBuilder.buildApk (package:
+flutter_tools/src/android/gradle.dart:234:5)
+           <asynchronous suspension>
+           #3      BuildApkCommand.runCommand (package:flu
+tter_tools/src/commands/build_apk.dart:131:5)
+           <asynchronous suspension>
+           #4      FlutterCommand.run.<anonymous closure> 
+(package:flutter_tools/src/runner/flutter_command.dart:155
+9:27)
+           <asynchronous suspension>
+           #5      AppContext.run.<anonymous closure> (pac
+kage:flutter_tools/src/base/context.dart:154:19)
+           <asynchronous suspension>
+           #6      CommandRunner.runCommand (package:args/
+command_runner.dart:212:13)
+           <asynchronous suspension>
+           #7      FlutterCommandRunner.runCommand.<anonym
+ous closure> (package:flutter_tools/src/runner/flutter_com
+mand_runner.dart:487:9)
+           <asynchronous suspension>
+           #8      AppContext.run.<anonymous closure> (pac
+kage:flutter_tools/src/base/context.dart:154:19)
+           <asynchronous suspension>
+           #9      FlutterCommandRunner.runCommand (packag
+e:flutter_tools/src/runner/flutter_command_runner.dart:422
+:5)
+           <asynchronous suspension>
+           #10     run.<anonymous closure>.<anonymous clos
+ure> (package:flutter_tools/runner.dart:104:11)
+           <asynchronous suspension>
+           #11     AppContext.run.<anonymous closure> (pac
+kage:flutter_tools/src/base/context.dart:154:19)
+           <asynchronous suspension>
+           #12     main (package:flutter_tools/executable.
+dart:103:3)
+           <asynchronous suspension>
+
+
+[        ] Running 1 shutdown hook
+[   +4 ms] Shutdown hooks complete
+[  +83 ms] exiting with code 1
