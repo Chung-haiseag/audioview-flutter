@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../models/movie.dart';
 import '../../services/movie_service.dart';
 import '../../services/smart_search_service.dart';
-import '../home/movie_detail_screen.dart';
+import '../movie/movie_detail_screen.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -16,11 +16,11 @@ class _SearchScreenState extends State<SearchScreen> {
   final MovieService _movieService = MovieService();
   final SmartSearchService _smartSearch = SmartSearchService();
   final TextEditingController _searchController = TextEditingController();
-  
+
   List<Movie> _searchResults = [];
   bool _isLoading = false;
   Timer? _debounce;
-  
+
   // Smart Search states
   bool _isSmartSearchEnabled = false;
   List<String> _aiKeywords = [];
@@ -49,7 +49,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
     try {
       List<Movie> results = [];
-      
+
       if (_isSmartSearchEnabled && _smartSearch.isAvailable) {
         setState(() => _isAnalyzing = true);
         // AI 의도 분석
@@ -107,12 +107,13 @@ class _SearchScreenState extends State<SearchScreen> {
                   onChanged: _onSearchChanged,
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
-                    hintText: _isSmartSearchEnabled 
-                        ? '영화 분위기나 감정을 입력해보세요 (예: 슬픈 영화)' 
+                    hintText: _isSmartSearchEnabled
+                        ? '영화 분위기나 감정을 입력해보세요 (예: 슬픈 영화)'
                         : '영화, 시리즈, 배우 검색',
-                    hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.5)),
+                    hintStyle:
+                        TextStyle(color: Colors.white.withValues(alpha: 0.5)),
                     prefixIcon: const Icon(Icons.search, color: Colors.blue),
-                    suffixIcon: _searchController.text.isNotEmpty 
+                    suffixIcon: _searchController.text.isNotEmpty
                         ? IconButton(
                             icon: const Icon(Icons.clear, color: Colors.grey),
                             onPressed: () {
@@ -129,7 +130,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                   ),
                 ),
-                
+
                 // Smart Search Toggle
                 const SizedBox(height: 8),
                 Row(
@@ -138,7 +139,8 @@ class _SearchScreenState extends State<SearchScreen> {
                     Text(
                       '스마트 AI 검색',
                       style: TextStyle(
-                        color: _isSmartSearchEnabled ? Colors.blue : Colors.grey,
+                        color:
+                            _isSmartSearchEnabled ? Colors.blue : Colors.grey,
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
                       ),
@@ -150,7 +152,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         if (value && !_smartSearch.isAvailable) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text('AI 검색을 위해 Gemini API 키 설정이 필요합니다.'),
+                              content: Text('AI 검색을 위해 API 키 설정이 필요합니다.'),
                               backgroundColor: Colors.orange,
                             ),
                           );
@@ -168,7 +170,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               ],
             ),
-          ],
+          ),
 
           // AI Analysis Feedback
           if (_isAnalyzing)
@@ -226,15 +228,17 @@ class _SearchScreenState extends State<SearchScreen> {
           Wrap(
             spacing: 8,
             runSpacing: 8,
-            children: recommendations.map((tag) => ActionChip(
-                  label: Text(tag),
-                  backgroundColor: Colors.white.withValues(alpha: 0.1),
-                  labelStyle: const TextStyle(color: Colors.white),
-                  onPressed: () {
-                    _searchController.text = tag;
-                    _performSearch(tag);
-                  },
-                )).toList(),
+            children: recommendations
+                .map((tag) => ActionChip(
+                      label: Text(tag),
+                      backgroundColor: Colors.white.withValues(alpha: 0.1),
+                      labelStyle: const TextStyle(color: Colors.white),
+                      onPressed: () {
+                        _searchController.text = tag;
+                        _performSearch(tag);
+                      },
+                    ))
+                .toList(),
           ),
         ],
       ),
@@ -246,11 +250,15 @@ class _SearchScreenState extends State<SearchScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.movie_filter, size: 80, color: Colors.white.withValues(alpha: 0.2)),
+          Icon(Icons.movie_filter,
+              size: 80, color: Colors.white.withValues(alpha: 0.2)),
           const SizedBox(height: 16),
           Text(
             '찾으시는 영화가 없나요?',
-            style: TextStyle(color: Colors.white.withValues(alpha: 0.8), fontSize: 18, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: Colors.white.withValues(alpha: 0.8),
+                fontSize: 18,
+                fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           Text(
@@ -296,10 +304,11 @@ class _SearchScreenState extends State<SearchScreen> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: Image.network(
-                    movie.thumbnailUrl,
+                    movie.posterUrl,
                     fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) =>
-                        Container(color: Colors.grey[900], child: const Icon(Icons.movie)),
+                    errorBuilder: (context, error, stackTrace) => Container(
+                        color: Colors.grey[900],
+                        child: const Icon(Icons.movie)),
                   ),
                 ),
               ),
