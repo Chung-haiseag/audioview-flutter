@@ -5,6 +5,7 @@ import '../../services/movie_service.dart';
 import '../../widgets/hero_section.dart';
 import '../../widgets/movie_section.dart';
 import '../category/category_list_screen.dart';
+import '../../widgets/shimmer_loading.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -79,9 +80,7 @@ class HomeScreen extends StatelessWidget {
                 stream: MovieService().getNewMovies(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
-                    return const SizedBox(
-                        height: 200,
-                        child: Center(child: CircularProgressIndicator()));
+                    return const MovieSectionShimmer();
                   }
                   return MovieSection(
                       title: '새로 올라온 영화', movies: snapshot.data!);
@@ -93,7 +92,7 @@ class HomeScreen extends StatelessWidget {
             StreamBuilder<List<Movie>>(
                 stream: MovieService().getPopularMovies(),
                 builder: (context, snapshot) {
-                  if (!snapshot.hasData) return const SizedBox.shrink();
+                  if (!snapshot.hasData) return const MovieSectionShimmer();
                   return MovieSection(
                       title: '실시간 인기영화', movies: snapshot.data!);
                 }),

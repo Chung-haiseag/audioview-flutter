@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/movie.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'shimmer_loading.dart';
 
 class MovieCard extends StatelessWidget {
   final Movie movie;
@@ -40,28 +42,17 @@ class MovieCard extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: movie.posterUrl.isNotEmpty
-                        ? Image.network(
-                            movie.posterUrl,
+                        ? CachedNetworkImage(
+                            imageUrl: movie.posterUrl,
                             fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return const Center(
-                                child: Icon(Icons.broken_image,
-                                    color: Colors.white24),
-                              );
-                            },
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return Center(
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  value: loadingProgress.expectedTotalBytes !=
-                                          null
-                                      ? loadingProgress.cumulativeBytesLoaded /
-                                          loadingProgress.expectedTotalBytes!
-                                      : null,
-                                ),
-                              );
-                            },
+                            placeholder: (context, url) => const ShimmerWidget(
+                              width: 120,
+                              height: 180,
+                            ),
+                            errorWidget: (context, url, error) => const Center(
+                              child: Icon(Icons.broken_image,
+                                  color: Colors.white24),
+                            ),
                           )
                         : const Center(
                             child: Icon(Icons.movie_creation,
