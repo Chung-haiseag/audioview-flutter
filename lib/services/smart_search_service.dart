@@ -9,7 +9,7 @@ class SmartSearchService {
   SmartSearchService() {
     if (_apiKey.isNotEmpty && _apiKey != 'YOUR_GEMINI_API_KEY_HERE') {
       _model = GenerativeModel(
-        model: 'gemini-pro',
+        model: 'gemini-1.5-flash',
         apiKey: _apiKey,
       );
     }
