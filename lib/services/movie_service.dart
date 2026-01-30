@@ -29,32 +29,34 @@ class MovieService {
     });
   }
 
-  // Search movies by keywords (title, director, actors, etc.) using searchKeywords field
+  List<Movie>? _cachedMovies;
+
+  // Search movies by keywords (title, director, actors, etc.)
   Future<List<Movie>> searchMovies(String query) async {
     if (query.isEmpty) return [];
 
     try {
-      // 1. Array contains (Exact keyword match from searchKeywords list)
-      final snapshot = await _firestore
-          .collection('movies')
-          .where('searchKeywords', arrayContains: query)
-          .limit(20)
-          .get();
-
-      if (snapshot.docs.isNotEmpty) {
-        return snapshot.docs.map((doc) => Movie.fromFirestore(doc)).toList();
+      // 1. Load all movies if not cached (for client-side partial filtering)
+      if (_cachedMovies == null) {
+        final snapshot = await _firestore.collection('movies').get();
+        _cachedMovies =
+            snapshot.docs.map((doc) => Movie.fromFirestore(doc)).toList();
       }
 
-      // 2. Prefix search fallback on title for partial matches (better UX for typing)
-      final titleSnapshot = await _firestore
-          .collection('movies')
-          .orderBy('title')
-          .startAt([query])
-          .endAt(['$query\uf8ff'])
-          .limit(10)
-          .get();
+      final lowercaseQuery = query.toLowerCase();
 
-      return titleSnapshot.docs.map((doc) => Movie.fromFirestore(doc)).toList();
+      // 2. Perform partial match filtering (Substring search)
+      return _cachedMovies!.where((movie) {
+        final titleMatch = movie.title.toLowerCase().contains(lowercaseQuery);
+        final directorMatch =
+            movie.director?.toLowerCase().contains(lowercaseQuery) ?? false;
+        final actorMatch = movie.actors
+            .any((actor) => actor.toLowerCase().contains(lowercaseQuery));
+        final keywordMatch = movie.searchKeywords
+            .any((keyword) => keyword.toLowerCase().contains(lowercaseQuery));
+
+        return titleMatch || directorMatch || actorMatch || keywordMatch;
+      }).toList();
     } catch (e) {
       return [];
     }

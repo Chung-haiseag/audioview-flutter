@@ -1,4 +1,5 @@
-﻿import 'package:flutter/material.dart';
+﻿import 'dart:async';
+import 'package:flutter/material.dart';
 import 'voice_search_screen.dart';
 import '../../constants/mock_data.dart';
 import '../../models/movie.dart';
@@ -18,24 +19,28 @@ class _SearchScreenState extends State<SearchScreen> {
   final _searchController = TextEditingController();
   String _searchQuery = '';
   List<Movie> _searchResults = [];
-  // bool _isSearching = false; // Removed unused field
+  Timer? _debounce;
 
   @override
   void initState() {
     super.initState();
-    // _searchController.addListener(_onSearchChanged); // Removed listener for manual submission preferred or debounce?
-    // User usually expects search on enter or typing. Let's keep typing search but maybe with debounce.
-    // For now, simpler: search on submitted or icon press.
+    _searchController.addListener(_onSearchChanged);
   }
 
   @override
   void dispose() {
-    // _searchController.removeListener(_onSearchChanged);
+    _searchController.removeListener(_onSearchChanged);
+    _debounce?.cancel();
     _searchController.dispose();
     super.dispose();
   }
 
-  // Removed _onSearchChanged to avoid too many queries. Use onSubmitted.
+  void _onSearchChanged() {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      _performSearch(_searchController.text);
+    });
+  }
 
   Future<void> _performSearch(String query) async {
     if (query.isEmpty) {
@@ -85,6 +90,10 @@ class _SearchScreenState extends State<SearchScreen> {
             controller: _searchController,
             style: const TextStyle(color: Colors.white),
             textInputAction: TextInputAction.search,
+            onChanged: (value) {
+              // _onSearchChanged handles this via listener,
+              // but we can also use onChanged directly if preferred.
+            },
             onSubmitted: _performSearch,
             decoration: InputDecoration(
               hintText: '영화, 시리즈, 배우 검색',
