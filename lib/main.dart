@@ -18,9 +18,13 @@ import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'services/notification_service.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Load environmental variables
+  await dotenv.load(fileName: ".env");
 
   // Kakao SDK 초기화
   KakaoSdk.init(nativeAppKey: '4538351b8dd330e9f41491a83effc087');
