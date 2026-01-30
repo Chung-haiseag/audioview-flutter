@@ -27,7 +27,6 @@ dependencies:
   kakao_flutter_sdk: ^1.9.0
   flutter_naver_login: 2.1.1
   google_sign_in: ^6.3.0
-  google_generative_ai: ^0.4.5
   cached_network_image: ^3.4.1
   shimmer: ^3.0.0
   sqflite: 2.3.3+2
