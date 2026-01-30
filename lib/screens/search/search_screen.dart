@@ -110,8 +110,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     hintText: _isSmartSearchEnabled
                         ? '영화 분위기나 감정을 입력해보세요 (예: 슬픈 영화)'
                         : '영화, 시리즈, 배우 검색',
-                    hintStyle:
-                        TextStyle(color: Colors.white.withValues(alpha: 0.5)),
+                    hintStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
                     prefixIcon: const Icon(Icons.search, color: Colors.blue),
                     suffixIcon: _searchController.text.isNotEmpty
                         ? IconButton(
@@ -123,7 +122,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           )
                         : const Icon(Icons.mic, color: Colors.yellow),
                     filled: true,
-                    fillColor: Colors.white.withValues(alpha: 0.1),
+                    fillColor: Colors.white.withOpacity(0.1),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide.none,
@@ -152,7 +151,8 @@ class _SearchScreenState extends State<SearchScreen> {
                         if (value && !_smartSearch.isAvailable) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text('AI 검색을 위해 API 키 설정이 필요합니다.'),
+                              content:
+                                  Text('AI 검색을 위해 Gemini API 키 설정이 필요합니다.'),
                               backgroundColor: Colors.orange,
                             ),
                           );
@@ -231,7 +231,7 @@ class _SearchScreenState extends State<SearchScreen> {
             children: recommendations
                 .map((tag) => ActionChip(
                       label: Text(tag),
-                      backgroundColor: Colors.white.withValues(alpha: 0.1),
+                      backgroundColor: Colors.white.withOpacity(0.1),
                       labelStyle: const TextStyle(color: Colors.white),
                       onPressed: () {
                         _searchController.text = tag;
@@ -251,12 +251,12 @@ class _SearchScreenState extends State<SearchScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(Icons.movie_filter,
-              size: 80, color: Colors.white.withValues(alpha: 0.2)),
+              size: 80, color: Colors.white.withOpacity(0.2)),
           const SizedBox(height: 16),
           Text(
             '찾으시는 영화가 없나요?',
             style: TextStyle(
-                color: Colors.white.withValues(alpha: 0.8),
+                color: Colors.white.withOpacity(0.8),
                 fontSize: 18,
                 fontWeight: FontWeight.bold),
           ),
@@ -264,7 +264,7 @@ class _SearchScreenState extends State<SearchScreen> {
           Text(
             '입력하신 검색어 \'${_searchController.text}\'와(과)\n일치하는 결과가 없습니다.',
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white.withValues(alpha: 0.5)),
+            style: TextStyle(color: Colors.white.withOpacity(0.5)),
           ),
           const SizedBox(height: 24),
           TextButton(
