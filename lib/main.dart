@@ -1,6 +1,7 @@
 // Audioview - Flutter Web Deployment
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'config/theme.dart';
 import 'providers/auth_provider.dart';
 import 'screens/auth/login_screen.dart';
@@ -18,7 +19,6 @@ import 'firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'services/notification_service.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +26,7 @@ void main() async {
   // Load environmental variables
   await dotenv.load(fileName: "assets/env.txt");
 
-  // Kakao SDK 초기??
+  // Kakao SDK 초기화
   KakaoSdk.init(nativeAppKey: '4538351b8dd330e9f41491a83effc087');
 
   await Firebase.initializeApp(
@@ -96,11 +96,11 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<String> _titles = [
     'AUDIOVIEW',
-    '?�르',
-    '?�정',
-    '검??,
-    '마이?�이지',
-    '공�?/?�벤??,
+    '장르',
+    '설정',
+    '검색',
+    '마이페이지',
+    '공지/이벤트',
   ];
 
   @override

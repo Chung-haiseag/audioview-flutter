@@ -1,13 +1,9 @@
-﻿import 'dart:async';
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'voice_search_screen.dart';
-import '../../constants/mock_data.dart';
 import '../../models/movie.dart';
 import '../../services/movie_service.dart';
-import '../../widgets/movie_card.dart';
-import '../movie/movie_detail_screen.dart';
-import '../help/request_content_screen.dart';
 import '../../services/smart_search_service.dart';
+import '../home/movie_detail_screen.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -17,245 +13,206 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  final _searchController = TextEditingController();
-  String _searchQuery = '';
+  final MovieService _movieService = MovieService();
+  final SmartSearchService _smartSearch = SmartSearchService();
+  final TextEditingController _searchController = TextEditingController();
+  
   List<Movie> _searchResults = [];
+  bool _isLoading = false;
   Timer? _debounce;
-  bool _isSmartSearch = false;
-  bool _isAIAnalyzing = false;
-  final _smartSearch = SmartSearchService();
+  
+  // Smart Search states
+  bool _isSmartSearchEnabled = false;
+  List<String> _aiKeywords = [];
+  bool _isAnalyzing = false;
 
-  @override
-  void initState() {
-    super.initState();
-    _searchController.addListener(_onSearchChanged);
-  }
-
-  @override
-  void dispose() {
-    _searchController.removeListener(_onSearchChanged);
-    _debounce?.cancel();
-    _searchController.dispose();
-    super.dispose();
-  }
-
-  void _onSearchChanged() {
-    if (_debounce?.isActive ?? false) _debounce?.cancel();
+  void _onSearchChanged(String query) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
     _debounce = Timer(const Duration(milliseconds: 500), () {
-      _performSearch(_searchController.text);
+      _performSearch(query);
     });
   }
 
   Future<void> _performSearch(String query) async {
-    if (query.isEmpty) {
+    if (query.trim().isEmpty) {
       setState(() {
         _searchResults = [];
-        _searchQuery = '';
+        _aiKeywords = [];
       });
       return;
     }
 
     setState(() {
-      _searchQuery = query;
+      _isLoading = true;
+      _aiKeywords = [];
     });
 
     try {
-      if (_isSmartSearch && _smartSearch.isAvailable) {
-        setState(() => _isAIAnalyzing = true);
+      List<Movie> results = [];
+      
+      if (_isSmartSearchEnabled && _smartSearch.isAvailable) {
+        setState(() => _isAnalyzing = true);
+        // AI 의도 분석
         final keywords = await _smartSearch.analyzeQuery(query);
+        setState(() {
+          _aiKeywords = keywords;
+          _isAnalyzing = false;
+        });
 
-        List<Movie> allAiResults = [];
+        // 분석된 키워드들로 검색 결과 취합
+        Set<Movie> combinedResults = {};
         for (var keyword in keywords) {
-          final res = await MovieService().searchMovies(keyword);
-          allAiResults.addAll(res);
+          final res = await _movieService.searchMovies(keyword);
+          combinedResults.addAll(res);
         }
-
-        // Remove duplicates
-        final uniqueIds = <String>{};
-        _searchResults =
-            allAiResults.where((m) => uniqueIds.add(m.id)).toList();
+        results = combinedResults.toList();
       } else {
-        // Regular search
-        _searchResults = await MovieService().searchMovies(query);
+        // 일반 부분 검색
+        results = await _movieService.searchMovies(query);
       }
+
+      setState(() {
+        _searchResults = results;
+      });
     } catch (e) {
-      _searchResults = [];
+      debugPrint('Search error: $e');
     } finally {
-      if (mounted) {
-        setState(() => _isAIAnalyzing = false);
-      }
+      setState(() {
+        _isLoading = false;
+        _isAnalyzing = false;
+      });
     }
   }
 
-  void _onKeywordTap(String keyword) {
-    _searchController.text = keyword;
-    _performSearch(keyword);
-    FocusScope.of(context).unfocus(); // Hide keyboard
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    _searchController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Search Bar
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-          child: TextField(
-            controller: _searchController,
-            style: const TextStyle(color: Colors.white),
-            textInputAction: TextInputAction.search,
-            onChanged: (value) {
-              // _onSearchChanged handles this via listener,
-              // but we can also use onChanged directly if preferred.
-            },
-            onSubmitted: _performSearch,
-            decoration: InputDecoration(
-              hintText:
-                  _isSmartSearch ? '무엇이든 물어보세요 (예: 슬픈 영화)' : '영화, 시리즈, 배우 검색',
-              hintStyle: TextStyle(color: Colors.grey[600]),
-              prefixIcon: Icon(Icons.search,
-                  color: _isSmartSearch ? Colors.blueAccent : Colors.grey[600]),
-              suffixIcon: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (_searchQuery.isNotEmpty)
-                    IconButton(
-                      icon: const Icon(Icons.close, color: Colors.grey),
-                      onPressed: () {
-                        _searchController.clear();
-                        _performSearch('');
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Column(
+        children: [
+          // Search Input Area
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                TextField(
+                  controller: _searchController,
+                  onChanged: _onSearchChanged,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                    hintText: _isSmartSearchEnabled 
+                        ? '영화 분위기나 감정을 입력해보세요 (예: 슬픈 영화)' 
+                        : '영화, 시리즈, 배우 검색',
+                    hintStyle: TextStyle(color: Colors.white.withValues(alpha: 0.5)),
+                    prefixIcon: const Icon(Icons.search, color: Colors.blue),
+                    suffixIcon: _searchController.text.isNotEmpty 
+                        ? IconButton(
+                            icon: const Icon(Icons.clear, color: Colors.grey),
+                            onPressed: () {
+                              _searchController.clear();
+                              _onSearchChanged('');
+                            },
+                          )
+                        : const Icon(Icons.mic, color: Colors.yellow),
+                    filled: true,
+                    fillColor: Colors.white.withValues(alpha: 0.1),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                ),
+                
+                // Smart Search Toggle
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      '스마트 AI 검색',
+                      style: TextStyle(
+                        color: _isSmartSearchEnabled ? Colors.blue : Colors.grey,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Switch(
+                      value: _isSmartSearchEnabled,
+                      activeColor: Colors.blue,
+                      onChanged: (value) {
+                        if (value && !_smartSearch.isAvailable) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('AI 검색을 위해 Gemini API 키 설정이 필요합니다.'),
+                              backgroundColor: Colors.orange,
+                            ),
+                          );
+                          return;
+                        }
+                        setState(() {
+                          _isSmartSearchEnabled = value;
+                        });
+                        if (_searchController.text.isNotEmpty) {
+                          _performSearch(_searchController.text);
+                        }
                       },
                     ),
-                  IconButton(
-                    icon:
-                        const Icon(Icons.keyboard_voice, color: Colors.yellow),
-                    onPressed: () async {
-                      final result = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const VoiceSearchScreen(),
-                        ),
-                      );
-                      if (result != null &&
-                          result is String &&
-                          result.isNotEmpty) {
-                        _searchController.text = result;
-                        _performSearch(result);
-                      }
-                    },
-                  ),
-                ],
-              ),
-              filled: true,
-              fillColor: const Color(0xFF1E1E1E),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: _isSmartSearch
-                    ? const BorderSide(color: Colors.blueAccent, width: 1)
-                    : BorderSide.none,
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: _isSmartSearch
-                    ? const BorderSide(color: Colors.blueAccent, width: 1)
-                    : BorderSide.none,
-              ),
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  ],
+                ),
+              ],
             ),
-          ),
-        ),
+          ],
 
-        // Smart Search Toggle
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(
-                '스마트 AI 검색',
-                style: TextStyle(
-                  color: _isSmartSearch ? Colors.blueAccent : Colors.grey,
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Transform.scale(
-                scale: 0.7,
-                child: Switch(
-                  value: _isSmartSearch,
-                  onChanged: (value) {
-                    if (value && !_smartSearch.isAvailable) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('AI 검색을 위해 Gemini API 키 설정이 필요합니다.'),
-                          backgroundColor: Colors.orange,
-                        ),
-                      );
-                      return;
-                    }
-                    setState(() {
-                      _isSmartSearch = value;
-                      if (!value) {
-                        _performSearch(_searchController.text);
-                      }
-                    });
-                  },
-                  activeColor: Colors.blueAccent,
-                ),
-              ),
-            ],
-          ),
-        ),
-
-        if (_isAIAnalyzing)
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0),
-            child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+          // AI Analysis Feedback
+          if (_isAnalyzing)
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
                 children: [
-                  SizedBox(
-                    width: 12,
-                    height: 12,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor:
-                          AlwaysStoppedAnimation<Color>(Colors.blueAccent),
-                    ),
-                  ),
-                  SizedBox(width: 8),
+                  LinearProgressIndicator(backgroundColor: Colors.transparent),
+                  SizedBox(height: 8),
                   Text(
-                    'AI가 취향을 분석하고 있어요...',
-                    style: TextStyle(color: Colors.blueAccent, fontSize: 12),
+                    'AI가 검색 의도를 분석하고 있습니다...',
+                    style: TextStyle(color: Colors.blue, fontSize: 12),
                   ),
                 ],
               ),
             ),
-          ),
 
-        // Content Area
-        Expanded(
-          child: _searchQuery.isEmpty
-              ? _buildRecommendationSection()
-              : _buildSearchResults(),
-        ),
-      ],
+          // Search Results
+          Expanded(
+            child: _isLoading && !_isAnalyzing
+                ? const Center(child: CircularProgressIndicator())
+                : _searchResults.isEmpty
+                    ? _searchController.text.isEmpty
+                        ? _buildRecommendationSection()
+                        : _buildEmptyState()
+                    : _buildResultsGrid(),
+          ),
+        ],
+      ),
     );
   }
 
   Widget _buildRecommendationSection() {
+    final recommendations = ['액션', '가치봄', '한국 영화', '인사이드 아웃', '데몬 헌터스', '공포'];
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
-              Icon(Icons.play_circle_outline, color: Colors.red, size: 20),
-              SizedBox(width: 8),
-              Text(
+              const Icon(Icons.play_circle_fill, color: Colors.red, size: 20),
+              const SizedBox(width: 8),
+              const Text(
                 '추천 검색어',
                 style: TextStyle(
                   color: Colors.white,
@@ -267,125 +224,94 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
           const SizedBox(height: 16),
           Wrap(
-            spacing: 8.0,
-            runSpacing: 12.0,
-            children: recommendationKeywords.map((keyword) {
-              return GestureDetector(
-                onTap: () => _onKeywordTap(keyword),
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF1A1A1A),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: const Color(0xFF333333),
-                    ),
-                  ),
-                  child: Text(
-                    keyword,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              );
-            }).toList(),
+            spacing: 8,
+            runSpacing: 8,
+            children: recommendations.map((tag) => ActionChip(
+                  label: Text(tag),
+                  backgroundColor: Colors.white.withValues(alpha: 0.1),
+                  labelStyle: const TextStyle(color: Colors.white),
+                  onPressed: () {
+                    _searchController.text = tag;
+                    _performSearch(tag);
+                  },
+                )).toList(),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildSearchResults() {
-    if (_searchResults.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 80,
-              height: 80,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: const Color(0xFF1A1A1A),
-                border: Border.all(color: const Color(0xFF333333)),
-              ),
-              child: const Icon(
-                Icons.movie_outlined,
-                size: 40,
-                color: Color(0xFF555555),
-              ),
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              '찾으시는 영화가 없나요?',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              "입력하신 검색어 '$_searchQuery'와(과)\n일치하는 결과가 없습니다.",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.grey[600],
-                fontSize: 14,
-              ),
-            ),
-            const SizedBox(height: 32),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const RequestContentScreen(),
-                  ),
-                );
-              },
-              child: const Text(
-                '작품 요청하기',
-                style: TextStyle(
-                  color: Colors.red,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  decoration: TextDecoration.underline,
-                  decorationColor: Colors.red,
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
+  Widget _buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.movie_filter, size: 80, color: Colors.white.withValues(alpha: 0.2)),
+          const SizedBox(height: 16),
+          Text(
+            '찾으시는 영화가 없나요?',
+            style: TextStyle(color: Colors.white.withValues(alpha: 0.8), fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '입력하신 검색어 \'${_searchController.text}\'와(과)\n일치하는 결과가 없습니다.',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white.withValues(alpha: 0.5)),
+          ),
+          const SizedBox(height: 24),
+          TextButton(
+            onPressed: () {},
+            child: const Text('작품 요청하기', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
+    );
+  }
 
+  Widget _buildResultsGrid() {
     return GridView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
-        childAspectRatio: 0.55,
+        childAspectRatio: 0.7,
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
       ),
       itemCount: _searchResults.length,
       itemBuilder: (context, index) {
-        return MovieCard(
-          movie: _searchResults[index],
-          showNewBadge: false,
+        final movie = _searchResults[index];
+        return GestureDetector(
           onTap: () {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => MovieDetailScreen(
-                  movie: _searchResults[index],
-                ),
+                builder: (context) => MovieDetailScreen(movie: movie),
               ),
             );
           },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.network(
+                    movie.thumbnailUrl,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) =>
+                        Container(color: Colors.grey[900], child: const Icon(Icons.movie)),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                movie.title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(color: Colors.white, fontSize: 12),
+              ),
+            ],
+          ),
         );
       },
     );
