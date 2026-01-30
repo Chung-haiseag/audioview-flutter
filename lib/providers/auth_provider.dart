@@ -35,11 +35,16 @@ class AuthProvider with ChangeNotifier {
         // Fetch user data from Firestore
         _firestore.collection('users').doc(user.uid).snapshots().listen((doc) {
           if (doc.exists) {
-            _userData = doc.data();
-            NotificationService.saveTokenToDatabase(user.uid);
+            final newData = doc.data();
+            // Only update and notify if data has actually changed (excluding points/tokens if possible)
+            // For now, let's just make sure we don't save token inside this listener
+            _userData = newData;
             notifyListeners();
           }
         });
+        // Save token once outside the listener
+        // This call is now handled by NotificationService which will check for redundancy
+        NotificationService.saveTokenToDatabase(user.uid);
       } else {
         _userData = null;
         notifyListeners();
