@@ -58,7 +58,7 @@ app.*.symbols
 # Obfuscation related
 app.*.map.json
 
-# React/Vite (기존 웹 앱)
+# React/Vite (기존 ????
 node_modules/
 dist/
 dist-ssr/
@@ -102,7 +102,7 @@ Thumbs.db
 .svn/
 migrate_working_dir/
 
-# Compressed files (압축 파일 제외)
+# Compressed files (?�축 ?�일 ?�외)
 *.tar.gz
 *.zip
 admin-tool-backup/
@@ -113,6 +113,6 @@ node_modules/
 package-lock.json
 
 # Environment variables
-.env
-*.env.local
-*.env.production
+**/ .env
+***/ .env.local
+***/ .env.production
