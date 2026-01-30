@@ -24,7 +24,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Load environmental variables
-  await dotenv.load(fileName: ".env");
+  await dotenv.load(fileName: "assets/.env");
 
   // Kakao SDK 초기화
   KakaoSdk.init(nativeAppKey: '4538351b8dd330e9f41491a83effc087');
