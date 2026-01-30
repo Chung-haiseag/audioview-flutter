@@ -62,7 +62,7 @@ app.*.map.json
 .env
 *.env.local
 *.env.production
-assets/.env
+# assets/.env (Commented out to allow CI build with placeholder)
 
 # IDE
 .vscode/*
