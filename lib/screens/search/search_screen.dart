@@ -4,6 +4,8 @@ import '../../models/movie.dart';
 import '../../services/movie_service.dart';
 import '../../services/smart_search_service.dart';
 import '../movie/movie_detail_screen.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
+import 'package:permission_handler/permission_handler.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -25,6 +27,55 @@ class _SearchScreenState extends State<SearchScreen> {
   bool _isSmartSearchEnabled = false;
   List<String> _aiKeywords = [];
   bool _isAnalyzing = false;
+
+  // Voice Search states
+  final stt.SpeechToText _speech = stt.SpeechToText();
+  bool _isListening = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initSpeech();
+  }
+
+  void _initSpeech() async {
+    try {
+      await _speech.initialize(
+        onStatus: (status) => debugPrint('STT Status: $status'),
+        onError: (error) => debugPrint('STT Error: $error'),
+      );
+    } catch (e) {
+      debugPrint('STT Initialization failed: $e');
+    }
+  }
+
+  Future<void> _toggleListening() async {
+    if (_isListening) {
+      await _speech.stop();
+      setState(() => _isListening = false);
+    } else {
+      var status = await Permission.microphone.request();
+      if (status.isGranted) {
+        setState(() => _isListening = true);
+        await _speech.listen(
+          onResult: (result) {
+            setState(() {
+              _searchController.text = result.recognizedWords;
+              if (result.finalResult) {
+                _isListening = false;
+                _performSearch(result.recognizedWords);
+              }
+            });
+          },
+          localeId: 'ko_KR', // Ensure Korean recognition
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('마이크 권한이 필요합니다.')),
+        );
+      }
+    }
+  }
 
   void _onSearchChanged(String query) {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
@@ -120,7 +171,13 @@ class _SearchScreenState extends State<SearchScreen> {
                               _onSearchChanged('');
                             },
                           )
-                        : const Icon(Icons.mic, color: Colors.yellow),
+                        : IconButton(
+                            icon: Icon(
+                              _isListening ? Icons.mic : Icons.mic_none,
+                              color: _isListening ? Colors.red : Colors.yellow,
+                            ),
+                            onPressed: _toggleListening,
+                          ),
                     filled: true,
                     fillColor: Colors.white.withOpacity(0.1),
                     border: OutlineInputBorder(

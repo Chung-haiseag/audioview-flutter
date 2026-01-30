@@ -14,7 +14,7 @@ import flutter_local_notifications
 import google_sign_in_ios
 import shared_preferences_foundation
 import speech_to_text
-import sqflite_darwin
+import sqflite
 import webview_flutter_wkwebview
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
