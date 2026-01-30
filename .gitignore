@@ -62,8 +62,6 @@ app.*.map.json
 .env
 *.env.local
 *.env.production
-# assets/env.txt (Allowed for web deployment as requested)
-env.txt
 
 # IDE
 .vscode/*

@@ -62,4 +62,4 @@ flutter:
 
   assets:
     - assets/images/
-    - env.txt
+    - assets/env.txt
