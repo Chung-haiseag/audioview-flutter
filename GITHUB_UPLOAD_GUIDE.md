@@ -11,7 +11,7 @@ AudioView Flutter 프로젝트를 GitHub에 업로드하는 방법입니다.
 ### 2단계: 저장소 생성
 1. GitHub Desktop에서 `File` → `New Repository`
 2. 또는 기존 폴더 추가: `File` → `Add Local Repository`
-   - 폴더: `C:\Users\정해석\Downloads\audioview`
+   - 폴더: `<your-project-path>` (예: `C:\projects\audioview`)
 
 ### 3단계: 업로드
 1. 변경사항 확인 (좌측 패널)
@@ -58,7 +58,7 @@ git config --global user.email "your.email@example.com"
 
 ```bash
 # 프로젝트 폴더로 이동
-cd C:\Users\정해석\Downloads\audioview
+cd <your-project-path>
 
 # Git 저장소 초기화
 git init
@@ -98,7 +98,7 @@ GitHub 로그인 창이 나타나면:
 
 ### 1단계: VS Code에서 폴더 열기
 ```
-File → Open Folder → C:\Users\정해석\Downloads\audioview
+File → Open Folder → <your-project-path>
 ```
 
 ### 2단계: Source Control 사용
@@ -131,7 +131,7 @@ File → Open Folder → C:\Users\정해석\Downloads\audioview
 ### ✅ 현재 상태 확인
 
 ```bash
-cd C:\Users\정해석\Downloads\audioview
+cd <your-project-path>
 
 # Git 상태 확인
 git status
@@ -197,7 +197,7 @@ dist/                         # 웹 빌드 결과
 
 ```bash
 # 프로젝트 폴더로 이동
-cd C:\Users\정해석\Downloads\audioview
+cd <your-project-path>
 
 # 변경사항 확인
 git status

@@ -92,9 +92,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
         return ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            // Point Section
-            _buildPointSection(auth),
-
             const SizedBox(height: 16),
 
             // Smart Glasses
@@ -440,128 +437,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ],
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildPointSection(AuthProvider auth) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Colors.red.withValues(alpha: 0.8),
-            const Color(0xFF1E1E1E),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.red.withValues(alpha: 0.2),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'MY MILEAGE',
-                style: TextStyle(
-                  color: Colors.white70,
-                  fontSize: 12,
-                  letterSpacing: 1.5,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              GestureDetector(
-                onTap: () async {
-                  final result = await auth.performCheckIn();
-                  if (mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(result['message']),
-                        backgroundColor:
-                            result['success'] ? Colors.green : Colors.red,
-                      ),
-                    );
-                  }
-                },
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Text(
-                    '출석체크',
-                    style: TextStyle(color: Colors.white, fontSize: 11),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.baseline,
-                textBaseline: TextBaseline.alphabetic,
-                children: [
-                  Text(
-                    auth.points.toString(),
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 36,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(width: 4),
-                  const Text(
-                    'P',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.star, color: Colors.amber, size: 16),
-                    const SizedBox(width: 4),
-                    Text(
-                      auth.points >= 1000 ? '골드 회원' : '실버 회원',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
       ),
     );
   }

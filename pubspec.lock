@@ -58,13 +58,13 @@ packages:
     source: hosted
     version: "2.1.2"
   characters:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: characters
-      sha256: f71061c654a3380576a52b451dd5532377954cf9dbd272a78fc8479606670803
+      sha256: faf38497bda5ead2a8c7615f4f7939df04333478bf32e4173fcb06d428b5716b
       url: "https://pub.dev"
     source: hosted
-    version: "1.4.0"
+    version: "1.4.1"
   checked_yaml:
     dependency: transitive
     description:
@@ -330,42 +330,50 @@ packages:
     dependency: "direct dev"
     description:
       name: flutter_launcher_icons
-      sha256: "526faf84284b86a4cb36d20a5e45147747b7563d921373d4ee0559c54fcdbcea"
+      sha256: "10f13781741a2e3972126fae08393d3c4e01fa4cd7473326b94b72cf594195e7"
       url: "https://pub.dev"
     source: hosted
-    version: "0.13.1"
+    version: "0.14.4"
   flutter_lints:
     dependency: "direct dev"
     description:
       name: flutter_lints
-      sha256: a25a15ebbdfc33ab1cd26c63a6ee519df92338a9c10f122adda92938253bef04
+      sha256: "3105dc8492f6183fb076ccf1f351ac3d60564bff92e20bfc4af9cc1651f4e7e1"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.3"
+    version: "6.0.0"
   flutter_local_notifications:
     dependency: "direct main"
     description:
       name: flutter_local_notifications
-      sha256: "674173fd3c9eda9d4c8528da2ce0ea69f161577495a9cc835a2a4ecd7eadeb35"
+      sha256: "76cd20bcfa72fabe50ea27eeaf165527f446f55d3033021462084b87805b4cac"
       url: "https://pub.dev"
     source: hosted
-    version: "17.2.4"
+    version: "20.0.0"
   flutter_local_notifications_linux:
     dependency: transitive
     description:
       name: flutter_local_notifications_linux
-      sha256: c49bd06165cad9beeb79090b18cd1eb0296f4bf4b23b84426e37dd7c027fc3af
+      sha256: dce0116868cedd2cdf768af0365fc37ff1cbef7c02c4f51d0587482e625868d0
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.1"
+    version: "7.0.0"
   flutter_local_notifications_platform_interface:
     dependency: transitive
     description:
       name: flutter_local_notifications_platform_interface
-      sha256: "85f8d07fe708c1bdcf45037f2c0109753b26ae077e9d9e899d55971711a4ea66"
+      sha256: "23de31678a48c084169d7ae95866df9de5c9d2a44be3e5915a2ff067aeeba899"
       url: "https://pub.dev"
     source: hosted
-    version: "7.2.0"
+    version: "10.0.0"
+  flutter_local_notifications_windows:
+    dependency: transitive
+    description:
+      name: flutter_local_notifications_windows
+      sha256: "7ddd964fa85b6a23e96956c5b63ef55cdb9e5947b71b95712204db42ad46da61"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   flutter_native_splash:
     dependency: "direct dev"
     description:
@@ -378,10 +386,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_naver_login
-      sha256: "69d62da60e866b09894f2d632d7d1cb36eee17164b9e46e33d86ebee4b91cd42"
+      sha256: "6acac40088d4d05cdb8d7dceb0cf690a80833de7bdbb7c53209fc1c1442add1c"
       url: "https://pub.dev"
     source: hosted
-    version: "1.8.0"
+    version: "2.1.1"
   flutter_shaders:
     dependency: transitive
     description:
@@ -420,10 +428,10 @@ packages:
     dependency: "direct main"
     description:
       name: google_fonts
-      sha256: ba03d03bcaa2f6cb7bd920e3b5027181db75ab524f8891c8bc3aa603885b8055
+      sha256: bf1fe61d4a53420a94cbbd4326e07702d247757926f6955af9667765a8324413
       url: "https://pub.dev"
     source: hosted
-    version: "6.3.3"
+    version: "8.0.0"
   google_identity_services_web:
     dependency: transitive
     description:
@@ -516,26 +524,18 @@ packages:
     dependency: "direct main"
     description:
       name: intl
-      sha256: "3bc132a9dbce73a7e4a21a17d06e1878839ffbf975568bc875c60537824b0c4d"
+      sha256: "3df61194eb431efc39c4ceba583b95633a403f46c9fd341e550ce0bfa50e9aa5"
       url: "https://pub.dev"
     source: hosted
-    version: "0.18.1"
-  js:
-    dependency: transitive
-    description:
-      name: js
-      sha256: "53385261521cc4a0c4658fd0ad07a7d14591cf8fc33abbceae306ddb974888dc"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.7.2"
+    version: "0.20.2"
   json_annotation:
     dependency: transitive
     description:
       name: json_annotation
-      sha256: "1ce844379ca14835a50d2f019a3099f419082cfdd231cd86a142af94dd5c6bb1"
+      sha256: "805fa86df56383000f640384b282ce0cb8431f1a7a2396de92fb66186d8c57df"
       url: "https://pub.dev"
     source: hosted
-    version: "4.9.0"
+    version: "4.10.0"
   kakao_flutter_sdk:
     dependency: "direct main"
     description:
@@ -636,10 +636,10 @@ packages:
     dependency: transitive
     description:
       name: lints
-      sha256: "0a217c6c989d21039f1498c3ed9f3ed71b354e69873f13a8dfc3c9fe76f1b452"
+      sha256: a5e2b223cb7c9c8efdc663ef484fdd95bb243bff242ef5b13e26883547fce9a0
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.1"
+    version: "6.0.0"
   logging:
     dependency: transitive
     description:
@@ -657,29 +657,29 @@ packages:
     source: hosted
     version: "0.257.0"
   matcher:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: matcher
-      sha256: dc58c723c3c24bf8d3e2d3ad3f2f9d7bd9cf43ec6feaa64181775e60190153f2
+      sha256: "12956d0ad8390bbcc63ca2e1469c0619946ccb52809807067a7020d57e647aa6"
       url: "https://pub.dev"
     source: hosted
-    version: "0.12.17"
+    version: "0.12.18"
   material_color_utilities:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: material_color_utilities
-      sha256: f7142bb1154231d7ea5f96bc7bde4bda2a0945d2806bb11670e30b850d56bdec
+      sha256: "9c337007e82b1889149c82ed242ed1cb24a66044e30979c44912381e9be4c48b"
       url: "https://pub.dev"
     source: hosted
-    version: "0.11.1"
+    version: "0.13.0"
   meta:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: meta
-      sha256: "23f08335362185a5ea2ad3a4e597f1375e78bce8a040df5c600c8d3552ef2394"
+      sha256: "9f29b9bcc8ee287b1a31e0d01be0eae99a930dbffdaecf04b3f3d82a969f296f"
       url: "https://pub.dev"
     source: hosted
-    version: "1.17.0"
+    version: "1.18.1"
   mime:
     dependency: transitive
     description:
@@ -708,10 +708,10 @@ packages:
     dependency: transitive
     description:
       name: objective_c
-      sha256: "7fd0c4d8ac8980011753b9bdaed2bf15111365924cdeeeaeb596214ea2b03537"
+      sha256: "983c7fa1501f6dcc0cb7af4e42072e9993cb28d73604d25ebf4dab08165d997e"
       url: "https://pub.dev"
     source: hosted
-    version: "9.2.4"
+    version: "9.2.5"
   path:
     dependency: transitive
     description:
@@ -788,18 +788,18 @@ packages:
     dependency: "direct main"
     description:
       name: permission_handler
-      sha256: "59adad729136f01ea9e35a48f5d1395e25cba6cea552249ddbe9cf950f5d7849"
+      sha256: bc917da36261b00137bbc8896bf1482169cd76f866282368948f032c8c1caae1
       url: "https://pub.dev"
     source: hosted
-    version: "11.4.0"
+    version: "12.0.1"
   permission_handler_android:
     dependency: transitive
     description:
       name: permission_handler_android
-      sha256: d3971dcdd76182a0c198c096b5db2f0884b0d4196723d21a866fc4cdea057ebc
+      sha256: "1e3bc410ca1bf84662104b100eb126e066cb55791b7451307f9708d4007350e6"
       url: "https://pub.dev"
     source: hosted
-    version: "12.1.0"
+    version: "13.0.1"
   permission_handler_apple:
     dependency: transitive
     description:
@@ -857,13 +857,13 @@ packages:
     source: hosted
     version: "2.1.8"
   pointycastle:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: pointycastle
-      sha256: "4be0097fcf3fd3e8449e53730c631200ebc7b88016acecab2b0da2f0149222fe"
+      sha256: "92aa3841d083cc4b0f4709b5c74fd6409a3e6ba833ffc7dc6a8fee096366acf5"
       url: "https://pub.dev"
     source: hosted
-    version: "3.9.1"
+    version: "4.0.0"
   posix:
     dependency: transitive
     description:
@@ -897,13 +897,13 @@ packages:
     source: hosted
     version: "2.5.4"
   shared_preferences_android:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: shared_preferences_android
-      sha256: "83af5c682796c0f7719c2bbf74792d113e40ae97981b8f266fa84574573556bc"
+      sha256: cbc40be9be1c5af4dab4d6e0de4d5d3729e6f3d65b89d21e1815d57705644a6f
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.18"
+    version: "2.4.20"
   shared_preferences_foundation:
     dependency: transitive
     description:
@@ -1014,21 +1014,21 @@ packages:
     source: hosted
     version: "1.2.2"
   test_api:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: test_api
-      sha256: ab2726c1a94d3176a45960b6234466ec367179b87dd74f1611adb1f3b5fb9d55
+      sha256: "93167629bfc610f71560ab9312acdda4959de4df6fac7492c89ff0d3886f6636"
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.7"
+    version: "0.7.9"
   timezone:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: timezone
-      sha256: "2236ec079a174ce07434e89fcd3fcda430025eb7692244139a9cf54fdcf1fc7d"
+      sha256: "784a5e34d2eb62e1326f24d6f600aaaee452eb8ca8ef2f384a59244e292d158b"
       url: "https://pub.dev"
     source: hosted
-    version: "0.9.4"
+    version: "0.11.0"
   typed_data:
     dependency: transitive
     description:
