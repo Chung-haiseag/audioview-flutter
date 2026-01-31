@@ -36,7 +36,7 @@ import {
     Edit as EditIcon,
     Delete as DeleteIcon,
 } from '@mui/icons-material';
-import { getUsers, updateUser, getUserFavorites, getUserDownloadHistory, addUser, deleteUser, getUserPoints, getPointHistory } from '../services/userService';
+import { getUsers, updateUser, getUserFavorites, getUserDownloadHistory, addUser, deleteUser, getUserPoints, getPointHistory, givePoints } from '../services/userService';
 import { User, UserFavorite, UserDownloadHistory, UserPoint, PointHistory } from '../types';
 import { format } from 'date-fns';
 
@@ -67,6 +67,12 @@ const Users: React.FC = () => {
         disabilityType: 'none',
         isActive: true,
     });
+
+    // 포인트 수정 다이얼로그 상태
+    const [openPointDialog, setOpenPointDialog] = useState(false);
+    const [pointAmount, setPointAmount] = useState<number>(0);
+    const [pointDescription, setPointDescription] = useState('');
+    const [pointSubmitting, setPointSubmitting] = useState(false);
 
     useEffect(() => {
         fetchUsers();
@@ -202,6 +208,39 @@ const Users: React.FC = () => {
                 console.error('회원 삭제 오류:', error);
                 alert('삭제 중 오류가 발생했습니다.');
             }
+        }
+    };
+
+    const handleOpenPointDialog = () => {
+        setPointAmount(0);
+        setPointDescription('');
+        setOpenPointDialog(true);
+    };
+
+    const handleGivePoints = async () => {
+        if (!selectedUser) return;
+        if (pointAmount === 0) {
+            alert('포인트 금액을 입력해주세요.');
+            return;
+        }
+        if (!pointDescription.trim()) {
+            alert('지급 사유를 입력해주세요.');
+            return;
+        }
+
+        try {
+            setPointSubmitting(true);
+            await givePoints(selectedUser.userId, pointAmount, pointDescription);
+            alert('포인트가 반영되었습니다.');
+            setOpenPointDialog(false);
+            // 데이터 새로고침
+            fetchActivityData(selectedUser.userId);
+            fetchUsers();
+        } catch (error) {
+            console.error('포인트 지급 오류:', error);
+            alert('처리 중 오류가 발생했습니다.');
+        } finally {
+            setPointSubmitting(false);
         }
     };
 
@@ -429,6 +468,18 @@ const Users: React.FC = () => {
                                 <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}><CircularProgress size={24} /></Box>
                             ) : (
                                 <Box>
+                                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                                        <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>포인트 현황</Typography>
+                                        <Button
+                                            variant="contained"
+                                            size="small"
+                                            color="secondary"
+                                            onClick={handleOpenPointDialog}
+                                            startIcon={<EditIcon />}
+                                        >
+                                            포인트 수정
+                                        </Button>
+                                    </Box>
                                     <Grid container spacing={2} sx={{ mb: 3 }}>
                                         <Grid size={4}>
                                             <Paper elevation={0} sx={{ p: 2, bgcolor: 'primary.light', color: 'primary.contrastText', textAlign: 'center' }}>
@@ -566,6 +617,48 @@ const Users: React.FC = () => {
                 <DialogActions>
                     <Button onClick={handleCloseEditDialog}>취소</Button>
                     <Button onClick={handleSubmit} variant="contained" color="primary">저장</Button>
+                </DialogActions>
+            </Dialog>
+            {/* 포인트 수정 다이얼로그 */}
+            <Dialog open={openPointDialog} onClose={() => setOpenPointDialog(false)} maxWidth="xs" fullWidth>
+                <DialogTitle>포인트 수정</DialogTitle>
+                <DialogContent>
+                    <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
+                        지급할 금액(양수) 또는 차감할 금액(음수)을 입력하세요.
+                    </Typography>
+                    <TextField
+                        fullWidth
+                        label="금액 (P)"
+                        type="number"
+                        value={pointAmount}
+                        onChange={(e) => setPointAmount(Number(e.target.value))}
+                        margin="normal"
+                        slotProps={{
+                            input: {
+                                startAdornment: <InputAdornment position="start">P</InputAdornment>,
+                            }
+                        }}
+                    />
+                    <TextField
+                        fullWidth
+                        label="사유 (예: 이벤트 지급, 고객 응대)"
+                        value={pointDescription}
+                        onChange={(e) => setPointDescription(e.target.value)}
+                        margin="normal"
+                        multiline
+                        rows={2}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpenPointDialog(false)}>취소</Button>
+                    <Button
+                        onClick={handleGivePoints}
+                        variant="contained"
+                        color="secondary"
+                        disabled={pointSubmitting}
+                    >
+                        {pointSubmitting ? <CircularProgress size={24} /> : (pointAmount >= 0 ? '지급하기' : '차감하기')}
+                    </Button>
                 </DialogActions>
             </Dialog>
         </Box>
