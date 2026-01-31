@@ -36,8 +36,15 @@ class AuthProvider with ChangeNotifier {
         _firestore.collection('users').doc(user.uid).snapshots().listen((doc) {
           if (doc.exists) {
             final newData = doc.data();
-            // Only update and notify if data has actually changed (excluding points/tokens if possible)
-            // For now, let's just make sure we don't save token inside this listener
+
+            // Auto-fix: If points field is missing, initialize it to 100
+            if (newData != null && newData['points'] == null) {
+              doc.reference.update({
+                'points': 100,
+                'updatedAt': FieldValue.serverTimestamp(),
+              });
+            }
+
             _userData = newData;
             notifyListeners();
           }
@@ -89,6 +96,7 @@ class AuthProvider with ChangeNotifier {
           'email': email,
           'disabilityType': disabilityType,
           'authProvider': 'email',
+          'points': 100, // Initialize with signup points
           'isActive': true,
           'createdAt': FieldValue.serverTimestamp(),
           'updatedAt': FieldValue.serverTimestamp(),
@@ -210,7 +218,23 @@ class AuthProvider with ChangeNotifier {
             'authProvider': 'google',
             'lastLogin': FieldValue.serverTimestamp(),
             'isActive': true,
+            'points': FieldValue.increment(
+                0), // Ensure points field exists, logic handled by CF if merge:true but safer here
           }, SetOptions(merge: true));
+
+          // For new users who don't have points, we can initialize it here if we can detect creation
+          final userDoc = await _firestore
+              .collection('users')
+              .doc(userCredential.user!.uid)
+              .get();
+          if (!userDoc.exists || userDoc.data()?['points'] == null) {
+            await _firestore
+                .collection('users')
+                .doc(userCredential.user!.uid)
+                .update({
+              'points': 100,
+            });
+          }
         }
       } else {
         // 1. Native: Trigger the authentication flow
@@ -243,6 +267,19 @@ class AuthProvider with ChangeNotifier {
             'lastLogin': FieldValue.serverTimestamp(),
             'isActive': true,
           }, SetOptions(merge: true));
+
+          final userDoc = await _firestore
+              .collection('users')
+              .doc(userCredential.user!.uid)
+              .get();
+          if (!userDoc.exists || userDoc.data()?['points'] == null) {
+            await _firestore
+                .collection('users')
+                .doc(userCredential.user!.uid)
+                .update({
+              'points': 100,
+            });
+          }
         }
       }
     } catch (e) {
