@@ -59,9 +59,6 @@ const Movies: React.FC = () => {
         hasClosedCaption: false,
         audioCommentaryFile: '',
         closedCaptionFile: '',
-        isLatest: false,
-        isPopular: false,
-        releaseDate: new Date(),
         genreId: '',
         productionCountry: '',
         searchKeywords: [],
@@ -123,9 +120,6 @@ const Movies: React.FC = () => {
             hasClosedCaption: false,
             audioCommentaryFile: '',
             closedCaptionFile: '',
-            isLatest: false,
-            isPopular: false,
-            releaseDate: new Date(),
             genreId: '',
             productionCountry: '',
             searchKeywords: [],
@@ -264,8 +258,7 @@ const Movies: React.FC = () => {
                                             {movie.hasClosedCaption && <Chip label="자막" size="small" color="secondary" />}
                                         </TableCell>
                                         <TableCell>
-                                            {movie.isLatest && <Chip label="최신" size="small" color="info" sx={{ mr: 0.5 }} />}
-                                            {movie.isPopular && <Chip label="인기" size="small" color="warning" />}
+                                            {/* Tags like isLatest/isPopular removed as they are now admin-managed via Special Lists */}
                                         </TableCell>
                                         <TableCell align="center">
                                             <IconButton size="small" color="primary" onClick={() => handleOpenEdit(movie)}><EditIcon /></IconButton>
@@ -373,16 +366,7 @@ const Movies: React.FC = () => {
                             />
                         </Grid>
                         <Grid size={12}>
-                            <Box sx={{ display: 'flex', gap: 3 }}>
-                                <FormControlLabel
-                                    control={<Checkbox name="isLatest" checked={formData.isLatest} onChange={handleInputChange} />}
-                                    label="최신작 표시"
-                                />
-                                <FormControlLabel
-                                    control={<Checkbox name="isPopular" checked={formData.isPopular} onChange={handleInputChange} />}
-                                    label="인기작 표시"
-                                />
-                            </Box>
+                            {/* Home Screen visibility is now managed in "Special List Management" */}
                         </Grid>
                         <Grid size={12}>
                             <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>

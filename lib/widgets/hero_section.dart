@@ -3,28 +3,32 @@ import '../models/movie.dart';
 import '../screens/movie/movie_detail_screen.dart';
 
 class HeroSection extends StatelessWidget {
-  const HeroSection({super.key});
+  final Movie? movie;
+  final bool isLoading;
+
+  const HeroSection({
+    super.key,
+    this.movie,
+    this.isLoading = false,
+  });
 
   @override
   Widget build(BuildContext context) {
-    // Hardcoded movie data for the Hero section
-    final heroMovie = Movie(
-      id: 'hero_movie_01',
-      title: '범죄도시4',
-      year: 2024,
-      country: '한국',
-      duration: 109,
-      genres: ['액션', '범죄'],
-      description:
-          '괴물형사 ‘마석도’(마동석)가 다시 돌아왔다! 대규모 온라인 불법 도박 조직을 소탕하기 위해 대한민국 광수대와 사이버팀이 뭉쳤다. 이번엔 더 커진 판, 더 강력해진 웃음으로 돌아왔다!',
-      posterUrl: 'https://img.youtube.com/vi/rY2o7d-308A/hqdefault.jpg',
-      hasAD: true,
-      hasCC: true,
-      hasMultiLang: false,
-    );
+    if (isLoading || movie == null) {
+      return Container(
+        height: 250,
+        width: double.infinity,
+        color: Colors.grey[900],
+        child: const Center(
+          child: CircularProgressIndicator(color: Colors.red),
+        ),
+      );
+    }
+
+    final heroMovie = movie!;
 
     return SizedBox(
-      height: 250, // Reduced height by half
+      height: 250,
       child: Stack(
         fit: StackFit.expand,
         children: [
@@ -41,7 +45,7 @@ class HeroSection extends StatelessWidget {
             child: Image.network(
               heroMovie.posterUrl,
               fit: BoxFit.cover,
-              alignment: Alignment.center, // Thumbnails look better centered
+              alignment: Alignment.center,
               loadingBuilder: (context, child, loadingProgress) {
                 if (loadingProgress == null) return child;
                 return Center(
@@ -50,35 +54,29 @@ class HeroSection extends StatelessWidget {
                   ),
                 );
               },
-              errorBuilder: (context, error, stackTrace) => Image.network(
-                'https://images.unsplash.com/photo-1594909122845-11baa439b7bf?q=80&w=1280&auto=format&fit=crop',
-                fit: BoxFit.cover,
-                alignment: Alignment.center,
-                errorBuilder: (context, error, stackTrace) => Container(
-                  color: Colors.grey[900],
-                  child: const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.movie, size: 50, color: Colors.white24),
-                      SizedBox(height: 8),
-                      Text('이미지를 불러올 수 없습니다',
-                          style:
-                              TextStyle(color: Colors.white24, fontSize: 12)),
-                    ],
-                  ),
+              errorBuilder: (context, error, stackTrace) => Container(
+                color: Colors.grey[900],
+                child: const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.movie, size: 50, color: Colors.white24),
+                    SizedBox(height: 8),
+                    Text('이미지를 불러올 수 없습니다',
+                        style: TextStyle(color: Colors.white24, fontSize: 12)),
+                  ],
                 ),
               ),
             ),
           ),
 
-          // 2. Gradient Overlay (Bottom to Top)
+          // 2. Gradient Overlay
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
                 colors: [
-                  const Color(0xFF0A0A0A), // Match scaffold background
+                  const Color(0xFF0A0A0A),
                   const Color(0xFF0A0A0A).withValues(alpha: 0.0),
                 ],
                 stops: const [0.1, 0.6],
@@ -98,22 +96,24 @@ class HeroSection extends StatelessWidget {
                   heroMovie.title,
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 32,
+                    fontSize: 28, // Slighly smaller to avoid overflow
                     fontWeight: FontWeight.w900,
                     height: 1.1,
                   ),
                 ),
                 const SizedBox(height: 8),
-                Text(
-                  heroMovie.description ?? '',
-                  style: TextStyle(
-                    color: Colors.grey[300],
-                    fontSize: 14,
-                    height: 1.4,
+                if (heroMovie.description != null &&
+                    heroMovie.description!.isNotEmpty)
+                  Text(
+                    heroMovie.description!,
+                    style: TextStyle(
+                      color: Colors.grey[300],
+                      fontSize: 14,
+                      height: 1.4,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
                 const SizedBox(height: 16),
                 Row(
                   children: [

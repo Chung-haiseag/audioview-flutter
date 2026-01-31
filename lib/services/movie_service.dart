@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/movie.dart';
 import '../models/genre.dart';
+import '../models/featured_list.dart';
 
 class MovieService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -9,6 +10,53 @@ class MovieService {
   List<Movie>? _newMoviesCache;
   List<Movie>? _popularMoviesCache;
   List<Genre>? _genresCache;
+
+  // New: Fetch Featured Lists (Special Lists)
+  Stream<List<FeaturedList>> getFeaturedLists() {
+    return _firestore
+        .collection('featured_lists')
+        .where('isActive', isEqualTo: true)
+        .orderBy('displayOrder', descending: false)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs
+          .map((doc) => FeaturedList.fromFirestore(doc))
+          .toList();
+    });
+  }
+
+  // New: Fetch movies in a specific Featured List
+  Stream<List<Movie>> getMoviesByFeaturedList(String listId) {
+    return _firestore
+        .collection('featured_movies')
+        .where('listId', isEqualTo: listId)
+        .orderBy('displayOrder', descending: false)
+        .snapshots()
+        .asyncMap((snapshot) async {
+      final movieIds =
+          snapshot.docs.map((doc) => doc.data()['movieId'] as String).toList();
+
+      if (movieIds.isEmpty) return [];
+
+      // Fetch actual movie documents for these IDs
+      // Firestore 'in' query supports up to 10 IDs. If more, we'd need batching.
+      // Usually TOP10 is exactly 10, so it's fine.
+      final moviesSnapshot = await _firestore
+          .collection('movies')
+          .where(FieldPath.documentId, whereIn: movieIds)
+          .get();
+
+      final moviesMap = {
+        for (var doc in moviesSnapshot.docs) doc.id: Movie.fromFirestore(doc)
+      };
+
+      // Return movies in the original display order of the featured_movies collection
+      return movieIds
+          .where((id) => moviesMap.containsKey(id))
+          .map((id) => moviesMap[id]!)
+          .toList();
+    });
+  }
 
   // Fetch "New" movies (isLatest or is_latest)
   Stream<List<Movie>> getNewMovies() {

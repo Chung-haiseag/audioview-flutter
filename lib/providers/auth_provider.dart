@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,6 +13,7 @@ import '../services/notification_service.dart';
 class AuthProvider with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  StreamSubscription<DocumentSnapshot>? _userSubscription;
 
   User? _user;
   Map<String, dynamic>? _userData;
@@ -30,10 +32,21 @@ class AuthProvider with ChangeNotifier {
 
   Future<void> _loadAuthStatus() async {
     _auth.authStateChanges().listen((User? user) async {
+      // Cancel previous subscription if it exists
+      await _userSubscription?.cancel();
+      _userSubscription = null;
+
       _user = user;
+      _userData = null; // Always clear old data immediately to avoid flicker
+      notifyListeners();
+
       if (user != null) {
         // Fetch user data from Firestore
-        _firestore.collection('users').doc(user.uid).snapshots().listen((doc) {
+        _userSubscription = _firestore
+            .collection('users')
+            .doc(user.uid)
+            .snapshots()
+            .listen((doc) {
           if (doc.exists) {
             final newData = doc.data();
 
@@ -68,12 +81,9 @@ class AuthProvider with ChangeNotifier {
           }
         });
         // Save token once outside the listener
-        // This call is now handled by NotificationService which will check for redundancy
         NotificationService.saveTokenToDatabase(user.uid);
-      } else {
-        _userData = null;
-        notifyListeners();
       }
+
       _isLoading = false;
       notifyListeners();
     });
@@ -141,6 +151,11 @@ class AuthProvider with ChangeNotifier {
     }
 
     await _auth.signOut();
+    await _userSubscription?.cancel();
+    _userSubscription = null;
+    _user = null;
+    _userData = null;
+
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('isLoggedIn');
     notifyListeners();
