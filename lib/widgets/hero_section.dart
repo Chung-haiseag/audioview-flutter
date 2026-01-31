@@ -28,7 +28,7 @@ class HeroSection extends StatelessWidget {
     final heroMovie = movie!;
 
     return SizedBox(
-      height: 250,
+      height: 450,
       child: Stack(
         fit: StackFit.expand,
         children: [
@@ -45,7 +45,7 @@ class HeroSection extends StatelessWidget {
             child: Image.network(
               heroMovie.posterUrl,
               fit: BoxFit.cover,
-              alignment: Alignment.center,
+              alignment: Alignment.topCenter,
               loadingBuilder: (context, child, loadingProgress) {
                 if (loadingProgress == null) return child;
                 return Center(
@@ -69,7 +69,7 @@ class HeroSection extends StatelessWidget {
             ),
           ),
 
-          // 2. Gradient Overlay
+          // 2. Gradient Overlay (Bottom and Top)
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -78,8 +78,10 @@ class HeroSection extends StatelessWidget {
                 colors: [
                   const Color(0xFF0A0A0A),
                   const Color(0xFF0A0A0A).withValues(alpha: 0.0),
+                  const Color(0xFF0A0A0A).withValues(alpha: 0.0),
+                  const Color(0xFF0A0A0A).withValues(alpha: 0.6),
                 ],
-                stops: const [0.1, 0.6],
+                stops: const [0.0, 0.3, 0.7, 1.0],
               ),
             ),
           ),

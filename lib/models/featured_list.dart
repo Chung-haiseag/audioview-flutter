@@ -21,7 +21,7 @@ class FeaturedList {
     final data = doc.data() as Map<String, dynamic>;
     return FeaturedList(
       listId: doc.id,
-      title: data['title'] ?? '',
+      title: data['listName'] ?? '',
       type: data['type'],
       displayOrder: data['displayOrder'] ?? 0,
       isActive: data['isActive'] ?? true,
