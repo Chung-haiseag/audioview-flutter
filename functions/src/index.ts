@@ -1,4 +1,6 @@
 import * as functions from "firebase-functions";
+import { onCall, HttpsError } from "firebase-functions/v2/https";
+import { setGlobalOptions } from "firebase-functions/v2";
 import * as admin from "firebase-admin";
 
 // Firebase Admin 초기화
@@ -48,16 +50,19 @@ export const onUserCreate = functions.firestore
     }
   });
 
+// Set global options for V2 functions (e.g., region)
+setGlobalOptions({ region: "us-central1" });
+
 /**
- * 일일 방문 체크인 (10P)
+ * 일일 방문 체크인 (10P) - V2 with CORS support
  */
-export const dailyCheckIn = functions.https.onCall(async (data, context) => {
+export const dailyCheckIn = onCall({ cors: true }, async (request) => {
   // 인증 확인
-  if (!context.auth) {
-    throw new functions.https.HttpsError("unauthenticated", "로그인이 필요합니다.");
+  if (!request.auth) {
+    throw new HttpsError("unauthenticated", "로그인이 필요합니다.");
   }
 
-  const userId = context.auth.uid;
+  const userId = request.auth.uid;
   const today = new Date();
   const dateString = today.toISOString().split('T')[0]; // YYYY-MM-DD
   const checkInId = `${userId}_${dateString}`;
@@ -102,7 +107,7 @@ export const dailyCheckIn = functions.https.onCall(async (data, context) => {
     return { success: true, points: checkInPoints, message: "10포인트가 적립되었습니다!" };
   } catch (error) {
     functions.logger.error("체크인 실패:", error);
-    throw new functions.https.HttpsError("internal", "체크인 처리 중 오류가 발생했습니다.");
+    throw new HttpsError("internal", "체크인 처리 중 오류가 발생했습니다.");
   }
 });
 
