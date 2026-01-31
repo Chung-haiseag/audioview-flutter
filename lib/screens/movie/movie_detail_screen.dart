@@ -1,7 +1,6 @@
 ﻿import 'package:flutter/material.dart';
 import 'dart:ui';
 import '../../models/movie.dart';
-// import '../../constants/mock_data.dart'; // unused
 import 'sync_screen.dart';
 
 class MovieDetailScreen extends StatefulWidget {
