@@ -120,11 +120,9 @@ class _MainScreenState extends State<MainScreen> {
               return;
             }
 
-            // 2. If not on Home tab, go to Home
+            // 2. If not on Home tab, exit immediately (No confirmation)
             if (_currentIndex != 0) {
-              setState(() {
-                _currentIndex = 0;
-              });
+              SystemNavigator.pop();
               return;
             }
 
