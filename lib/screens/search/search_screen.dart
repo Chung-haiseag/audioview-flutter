@@ -341,12 +341,16 @@ class _SearchScreenState extends State<SearchScreen> {
                               child: Icon(Icons.movie, color: Colors.white54)),
                       loadingBuilder: (context, child, loadingProgress) {
                         if (loadingProgress == null) return child;
+                        // Avoid division by zero or null
+                        final total = loadingProgress.expectedTotalBytes;
+                        final current = loadingProgress.cumulativeBytesLoaded;
+                        final progress = (total != null && total > 0)
+                            ? current / total
+                            : null;
+
                         return Center(
                           child: CircularProgressIndicator(
-                            value: loadingProgress.expectedTotalBytes != null
-                                ? loadingProgress.cumulativeBytesLoaded /
-                                    loadingProgress.expectedTotalBytes!
-                                : null,
+                            value: progress,
                             strokeWidth: 2,
                           ),
                         );

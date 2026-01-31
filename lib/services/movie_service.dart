@@ -153,7 +153,15 @@ class MovieService {
 
         return titleMatch || directorMatch || actorMatch || keywordMatch;
       }).toList();
+    } on FirebaseException catch (e) {
+      if (e.code == 'permission-denied') {
+        print('Permission denied (403): User may not be authorized.');
+        return [];
+      }
+      print('Firebase error in search: $e');
+      return [];
     } catch (e) {
+      print('General error in search: $e');
       return [];
     }
   }
