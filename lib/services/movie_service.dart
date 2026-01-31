@@ -104,8 +104,15 @@ class MovieService {
       // 1. Load all movies if not cached (for client-side partial filtering)
       if (_cachedMovies == null) {
         final snapshot = await _firestore.collection('movies').get();
-        _cachedMovies =
-            snapshot.docs.map((doc) => Movie.fromFirestore(doc)).toList();
+        _cachedMovies = [];
+        for (var doc in snapshot.docs) {
+          try {
+            _cachedMovies!.add(Movie.fromFirestore(doc));
+          } catch (e) {
+            print('Error parsing movie ${doc.id}: $e');
+            // Skip malformed documents
+          }
+        }
       }
 
       final lowercaseQuery = query.toLowerCase();
@@ -179,6 +186,11 @@ class MovieService {
         // Add Title
         if (data['title'] != null) {
           terms.add(data['title'].toString());
+        }
+        // Add Actor (Top 2)
+        if (data['actors'] is List && (data['actors'] as List).isNotEmpty) {
+          final actors = (data['actors'] as List).whereType<String>().take(2);
+          terms.addAll(actors);
         }
         // Add Keywords
         if (data['searchKeywords'] is List) {
