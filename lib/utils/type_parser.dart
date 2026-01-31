@@ -3,8 +3,7 @@ class TypeParser {
   /// Handles int, String (including those with non-digit characters), and null.
   static int parseInt(dynamic value) {
     if (value == null) return 0;
-    if (value is int) return value;
-    if (value is double) {
+    if (value is num) {
       if (value.isNaN || value.isInfinite) return 0;
       return value.toInt();
     }

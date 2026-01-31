@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../utils/type_parser.dart';
 
 class FeaturedList {
   final String listId;
@@ -23,7 +24,7 @@ class FeaturedList {
       listId: doc.id,
       title: data['listName'] ?? '',
       type: data['type'],
-      displayOrder: data['displayOrder'] ?? 0,
+      displayOrder: TypeParser.parseInt(data['displayOrder']),
       isActive: data['isActive'] ?? true,
       createdAt: (data['createdAt'] as Timestamp?)?.toDate(),
     );
@@ -49,7 +50,7 @@ class FeaturedMovieLink {
       featuredId: doc.id,
       listId: data['listId'] ?? '',
       movieId: data['movieId'] ?? '',
-      displayOrder: data['displayOrder'] ?? 0,
+      displayOrder: TypeParser.parseInt(data['displayOrder']),
     );
   }
 }
