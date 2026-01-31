@@ -16,7 +16,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _passwordController = TextEditingController();
   final _passwordConfirmController = TextEditingController();
   final _nameController = TextEditingController();
-  final String _disabilityType = 'visual'; // Default based on screenshot
+  String _disabilityType = 'visual'; // Default value
   bool _showPassword = false;
   bool _showConfirmPassword = false;
   bool _isLoading = false;
@@ -163,6 +163,37 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               borderSide: BorderSide.none,
                             ),
                           ),
+                        ),
+                        const SizedBox(height: 16),
+
+                        // Disability Type Dropdown
+                        DropdownButtonFormField<String>(
+                          value: _disabilityType,
+                          dropdownColor: const Color(0xFF333333),
+                          style: const TextStyle(color: Colors.white),
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: const Color(0xFF333333),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide.none,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 16),
+                          ),
+                          items: const [
+                            DropdownMenuItem(
+                                value: 'visual', child: Text('시각 장애')),
+                            DropdownMenuItem(
+                                value: 'hearing', child: Text('청각 장애')),
+                            DropdownMenuItem(
+                                value: 'none', child: Text('기타 / 비장애')),
+                          ],
+                          onChanged: (value) {
+                            if (value != null) {
+                              setState(() => _disabilityType = value);
+                            }
+                          },
                         ),
                         const SizedBox(height: 16),
 
