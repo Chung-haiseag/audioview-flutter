@@ -20,7 +20,15 @@ class MovieService {
         .snapshots()
         .map((snapshot) {
       return snapshot.docs
-          .map((doc) => FeaturedList.fromFirestore(doc))
+          .map((doc) {
+            try {
+              return FeaturedList.fromFirestore(doc);
+            } catch (e) {
+              // Skip malformed list entries
+              return null;
+            }
+          })
+          .whereType<FeaturedList>()
           .toList();
     });
   }
@@ -69,8 +77,16 @@ class MovieService {
         .limit(20)
         .snapshots()
         .map((snapshot) {
-      final movies =
-          snapshot.docs.map((doc) => Movie.fromFirestore(doc)).toList();
+      final movies = snapshot.docs
+          .map((doc) {
+            try {
+              return Movie.fromFirestore(doc);
+            } catch (e) {
+              return null;
+            }
+          })
+          .whereType<Movie>()
+          .toList();
       _newMoviesCache = movies;
       return movies;
     });
@@ -87,8 +103,16 @@ class MovieService {
         .limit(20)
         .snapshots()
         .map((snapshot) {
-      final movies =
-          snapshot.docs.map((doc) => Movie.fromFirestore(doc)).toList();
+      final movies = snapshot.docs
+          .map((doc) {
+            try {
+              return Movie.fromFirestore(doc);
+            } catch (e) {
+              return null;
+            }
+          })
+          .whereType<Movie>()
+          .toList();
       _popularMoviesCache = movies;
       return movies;
     });
@@ -144,7 +168,16 @@ class MovieService {
         .limit(20)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) => Movie.fromFirestore(doc)).toList();
+      return snapshot.docs
+          .map((doc) {
+            try {
+              return Movie.fromFirestore(doc);
+            } catch (e) {
+              return null;
+            }
+          })
+          .whereType<Movie>()
+          .toList();
     });
   }
 

@@ -4,7 +4,10 @@ class TypeParser {
   static int parseInt(dynamic value) {
     if (value == null) return 0;
     if (value is int) return value;
-    if (value is double) return value.toInt();
+    if (value is double) {
+      if (value.isNaN || value.isInfinite) return 0;
+      return value.toInt();
+    }
     if (value is String) {
       if (value.isEmpty) return 0;
       // Remove non-digit characters (e.g., "100분" -> "100")
