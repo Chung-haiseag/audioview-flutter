@@ -27,64 +27,68 @@ class HeroSection extends StatelessWidget {
 
     final heroMovie = movie!;
 
-    return SizedBox(
-      height: 450,
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          // 1. Background Image
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MovieDetailScreen(movie: heroMovie),
-                ),
-              );
-            },
-            child: Image.network(
-              heroMovie.posterUrl,
-              fit: BoxFit.cover,
-              alignment: Alignment.topCenter,
-              loadingBuilder: (context, child, loadingProgress) {
-                if (loadingProgress == null) return child;
-                return Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.red.withValues(alpha: 0.5),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: SizedBox(
+          height: 400, // Slightly reduced height from 450 to 400 with the padding
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              // 1. Background Image
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MovieDetailScreen(movie: heroMovie),
+                    ),
+                  );
+                },
+                child: Image.network(
+                  heroMovie.posterUrl,
+                  fit: BoxFit.cover,
+                  alignment: Alignment.topCenter,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.red.withValues(alpha: 0.5),
+                      ),
+                    );
+                  },
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    color: Colors.grey[900],
+                    child: const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.movie, size: 50, color: Colors.white24),
+                        SizedBox(height: 8),
+                        Text('이미지를 불러올 수 없습니다',
+                            style: TextStyle(color: Colors.white24, fontSize: 12)),
+                      ],
+                    ),
                   ),
-                );
-              },
-              errorBuilder: (context, error, stackTrace) => Container(
-                color: Colors.grey[900],
-                child: const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.movie, size: 50, color: Colors.white24),
-                    SizedBox(height: 8),
-                    Text('이미지를 불러올 수 없습니다',
-                        style: TextStyle(color: Colors.white24, fontSize: 12)),
-                  ],
                 ),
               ),
-            ),
-          ),
 
-          // 2. Gradient Overlay (Bottom and Top)
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
-                colors: [
-                  const Color(0xFF0A0A0A),
-                  const Color(0xFF0A0A0A).withValues(alpha: 0.0),
-                  const Color(0xFF0A0A0A).withValues(alpha: 0.0),
-                  const Color(0xFF0A0A0A).withValues(alpha: 0.6),
-                ],
-                stops: const [0.0, 0.3, 0.7, 1.0],
+              // 2. Gradient Overlay (Bottom and Top)
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    colors: [
+                      const Color(0xFF0A0A0A),
+                      const Color(0xFF0A0A0A).withValues(alpha: 0.0),
+                      const Color(0xFF0A0A0A).withValues(alpha: 0.0),
+                      const Color(0xFF0A0A0A).withValues(alpha: 0.4),
+                    ],
+                    stops: const [0.0, 0.3, 0.7, 1.0],
+                  ),
+                ),
               ),
-            ),
-          ),
 
           // 3. Content
           Positioned(
@@ -173,6 +177,7 @@ class HeroSection extends StatelessWidget {
             ),
           ),
         ],
+      ),
       ),
     );
   }
