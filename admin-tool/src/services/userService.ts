@@ -10,6 +10,7 @@ import {
     where,
     orderBy,
     limit,
+    runTransaction,
     QueryConstraint,
     Timestamp,
 } from 'firebase/firestore';
@@ -246,17 +247,20 @@ export const getUserDownloadHistory = async (userId: string): Promise<UserDownlo
     }
 };
 
-// 회원의 포인트 정보 조회
+// 회원의 포인트 정보 조회 (users 컬렉션 사용)
 export const getUserPoints = async (userId: string): Promise<UserPoint | null> => {
     try {
-        const docRef = doc(db, 'userPoints', userId);
+        const docRef = doc(db, 'users', userId);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
             const data = docSnap.data();
+            const points = data.points || 0;
             return {
                 userId: docSnap.id,
-                ...data,
+                totalPoints: points,
+                earnedPoints: points, // 현재 별도의 누적 필드가 없으므로 현재 포인트로 표시
+                usedPoints: 0,
                 createdAt: data.createdAt?.toDate(),
                 updatedAt: data.updatedAt?.toDate(),
             } as UserPoint;
@@ -268,23 +272,29 @@ export const getUserPoints = async (userId: string): Promise<UserPoint | null> =
     }
 };
 
-// 회원의 포인트 이력 조회
+// 회원의 포인트 이력 조회 (point_history 컬렉션 사용)
 export const getPointHistory = async (userId: string): Promise<PointHistory[]> => {
     try {
+        const historyRef = collection(db, 'point_history');
         const q = query(
-            collection(db, 'pointHistory'),
-            where('userId', '==', userId),
-            orderBy('createdAt', 'desc')
+            historyRef,
+            where('user_id', '==', userId),
+            orderBy('created_at', 'desc')
         );
         const querySnapshot = await getDocs(q);
 
         const history: PointHistory[] = [];
         querySnapshot.forEach((docSnap) => {
             const data = docSnap.data();
+            const points = data.points || 0;
             history.push({
                 historyId: docSnap.id,
-                ...data,
-                createdAt: data.createdAt?.toDate(),
+                userId: data.user_id,
+                pointType: points >= 0 ? 'earn' : 'use',
+                points: Math.abs(points),
+                reason: data.description || '',
+                balanceAfter: 0, // 현재 잔액 필드가 내역에 없으므로 0으로 표시
+                createdAt: data.created_at?.toDate() || new Date(),
             } as PointHistory);
         });
 
@@ -292,5 +302,40 @@ export const getPointHistory = async (userId: string): Promise<PointHistory[]> =
     } catch (error) {
         console.error('포인트 이력 조회 오류:', error);
         return [];
+    }
+};
+// 회원에게 포인트 지급/차감
+export const givePoints = async (userId: string, points: number, description: string) => {
+    try {
+        const userRef = doc(db, 'users', userId);
+        const historyRef = doc(collection(db, 'point_history'));
+
+        await runTransaction(db, async (transaction) => {
+            const userSnap = await transaction.get(userRef);
+            if (!userSnap.exists()) {
+                throw new Error('사용자가 존재하지 않습니다.');
+            }
+
+            const currentPoints = userSnap.data().points || 0;
+            const newPoints = currentPoints + points;
+
+            // 1. 사용자 포인트 업데이트
+            transaction.update(userRef, {
+                points: newPoints,
+                updatedAt: Timestamp.now()
+            });
+
+            // 2. 포인트 내역 추가
+            transaction.set(historyRef, {
+                user_id: userId,
+                points: points,
+                type: points >= 0 ? 'admin_add' : 'admin_sub',
+                description: description,
+                created_at: Timestamp.now()
+            });
+        });
+    } catch (error) {
+        console.error('포인트 지급 오류:', error);
+        throw error;
     }
 };
