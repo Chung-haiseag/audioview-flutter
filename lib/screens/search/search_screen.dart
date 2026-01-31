@@ -25,10 +25,22 @@ class _SearchScreenState extends State<SearchScreen> {
   final stt.SpeechToText _speech = stt.SpeechToText();
   bool _isListening = false;
 
+  List<String> _recommendations = [];
+
   @override
   void initState() {
     super.initState();
     _initSpeech();
+    _loadRecommendations();
+  }
+
+  Future<void> _loadRecommendations() async {
+    final terms = await _movieService.getRecommendedSearchTerms();
+    if (mounted) {
+      setState(() {
+        _recommendations = terms;
+      });
+    }
   }
 
   void _initSpeech() async {
@@ -116,63 +128,111 @@ class _SearchScreenState extends State<SearchScreen> {
       backgroundColor: Colors.transparent,
       body: Column(
         children: [
-          // Search Input Area
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                TextField(
-                  controller: _searchController,
-                  onChanged: _onSearchChanged,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                    hintText: '영화, 시리즈, 배우 검색',
-                    hintStyle: TextStyle(color: Colors.white.withOpacity(0.5)),
-                    prefixIcon: const Icon(Icons.search, color: Colors.blue),
-                    suffixIcon: _searchController.text.isNotEmpty
-                        ? IconButton(
-                            icon: const Icon(Icons.clear, color: Colors.grey),
-                            onPressed: () {
-                              _searchController.clear();
-                              _onSearchChanged('');
-                            },
-                          )
-                        : IconButton(
-                            icon: Icon(
-                              _isListening ? Icons.mic : Icons.mic_none,
-                              color: _isListening ? Colors.red : Colors.yellow,
-                            ),
-                            onPressed: _toggleListening,
-                          ),
-                    filled: true,
-                    fillColor: Colors.white.withOpacity(0.1),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide.none,
+          Column(
+            children: [
+              // Search Input Area
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    TextField(
+                      controller: _searchController,
+                      onChanged: _onSearchChanged,
+                      style: const TextStyle(color: Colors.white),
+                      decoration: InputDecoration(
+                        hintText: '영화, 시리즈, 배우 검색',
+                        hintStyle:
+                            TextStyle(color: Colors.white.withOpacity(0.5)),
+                        prefixIcon:
+                            const Icon(Icons.search, color: Colors.blue),
+                        suffixIcon: _searchController.text.isNotEmpty
+                            ? IconButton(
+                                icon:
+                                    const Icon(Icons.clear, color: Colors.grey),
+                                onPressed: () {
+                                  _searchController.clear();
+                                  _onSearchChanged('');
+                                },
+                              )
+                            : IconButton(
+                                icon: Icon(
+                                  // Always show mic icon, color changes on state
+                                  Icons.mic,
+                                  color:
+                                      _isListening ? Colors.red : Colors.white,
+                                ),
+                                onPressed: _toggleListening,
+                              ),
+                        filled: true,
+                        fillColor: Colors.white.withOpacity(0.1),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+
+              // Search Results
+              Expanded(
+                child: _isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : _searchResults.isEmpty
+                        ? _searchController.text.isEmpty
+                            ? _buildRecommendationSection()
+                            : _buildEmptyState()
+                        : _buildResultsGrid(),
+              ),
+            ],
           ),
 
-          // Search Results
-          Expanded(
-            child: _isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : _searchResults.isEmpty
-                    ? _searchController.text.isEmpty
-                        ? _buildRecommendationSection()
-                        : _buildEmptyState()
-                    : _buildResultsGrid(),
-          ),
+          // Voice Listening Overlay
+          if (_isListening)
+            Positioned.fill(
+              child: Container(
+                color: Colors.black.withOpacity(0.8),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(30),
+                      decoration: BoxDecoration(
+                        color: Colors.red.withOpacity(0.2),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.mic,
+                        size: 80,
+                        color: Colors.red,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    const Text(
+                      '듣고 있어요...',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextButton(
+                      onPressed: _toggleListening,
+                      child: const Text('취소',
+                          style: TextStyle(color: Colors.grey, fontSize: 16)),
+                    ),
+                  ],
+                ),
+              ),
+            ),
         ],
       ),
     );
   }
 
   Widget _buildRecommendationSection() {
-    final recommendations = ['액션', '가치봄', '한국 영화', '인사이드 아웃', '데몬 헌터스', '공포'];
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -196,7 +256,7 @@ class _SearchScreenState extends State<SearchScreen> {
           Wrap(
             spacing: 8,
             runSpacing: 8,
-            children: recommendations
+            children: _recommendations
                 .map((tag) => ActionChip(
                       label: Text(tag),
                       backgroundColor: Colors.white.withOpacity(0.1),

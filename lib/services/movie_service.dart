@@ -162,4 +162,38 @@ class MovieService {
     }
     return null;
   }
+
+  // Fetch recommended search terms (titles and keywords)
+  Future<List<String>> getRecommendedSearchTerms({int limit = 10}) async {
+    try {
+      // Fetch a mix of popular and latest movies to get relevant keywords
+      final snapshot = await _firestore
+          .collection('movies')
+          .orderBy('createdAt', descending: true)
+          .limit(20)
+          .get();
+
+      final Set<String> terms = {};
+      for (var doc in snapshot.docs) {
+        final data = doc.data();
+        // Add Title
+        if (data['title'] != null) {
+          terms.add(data['title'].toString());
+        }
+        // Add Keywords
+        if (data['searchKeywords'] is List) {
+          for (var keyword in data['searchKeywords']) {
+            if (keyword is String && keyword.isNotEmpty) {
+              terms.add(keyword);
+            }
+          }
+        }
+        if (terms.length >= limit * 2) break; // Optimization
+      }
+
+      return terms.take(limit).toList();
+    } catch (e) {
+      return ['액션', '가치봄', '한국 영화', '최신작']; // Fallback
+    }
+  }
 }
