@@ -292,7 +292,8 @@ class AuthProvider with ChangeNotifier {
   Future<Map<String, dynamic>> performCheckIn() async {
     try {
       final HttpsCallable callable =
-          FirebaseFunctions.instance.httpsCallable('dailyCheckIn');
+          FirebaseFunctions.instanceFor(region: 'us-central1')
+              .httpsCallable('dailyCheckIn');
       final result = await callable.call();
       return Map<String, dynamic>.from(result.data);
     } catch (e) {
