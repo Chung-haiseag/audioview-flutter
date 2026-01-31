@@ -46,23 +46,18 @@ class AuthProvider with ChangeNotifier {
                 });
               }
 
-              // Also check history (to fix existing users with empty history)
+              // Use a deterministic ID for signup history to prevent duplicates
               _firestore
                   .collection('point_history')
-                  .where('user_id', isEqualTo: user.uid)
-                  .where('type', isEqualTo: 'signup')
-                  .get()
-                  .then((historySnap) {
-                if (historySnap.docs.isEmpty) {
-                  _firestore.collection('point_history').add({
-                    'user_id': user.uid,
-                    'points': 100,
-                    'type': 'signup',
-                    'description': '회원가입 축하 포인트',
-                    'created_at': FieldValue.serverTimestamp(),
-                  });
-                }
-              });
+                  .doc('signup_${user.uid}')
+                  .set({
+                'user_id': user.uid,
+                'points': 100,
+                'type': 'signup',
+                'description': '회원가입 축하 포인트',
+                'created_at':
+                    newData['createdAt'] ?? FieldValue.serverTimestamp(),
+              }, SetOptions(merge: true));
             }
 
             _userData = newData;
