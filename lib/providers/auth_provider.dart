@@ -62,6 +62,9 @@ class AuthProvider with ChangeNotifier {
 
             _userData = newData;
             notifyListeners();
+          } else {
+            // User exists in Auth but not in Firestore -> Forced logout (Deleted by admin)
+            logout();
           }
         });
         // Save token once outside the listener

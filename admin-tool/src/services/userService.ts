@@ -5,7 +5,6 @@ import {
     getDocs,
     addDoc,
     updateDoc,
-    deleteDoc,
     query,
     where,
     orderBy,
@@ -14,7 +13,8 @@ import {
     QueryConstraint,
     Timestamp,
 } from 'firebase/firestore';
-import { db } from './firebase';
+import { httpsCallable } from 'firebase/functions';
+import { db, functions } from './firebase';
 import { User, UserFavorite, UserDownloadHistory, UserPoint, PointHistory } from '../types';
 
 const COLLECTION_NAME = 'users';
@@ -144,11 +144,11 @@ export const addUser = async (userData: Omit<User, 'userId' | 'createdAt' | 'upd
     }
 };
 
-// 회원 삭제
+// 회원 삭제 (Cloud Function 호출)
 export const deleteUser = async (userId: string) => {
     try {
-        const docRef = doc(db, COLLECTION_NAME, userId);
-        await deleteDoc(docRef);
+        const deleteFunc = httpsCallable(functions, 'deleteUserAccount');
+        await deleteFunc({ uid: userId });
     } catch (error) {
         console.error('회원 삭제 오류:', error);
         throw error;

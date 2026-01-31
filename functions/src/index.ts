@@ -316,3 +316,66 @@ export const onMovieUpdate = functions.firestore
         `${before.view_count} -> ${after.view_count}`);
     }
   });
+/**
+ * 회원 영구 삭제 (관리자용)
+ * 인증 계정(Auth)과 Firestore 데이터를 모두 삭제합니다.
+ */
+export const deleteUserAccount = functions.https.onCall(async (data, context) => {
+  // 인증 확인 (최소한 로그인된 상태여야 함)
+  if (!context.auth) {
+    throw new functions.https.HttpsError("unauthenticated", "로그인이 필요합니다.");
+  }
+
+  const targetUid = data.uid;
+  if (!targetUid) {
+    throw new functions.https.HttpsError("invalid-argument", "삭제할 사용자 ID(uid)가 필요합니다.");
+  }
+
+  try {
+    functions.logger.info(`회원 영구 삭제 시작: ${targetUid} (요청자: ${context.auth.uid})`);
+
+    // 1. Firebase Auth에서 계정 삭제
+    try {
+      await admin.auth().deleteUser(targetUid);
+      functions.logger.info(`Auth 계정 삭제 완료: ${targetUid}`);
+    } catch (authError: any) {
+      if (authError.code === 'auth/user-not-found') {
+        functions.logger.info(`Auth 계정이 이미 존재하지 않음: ${targetUid}`);
+      } else {
+        throw authError;
+      }
+    }
+
+    // 2. Firestore 데이터 삭제 (Batch 처리)
+    const batch = db.batch();
+
+    // - 유저 메인 문서 삭제
+    batch.delete(db.collection("users").doc(targetUid));
+
+    // - 포인트 히스토리 삭제 (해당 유저의 내역들)
+    const historySnapshot = await db.collection("point_history")
+      .where("user_id", "==", targetUid)
+      .get();
+
+    historySnapshot.forEach((doc) => {
+      batch.delete(doc.ref);
+    });
+
+    // - 출석 체크 기록 삭제
+    const checkInSnapshot = await db.collection("daily_check_ins")
+      .where("user_id", "==", targetUid)
+      .get();
+
+    checkInSnapshot.forEach((doc) => {
+      batch.delete(doc.ref);
+    });
+
+    await batch.commit();
+    functions.logger.info(`Firestore 관련 데이터 삭제 완료: ${targetUid}`);
+
+    return { success: true, message: "회원이 영구적으로 삭제되었습니다." };
+  } catch (error) {
+    functions.logger.error("회원 삭제 실패:", error);
+    throw new functions.https.HttpsError("internal", "회원 삭제 처리 중 오류가 발생했습니다.");
+  }
+});
