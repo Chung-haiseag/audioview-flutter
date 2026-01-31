@@ -33,8 +33,8 @@ export const onUserCreate = functions.firestore
         updated_at: admin.firestore.FieldValue.serverTimestamp(),
       });
 
-      // 포인트 히스토리 기록
-      await db.collection("point_history").add({
+      // 포인트 히스토리 기록 (고정 ID 사용하여 중복 방지)
+      await db.collection("point_history").doc("signup_" + userId).set({
         user_id: userId,
         points: signupPoints,
         type: "signup",
