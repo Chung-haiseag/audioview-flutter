@@ -1,5 +1,6 @@
 // Audioview - Flutter Web Deployment
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'config/theme.dart';
@@ -75,6 +76,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
   double _brightness = 100.0;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -107,66 +109,117 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Consumer<AuthProvider>(
       builder: (context, auth, _) {
-        return Scaffold(
-          backgroundColor: const Color(0xFF0A0A0A),
-          drawer: CustomDrawer(
-            currentIndex: _currentIndex,
-            onItemTapped: (index) async {
+        return PopScope(
+          canPop: false,
+          onPopInvoked: (didPop) async {
+            if (didPop) return;
+
+            // 1. If drawer is open, close it
+            if (_scaffoldKey.currentState?.isDrawerOpen ?? false) {
+              Navigator.of(context).pop();
+              return;
+            }
+
+            // 2. If not on Home tab, go to Home
+            if (_currentIndex != 0) {
               setState(() {
-                _currentIndex = index;
+                _currentIndex = 0;
               });
-            },
-          ),
-          body: Stack(
-            children: [
-              // 1. Content Layer
-              Column(
-                children: [
-                  // Spacer for Header (StatusBar + Header Height)
-                  SizedBox(height: MediaQuery.of(context).padding.top + 68),
-                  Expanded(child: _screens[_currentIndex]),
+              return;
+            }
+
+            // 3. If on Home tab, show exit confirmation
+            final shouldExit = await showDialog<bool>(
+              context: context,
+              builder: (context) => AlertDialog(
+                backgroundColor: const Color(0xFF1E1E1E),
+                title: const Text('앱 종료',
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold)),
+                content: const Text('앱을 종료하시겠습니까?',
+                    style: TextStyle(color: Colors.white70)),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child:
+                        const Text('취소', style: TextStyle(color: Colors.grey)),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(true),
+                    child:
+                        const Text('종료', style: TextStyle(color: Colors.red)),
+                  ),
                 ],
               ),
+            );
 
-              // 2. Brightness Overlay Layer (Covers content below header)
-              Positioned(
-                top: MediaQuery.of(context).padding.top + 68,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                child: IgnorePointer(
-                  child: Container(
-                    color: Colors.black.withOpacity((100 - _brightness) / 100),
+            if (shouldExit == true) {
+              SystemNavigator.pop();
+            }
+          },
+          child: Scaffold(
+            key: _scaffoldKey,
+            backgroundColor: const Color(0xFF0A0A0A),
+            drawer: CustomDrawer(
+              currentIndex: _currentIndex,
+              onItemTapped: (index) async {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+            ),
+            body: Stack(
+              children: [
+                // 1. Content Layer
+                Column(
+                  children: [
+                    // Spacer for Header (StatusBar + Header Height)
+                    SizedBox(height: MediaQuery.of(context).padding.top + 68),
+                    Expanded(child: _screens[_currentIndex]),
+                  ],
+                ),
+
+                // 2. Brightness Overlay Layer (Covers content below header)
+                Positioned(
+                  top: MediaQuery.of(context).padding.top + 68,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: IgnorePointer(
+                    child: Container(
+                      color:
+                          Colors.black.withOpacity((100 - _brightness) / 100),
+                    ),
                   ),
                 ),
-              ),
 
-              // 3. Header Layer (Floating on top)
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: CustomHeader(
-                  isSubPage: _currentIndex != 0,
-                  customTitle:
-                      _currentIndex == 0 ? null : _titles[_currentIndex],
-                  brightness: _brightness,
-                  onBrightnessChanged: (value) {
-                    setState(() {
-                      _brightness = value;
-                    });
-                  },
-                  onSearchPressed: _currentIndex == 3
-                      ? null
-                      : () {
-                          setState(() {
-                            _currentIndex = 3;
-                          });
-                        },
-                  onBackPressed: null,
+                // 3. Header Layer (Floating on top)
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: CustomHeader(
+                    isSubPage: _currentIndex != 0,
+                    customTitle:
+                        _currentIndex == 0 ? null : _titles[_currentIndex],
+                    brightness: _brightness,
+                    onBrightnessChanged: (value) {
+                      setState(() {
+                        _brightness = value;
+                      });
+                    },
+                    onSearchPressed: _currentIndex == 3
+                        ? null
+                        : () {
+                            setState(() {
+                              _currentIndex = 3;
+                            });
+                          },
+                    onBackPressed: null,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
