@@ -68,7 +68,14 @@ const Featured: React.FC = () => {
         try {
             setLoading(true);
             const [listData, movieData] = await Promise.all([getFeaturedLists(), getMovies()]);
-            setLists(listData);
+
+            // 각 목록의 영화 개수를 병합하여 확장된 인터페이스 사용
+            const listsWithCounts = await Promise.all(listData.map(async (list) => {
+                const fm = await getFeaturedMovies(list.listId);
+                return { ...list, movieCount: fm.length };
+            }));
+
+            setLists(listsWithCounts as (FeaturedList & { movieCount: number })[]);
             setMovies(movieData);
         } catch (error) {
             console.error('데이터 조회 오류:', error);
@@ -141,6 +148,7 @@ const Featured: React.FC = () => {
         try {
             await addMovieToFeatured(selectedList.listId, movieId, featuredMovies.length);
             loadFeaturedMovies(selectedList.listId);
+            fetchData(); // 메인 목록의 개수 업데이트를 위해 호출
         } catch (error: any) {
             alert(error.message);
         }
@@ -150,6 +158,7 @@ const Featured: React.FC = () => {
         try {
             await removeMovieFromFeatured(featuredId);
             if (selectedList) loadFeaturedMovies(selectedList.listId);
+            fetchData(); // 메인 목록의 개수 업데이트를 위해 호출
         } catch (error) {
             console.error('영화 제거 오류:', error);
         }
@@ -176,7 +185,9 @@ const Featured: React.FC = () => {
                                             {!list.isActive && <Typography component="span" color="error" variant="caption" sx={{ ml: 1 }}>(비활성)</Typography>}
                                         </Typography>
                                         <Typography variant="body2" color="text.secondary">{list.listDescription || '설명 없음'}</Typography>
-                                        <Typography variant="caption" sx={{ display: 'block', mt: 1 }}>최대 항목: {list.maxItems}개</Typography>
+                                        <Typography variant="caption" sx={{ display: 'block', mt: 1, fontWeight: 'bold', color: 'primary.main' }}>
+                                            현재 항목: {(list as any).movieCount || 0} / {list.maxItems}개
+                                        </Typography>
                                     </Box>
                                     <Box>
                                         <IconButton size="small" color="primary" onClick={() => handleOpenManageMovies(list)} title="영화 관리"><MovieIcon /></IconButton>
