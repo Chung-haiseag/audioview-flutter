@@ -68,16 +68,25 @@ class Movie {
       hasCC: data['hasClosedCaption'] ?? data['has_closed_caption'] ?? false,
       hasMultiLang: false,
       director: data['director'] ?? '',
-      actors: data['actors'] is List ? List<String>.from(data['actors']) : [],
-      searchKeywords: data['searchKeywords'] is List
-          ? List<String>.from(data['searchKeywords'])
-          : [],
+      actors: _parseList(data['actors']),
+      searchKeywords: _parseList(data['searchKeywords']),
     );
+  }
+
+  static List<String> _parseList(dynamic list) {
+    if (list is List) {
+      return list
+          .whereType<String>() // Filter only Strings
+          .where((s) => s.isNotEmpty) // Filter empty
+          .toList();
+    }
+    return [];
   }
 
   static List<String> _parseGenres(Map<String, dynamic> data) {
     if (data['genres'] is List) {
-      return List<String>.from(data['genres']);
+      // Use the safe parser for genres too
+      return _parseList(data['genres']);
     }
     if (data['genre'] is String) {
       return [data['genre']];
