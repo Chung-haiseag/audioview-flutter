@@ -379,3 +379,61 @@ export const deleteUserAccount = functions.https.onCall(async (data, context) =>
     throw new functions.https.HttpsError("internal", "회원 삭제 처리 중 오류가 발생했습니다.");
   }
 });
+
+/**
+ * [임시] 추천 영화 목록 설정 (10개)
+ */
+export const setupRecommendedMovies = functions.https.onCall(async (data, context) => {
+  try {
+    // 1. "추천 영화" 목록 존재 확인 및 생성
+    const listSnapshot = await db.collection("featured_lists")
+      .where("listName", "==", "추천 영화")
+      .limit(1)
+      .get();
+
+    let listId;
+    if (listSnapshot.empty) {
+      const newList = await db.collection("featured_lists").add({
+        listName: "추천 영화",
+        listDescription: "Antigravity가 추천하는 영화 목록입니다.",
+        maxItems: 10,
+        isActive: true,
+        displayOrder: 1, // 상단에 위치
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+      listId = newList.id;
+    } else {
+      listId = listSnapshot.docs[0].id;
+    }
+
+    // 2. 영화 10개 가져오기
+    const moviesSnapshot = await db.collection("movies").limit(10).get();
+    const movieDocs = moviesSnapshot.docs;
+
+    // 3. 기존 연결 삭제 (깔끔하게 재설정)
+    const existingLinks = await db.collection("featured_movies")
+      .where("listId", "==", listId)
+      .get();
+
+    const batch = db.batch();
+    existingLinks.forEach(doc => batch.delete(doc.ref));
+
+    // 4. 새 연결 추가
+    movieDocs.forEach((mDoc, index) => {
+      const linkRef = db.collection("featured_movies").doc();
+      batch.set(linkRef, {
+        listId: listId,
+        movieId: mDoc.id,
+        displayOrder: index,
+        featuredDate: admin.firestore.FieldValue.serverTimestamp(),
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+    });
+
+    await batch.commit();
+    return { success: true, count: movieDocs.length, message: "추천 영화 10개가 설정되었습니다." };
+  } catch (error) {
+    functions.logger.error("추천 영화 설정 실패:", error);
+    throw new functions.https.HttpsError("internal", "추천 영화 설정 중 오류가 발생했습니다.");
+  }
+});

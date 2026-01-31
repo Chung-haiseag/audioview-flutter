@@ -82,10 +82,11 @@ export const deleteFeaturedList = async (listId: string) => {
 // 특정 목록의 영화들 조회
 export const getFeaturedMovies = async (listId: string): Promise<(FeaturedMovie & { movie?: Movie })[]> => {
     try {
+        // orderBy를 제거하여 displayOrder 필드가 없는 문서도 모두 가져오도록 수정
+        // (Firestore의 orderBy는 필드가 없는 문서를 결과에서 제외함)
         const q = query(
             collection(db, MOVIE_LINK_COLLECTION),
-            where('listId', '==', listId),
-            orderBy('displayOrder', 'asc')
+            where('listId', '==', listId)
         );
         const querySnapshot = await getDocs(q);
 
@@ -95,6 +96,9 @@ export const getFeaturedMovies = async (listId: string): Promise<(FeaturedMovie 
             featuredDate: d.data().featuredDate?.toDate(),
             createdAt: d.data().createdAt?.toDate(),
         } as FeaturedMovie));
+
+        // 메모리에서 정렬 처리
+        featuredMovies.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
 
         // 영화 정보 병합 (필요 시)
         const results = await Promise.all(featuredMovies.map(async (fm) => {
