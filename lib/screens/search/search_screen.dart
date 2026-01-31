@@ -126,7 +126,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: Column(
+      body: Stack(
         children: [
           Column(
             children: [
@@ -333,29 +333,34 @@ class _SearchScreenState extends State<SearchScreen> {
                   borderRadius: BorderRadius.circular(8),
                   child: Container(
                     color: Colors.grey[900], // Fallback background
-                    child: Image.network(
-                      movie.posterUrl,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) =>
-                          const Center(
-                              child: Icon(Icons.movie, color: Colors.white54)),
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        // Avoid division by zero or null
-                        final total = loadingProgress.expectedTotalBytes;
-                        final current = loadingProgress.cumulativeBytesLoaded;
-                        final progress = (total != null && total > 0)
-                            ? current / total
-                            : null;
+                    child: movie.posterUrl.isNotEmpty
+                        ? Image.network(
+                            movie.posterUrl,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) =>
+                                const Center(
+                                    child: Icon(Icons.movie,
+                                        color: Colors.white54)),
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              // Avoid division by zero or null
+                              final total = loadingProgress.expectedTotalBytes;
+                              final current =
+                                  loadingProgress.cumulativeBytesLoaded;
+                              final progress = (total != null && total > 0)
+                                  ? current / total
+                                  : null;
 
-                        return Center(
-                          child: CircularProgressIndicator(
-                            value: progress,
-                            strokeWidth: 2,
-                          ),
-                        );
-                      },
-                    ),
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  value: progress,
+                                  strokeWidth: 2,
+                                ),
+                              );
+                            },
+                          )
+                        : const Center(
+                            child: Icon(Icons.movie, color: Colors.white54)),
                   ),
                 ),
               ),
