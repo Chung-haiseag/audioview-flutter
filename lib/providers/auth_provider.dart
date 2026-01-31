@@ -37,11 +37,31 @@ class AuthProvider with ChangeNotifier {
           if (doc.exists) {
             final newData = doc.data();
 
-            // Auto-fix: If points field is missing, initialize it to 100
-            if (newData != null && newData['points'] == null) {
-              doc.reference.update({
-                'points': 100,
-                'updatedAt': FieldValue.serverTimestamp(),
+            // Auto-fix: Ensure points field and history exist
+            if (newData != null) {
+              if (newData['points'] == null) {
+                doc.reference.update({
+                  'points': 100,
+                  'updatedAt': FieldValue.serverTimestamp(),
+                });
+              }
+
+              // Also check history (to fix existing users with empty history)
+              _firestore
+                  .collection('point_history')
+                  .where('user_id', isEqualTo: user.uid)
+                  .where('type', isEqualTo: 'signup')
+                  .get()
+                  .then((historySnap) {
+                if (historySnap.docs.isEmpty) {
+                  _firestore.collection('point_history').add({
+                    'user_id': user.uid,
+                    'points': 100,
+                    'type': 'signup',
+                    'description': '회원가입 축하 포인트',
+                    'created_at': FieldValue.serverTimestamp(),
+                  });
+                }
               });
             }
 
