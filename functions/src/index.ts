@@ -19,6 +19,14 @@ export const onUserCreate = functions.firestore
     const signupPoints = 100;
 
     try {
+      const userData = snap.data();
+
+      // If points already initialized by client, skip to avoid double crediting
+      if (userData && userData.points !== undefined && userData.points >= signupPoints) {
+        functions.logger.info(`User ${userId} already has ${userData.points} points. Skipping signup bonus.`);
+        return;
+      }
+
       // 포인트 업데이트
       await snap.ref.update({
         points: admin.firestore.FieldValue.increment(signupPoints),
