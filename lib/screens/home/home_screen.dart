@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../models/movie.dart';
 import '../../models/genre.dart';
 import '../../models/featured_list.dart';
@@ -13,7 +14,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final movieService = MovieService();
+    final movieService = context.read<MovieService>();
 
     return Scaffold(
       backgroundColor: const Color(0xFF0A0A0A),

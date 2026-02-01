@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../models/movie.dart';
 import '../screens/movie/movie_detail_screen.dart';
 
@@ -47,19 +48,19 @@ class HeroSection extends StatelessWidget {
                     ),
                   );
                 },
-                child: Image.network(
-                  heroMovie.posterUrl,
+                child: CachedNetworkImage(
+                  imageUrl: heroMovie.posterUrl,
                   fit: BoxFit.cover,
                   alignment: Alignment.topCenter,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.red.withValues(alpha: 0.5),
-                      ),
-                    );
-                  },
-                  errorBuilder: (context, error, stackTrace) => Container(
+                  // Optimize for full screen width but don't over-fetch if not needed.
+                  // Assuming Hero is roughly top 40% of screen.
+                  // memCacheWidth: 800, // Optional: uncomment if memory issues arise
+                  placeholder: (context, url) => Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.red.withValues(alpha: 0.5),
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => Container(
                     color: Colors.grey[900],
                     child: const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
