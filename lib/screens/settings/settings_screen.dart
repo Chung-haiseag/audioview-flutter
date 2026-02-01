@@ -6,7 +6,6 @@ import '../help/privacy_policy_screen.dart';
 import '../help/terms_of_service_screen.dart';
 import '../help/faq_screen.dart';
 import '../help/user_guide_screen.dart';
-import 'point_history_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -236,13 +235,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
           title: '새로운 작품 요청하기',
           subtitle: '보고 싶은 작품이 있다면 요청해 주세요',
           screen: const RequestContentScreen(),
-        ),
-        _buildHelpNavEntry(
-          context: context,
-          icon: Icons.history_outlined,
-          title: '마일리지 적립 내역',
-          subtitle: '포인트 획득 및 사용 이력을 확인하세요',
-          screen: const PointHistoryScreen(),
         ),
         const SizedBox(height: 32),
         const Text(
