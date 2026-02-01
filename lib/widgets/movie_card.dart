@@ -45,6 +45,7 @@ class MovieCard extends StatelessWidget {
                         ? CachedNetworkImage(
                             imageUrl: movie.posterUrl,
                             fit: BoxFit.cover,
+                            memCacheWidth: 200, // Optimize memory for lists
                             placeholder: (context, url) => const ShimmerWidget(
                               width: 120,
                               height: 180,

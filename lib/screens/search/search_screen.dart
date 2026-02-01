@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../../models/movie.dart';
 import '../../services/movie_service.dart';
 import '../movie/movie_detail_screen.dart';
@@ -14,7 +16,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  final MovieService _movieService = MovieService();
+  late final MovieService _movieService;
   final TextEditingController _searchController = TextEditingController();
 
   List<Movie> _searchResults = [];
@@ -30,6 +32,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void initState() {
     super.initState();
+    _movieService = context.read<MovieService>();
     _initSpeech();
     _loadRecommendations();
   }
@@ -334,30 +337,19 @@ class _SearchScreenState extends State<SearchScreen> {
                   child: Container(
                     color: Colors.grey[900], // Fallback background
                     child: movie.posterUrl.isNotEmpty
-                        ? Image.network(
-                            movie.posterUrl,
+                        ? CachedNetworkImage(
+                            imageUrl: movie.posterUrl,
                             fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) =>
-                                const Center(
-                                    child: Icon(Icons.movie,
-                                        color: Colors.white54)),
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              // Avoid division by zero or null
-                              final total = loadingProgress.expectedTotalBytes;
-                              final current =
-                                  loadingProgress.cumulativeBytesLoaded;
-                              final progress = (total != null && total > 0)
-                                  ? current / total
-                                  : null;
-
-                              return Center(
-                                child: CircularProgressIndicator(
-                                  value: progress,
-                                  strokeWidth: 2,
-                                ),
-                              );
-                            },
+                            memCacheWidth:
+                                200, // Optimize memory usage for grid items
+                            errorWidget: (context, url, error) => const Center(
+                                child:
+                                    Icon(Icons.movie, color: Colors.white54)),
+                            placeholder: (context, url) => const Center(
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                              ),
+                            ),
                           )
                         : const Center(
                             child: Icon(Icons.movie, color: Colors.white54)),

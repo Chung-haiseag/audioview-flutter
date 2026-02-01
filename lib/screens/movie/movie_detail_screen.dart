@@ -1,4 +1,5 @@
 ﻿import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'dart:ui';
 import '../../models/movie.dart';
 import 'sync_screen.dart';
@@ -103,12 +104,14 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
               fit: StackFit.expand,
               children: [
                 // Current movie poster background
-                Image.network(
-                  widget.movie.posterUrl,
+                CachedNetworkImage(
+                  imageUrl: widget.movie.posterUrl,
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(color: Colors.black);
-                  },
+                  memCacheWidth:
+                      600, // Slightly improved quality for background but still optimized
+                  placeholder: (context, url) => Container(color: Colors.black),
+                  errorWidget: (context, url, error) =>
+                      Container(color: Colors.black),
                 ),
                 // Blur effect
                 BackdropFilter(
