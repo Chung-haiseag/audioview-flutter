@@ -12,6 +12,10 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final _nicknameController = TextEditingController();
+  final List<String> _disabilityTypes = ['선택 안함', '시각장애', '청각장애', '지체장애', '기타'];
+  String? _selectedDisabilityType;
+  bool _isVisuallyImpaired = false;
+
   bool _isLoading = false;
 
   @override
@@ -19,6 +23,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     super.initState();
     final auth = Provider.of<AuthProvider>(context, listen: false);
     _nicknameController.text = auth.userData?['username'] ?? '';
+
+    // Initialize disability type
+    String? loadedType = auth.userData?['disabilityType'];
+    if (loadedType != null && _disabilityTypes.contains(loadedType)) {
+      _selectedDisabilityType = loadedType;
+    } else {
+      _selectedDisabilityType = '선택 안함';
+    }
+
+    // Initialize visually impaired mode
+    _isVisuallyImpaired = auth.userData?['isVisuallyImpaired'] ?? false;
   }
 
   @override
@@ -38,8 +53,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     setState(() => _isLoading = true);
 
     try {
-      await Provider.of<AuthProvider>(context, listen: false)
-          .updateUserProfile(nickname: _nicknameController.text.trim());
+      await Provider.of<AuthProvider>(context, listen: false).updateUserProfile(
+        nickname: _nicknameController.text.trim(),
+        disabilityType: _selectedDisabilityType,
+        isVisuallyImpaired: _isVisuallyImpaired,
+      );
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -167,6 +185,92 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   borderRadius: BorderRadius.circular(12),
                   borderSide: const BorderSide(color: Color(0xFFE50914)),
                 ),
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
+            // Disability Type Field
+            const Text(
+              '장애 유형',
+              style: TextStyle(color: Colors.grey, fontSize: 14),
+            ),
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                color: const Color(0xFF1E1E1E),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.grey[800]!),
+              ),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  value: _selectedDisabilityType,
+                  dropdownColor: const Color(0xFF2C2C2C),
+                  isExpanded: true,
+                  icon: const Icon(LucideIcons.chevronDown, color: Colors.grey),
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _selectedDisabilityType = newValue;
+                    });
+                  },
+                  items: _disabilityTypes
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
+            // Visually Impaired Mode Switch
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: const Color(0xFF1E1E1E),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.grey[800]!),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '시각장애인 모드',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        '화면 읽기 최적화 및 고대비 테마 적용',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Switch(
+                    value: _isVisuallyImpaired,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _isVisuallyImpaired = value;
+                      });
+                    },
+                    activeColor: const Color(0xFFE50914),
+                    activeTrackColor: const Color(0xFFE50914).withOpacity(0.3),
+                  ),
+                ],
               ),
             ),
 

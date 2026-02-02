@@ -346,14 +346,28 @@ class AuthProvider with ChangeNotifier {
   }
 
   // 프로필 업데이트
-  Future<void> updateUserProfile({required String nickname}) async {
+  Future<void> updateUserProfile({
+    required String nickname,
+    String? disabilityType,
+    bool? isVisuallyImpaired,
+  }) async {
     if (_user == null) return;
 
     try {
-      await _firestore.collection('users').doc(_user!.uid).update({
+      final Map<String, dynamic> data = {
         'username': nickname,
         'updatedAt': FieldValue.serverTimestamp(),
-      });
+      };
+
+      if (disabilityType != null) {
+        data['disabilityType'] = disabilityType;
+      }
+
+      if (isVisuallyImpaired != null) {
+        data['isVisuallyImpaired'] = isVisuallyImpaired;
+      }
+
+      await _firestore.collection('users').doc(_user!.uid).update(data);
       // Snapshot listener will update local state
     } catch (e) {
       rethrow;
