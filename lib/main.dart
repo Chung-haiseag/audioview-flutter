@@ -14,6 +14,7 @@ import 'screens/downloads/downloads_screen.dart'; // Contains MyPageScreen class
 import 'screens/notice/notice_list_screen.dart';
 import 'screens/category/genre_list_screen.dart';
 import 'screens/movie/today_movie_screen.dart'; // Add this import
+import 'screens/accessibility/voice_home_screen.dart';
 import 'widgets/custom_header.dart';
 import 'widgets/custom_drawer.dart';
 
@@ -117,6 +118,11 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Consumer<AuthProvider>(
       builder: (context, auth, _) {
+        // Accessibility Mode Check
+        if (auth.userData?['isVisuallyImpaired'] == true) {
+          return const VoiceHomeScreen();
+        }
+
         return PopScope(
           canPop: false,
           onPopInvoked: (didPop) async {
