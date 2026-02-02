@@ -40,9 +40,10 @@ export const verifyKakaoToken = functions.https.onCall(async (data, context) => 
         const kakaoId = kakaoUser.id.toString();
         console.log("Kakao User ID:", kakaoId);
 
-        const email = kakaoUser.kakao_account?.email;
-        const nickname = kakaoUser.properties?.nickname;
-        const profileImage = kakaoUser.properties?.profile_image;
+        // 0. Ensure Admin Intialized
+        const email = kakaoUser.kakao_account?.email || null; // Firestore does not accept undefined
+        const nickname = kakaoUser.properties?.nickname || "Kakao User"; // Default nickname if missing
+        const profileImage = kakaoUser.properties?.profile_image || null;
 
         // 2. 파이어베이스 UID 생성 (접두사 추가하여 충돌 방지)
         const firebaseUid = `kakao:${kakaoId}`;
@@ -57,8 +58,8 @@ export const verifyKakaoToken = functions.https.onCall(async (data, context) => 
                 await admin.auth().createUser({
                     uid: firebaseUid,
                     displayName: nickname,
-                    email: email,
-                    photoURL: profileImage,
+                    email: email || undefined, // Auth create accepts undefined but not null
+                    photoURL: profileImage || undefined,
                 });
             } else {
                 throw error;
@@ -66,6 +67,7 @@ export const verifyKakaoToken = functions.https.onCall(async (data, context) => 
         }
 
         // 4. Firestore 유저 레코드 생성/업데이트
+        // Firestore requires explicitly null for missing values, not undefined
         await admin.firestore().collection("users").doc(firebaseUid).set({
             username: nickname,
             email: email,
