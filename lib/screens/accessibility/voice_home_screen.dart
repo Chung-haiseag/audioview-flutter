@@ -3,6 +3,13 @@ import 'package:provider/provider.dart';
 import '../../services/movie_service.dart';
 import '../../models/movie.dart';
 import '../movie/movie_detail_screen.dart';
+import '../../widgets/custom_drawer.dart';
+import '../search/search_screen.dart';
+import '../category/genre_list_screen.dart';
+import '../settings/settings_screen.dart';
+import '../downloads/downloads_screen.dart';
+import '../notice/notice_list_screen.dart';
+import '../movie/today_movie_screen.dart';
 
 class VoiceHomeScreen extends StatefulWidget {
   const VoiceHomeScreen({super.key});
@@ -18,15 +25,71 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
 
     return Scaffold(
       backgroundColor: Colors.black,
+      drawer: CustomDrawer(
+        currentIndex: -1, // No active tab in Lite Mode
+        onItemTapped: (index) {
+          // Navigator.pop(context); // CustomDrawer already pops
+          _handleDrawerNavigation(index);
+        },
+      ),
       appBar: AppBar(
-        title: const Text(
-          "간편 모드",
-          style: TextStyle(
-              color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
-        ),
+        automaticallyImplyLeading: false, // Disable default icon
+        titleSpacing: 0,
+        centerTitle: true,
         backgroundColor: Colors.black,
-        iconTheme: const IconThemeData(color: Colors.white, size: 32),
         elevation: 0,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Left: Menu Button
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Builder(
+                builder: (context) => TextButton(
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    minimumSize: const Size(60, 48), // Large touch target
+                  ),
+                  child: const Text(
+                    "메뉴",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            // Right: Voice Search Button
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SearchScreen(),
+                    ),
+                  );
+                },
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  minimumSize: const Size(60, 48), // Large touch target
+                ),
+                child: const Text(
+                  "음성검색",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: 20),
@@ -40,6 +103,39 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
         ],
       ),
     );
+  }
+
+  void _handleDrawerNavigation(int index) {
+    Widget? page;
+    switch (index) {
+      case 0: // Home - Stay here
+        return;
+      case 1: // Genre
+        page = const GenreListScreen();
+        break;
+      case 2: // Settings
+        page = const SettingsScreen();
+        break;
+      case 3: // Search (If accessible from drawer)
+        page = const SearchScreen();
+        break;
+      case 4: // My Page
+        page = const MyPageScreen();
+        break;
+      case 5: // Notice
+        page = const NoticeListScreen();
+        break;
+      case 6: // Today Movie
+        page = const TodayMovieScreen();
+        break;
+    }
+
+    if (page != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => page!),
+      );
+    }
   }
 
   Widget _buildSectionTitle(String title) {
