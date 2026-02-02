@@ -7,6 +7,7 @@ import '../../services/movie_service.dart';
 import '../movie/movie_detail_screen.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:permission_handler/permission_handler.dart';
+import '../../providers/auth_provider.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -60,13 +61,16 @@ class _SearchScreenState extends State<SearchScreen> {
   Future<void> _toggleListening() async {
     if (_isListening) {
       await _speech.stop();
+      if (!mounted) return;
       setState(() => _isListening = false);
     } else {
       var status = await Permission.microphone.request();
+      if (!mounted) return;
       if (status.isGranted) {
         setState(() => _isListening = true);
         await _speech.listen(
           onResult: (result) {
+            if (!mounted) return;
             setState(() {
               _searchController.text = result.recognizedWords;
               if (result.finalResult) {
@@ -78,9 +82,11 @@ class _SearchScreenState extends State<SearchScreen> {
           localeId: 'ko_KR', // Ensure Korean recognition
         );
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('마이크 권한이 필요합니다.')),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('마이크 권한이 필요합니다.')),
+          );
+        }
       }
     }
   }
@@ -127,6 +133,13 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<AuthProvider>(context);
+    final isLiteMode = auth.userData?['isVisuallyImpaired'] == true;
+
+    if (isLiteMode) {
+      return _buildLiteModeUI();
+    }
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Stack(
@@ -144,8 +157,8 @@ class _SearchScreenState extends State<SearchScreen> {
                       style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         hintText: '영화, 시리즈, 배우 검색',
-                        hintStyle:
-                            TextStyle(color: Colors.white.withOpacity(0.5)),
+                        hintStyle: TextStyle(
+                            color: Colors.white.withValues(alpha: 0.5)),
                         prefixIcon:
                             const Icon(Icons.search, color: Colors.blue),
                         suffixIcon: _searchController.text.isNotEmpty
@@ -177,7 +190,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 ),
                               ),
                         filled: true,
-                        fillColor: Colors.white.withOpacity(0.1),
+                        fillColor: Colors.white.withValues(alpha: 0.1),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide.none,
@@ -194,7 +207,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     ? Center(
                         child: Semantics(
                           label: '검색 중입니다',
-                          child: CircularProgressIndicator(),
+                          child: const CircularProgressIndicator(),
                         ),
                       )
                     : _searchResults.isEmpty
@@ -210,14 +223,14 @@ class _SearchScreenState extends State<SearchScreen> {
           if (_isListening)
             Positioned.fill(
               child: Container(
-                color: Colors.black.withOpacity(0.8),
+                color: Colors.black.withValues(alpha: 0.8),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
                       padding: const EdgeInsets.all(30),
                       decoration: BoxDecoration(
-                        color: Colors.red.withOpacity(0.2),
+                        color: Colors.red.withValues(alpha: 0.2),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
@@ -250,6 +263,212 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
+  Widget _buildLiteModeUI() {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        titleSpacing: 0,
+        backgroundColor: Colors.black,
+        elevation: 0,
+        title: Row(
+          children: [
+            // Left: Back button as text
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                style: TextButton.styleFrom(
+                  minimumSize: const Size(80, 48),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                ),
+                child: const Text(
+                  "뒤로가기",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+            const Spacer(),
+            // Center: Title with double-tap to reset
+            Semantics(
+              label: "음성 검색, 두 번 터치하면 검색 초기화",
+              button: true,
+              child: GestureDetector(
+                onDoubleTap: () {
+                  setState(() {
+                    _searchResults = [];
+                    _searchController.clear();
+                  });
+                },
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    "음성 검색",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const Spacer(),
+            const SizedBox(width: 80), // Balance for back button
+          ],
+        ),
+      ),
+      body: _searchResults.isEmpty && !_isLoading
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Semantics(
+                    button: true,
+                    label: _isListening ? "듣고 있어요" : "음성 검색 시작",
+                    child: GestureDetector(
+                      onTap: _toggleListening,
+                      child: Container(
+                        padding: const EdgeInsets.all(40),
+                        decoration: BoxDecoration(
+                          color: _isListening
+                              ? Colors.red.withValues(alpha: 0.2)
+                              : Colors.grey.withValues(alpha: 0.2),
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: _isListening ? Colors.red : Colors.white,
+                            width: 3,
+                          ),
+                        ),
+                        child: Icon(
+                          Icons.mic,
+                          size: 80,
+                          color: _isListening ? Colors.red : Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 32),
+                    child: Text(
+                      "영화제목이나 배우의 이름을\n이야기 하시면 영화를 찾아 드릴게요",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        height: 1.5,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  if (_isListening) ...[
+                    const SizedBox(height: 20),
+                    const Text(
+                      "듣고 있어요...",
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            )
+          : _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : Column(
+                  children: [
+                    if (_searchResults.length > 1)
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Semantics(
+                          liveRegion: true,
+                          child: Text(
+                            "영화 ${_searchResults.length}개가 검색되었습니다",
+                            style: const TextStyle(
+                              color: Colors.yellow,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    Expanded(
+                      child: ListView.builder(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        itemCount: _searchResults.length,
+                        itemBuilder: (context, index) {
+                          final movie = _searchResults[index];
+                          // Auto-focus first item semantics
+                          return Semantics(
+                            focused: index == 0,
+                            label: "${movie.title}, ${movie.duration}분",
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        MovieDetailScreen(movie: movie),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                constraints:
+                                    const BoxConstraints(minHeight: 80),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 20),
+                                decoration: const BoxDecoration(
+                                  border: Border(
+                                      bottom: BorderSide(
+                                          color: Colors.grey, width: 0.5)),
+                                ),
+                                child: Row(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.baseline,
+                                  textBaseline: TextBaseline.alphabetic,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        movie.title,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 16),
+                                    Text(
+                                      "${movie.duration}분",
+                                      style: const TextStyle(
+                                        color: Colors.white70,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+    );
+  }
+
   Widget _buildRecommendationSection() {
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -277,7 +496,7 @@ class _SearchScreenState extends State<SearchScreen> {
             children: _recommendations
                 .map((tag) => ActionChip(
                       label: Text(tag),
-                      backgroundColor: Colors.white.withOpacity(0.1),
+                      backgroundColor: Colors.white.withValues(alpha: 0.1),
                       labelStyle: const TextStyle(color: Colors.white),
                       onPressed: () {
                         _searchController.text = tag;
@@ -297,12 +516,12 @@ class _SearchScreenState extends State<SearchScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(Icons.movie_filter,
-              size: 80, color: Colors.white.withOpacity(0.2)),
+              size: 80, color: Colors.white.withValues(alpha: 0.2)),
           const SizedBox(height: 16),
           Text(
             '찾으시는 영화가 없나요?',
             style: TextStyle(
-                color: Colors.white.withOpacity(0.8),
+                color: Colors.white.withValues(alpha: 0.8),
                 fontSize: 18,
                 fontWeight: FontWeight.bold),
           ),
@@ -310,7 +529,7 @@ class _SearchScreenState extends State<SearchScreen> {
           Text(
             '입력하신 검색어 \'${_searchController.text}\'와(과)\n일치하는 결과가 없습니다.',
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white.withOpacity(0.5)),
+            style: TextStyle(color: Colors.white.withValues(alpha: 0.5)),
           ),
           const SizedBox(height: 24),
           TextButton(
