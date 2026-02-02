@@ -215,9 +215,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                   } catch (e) {
                                     if (mounted) {
                                       ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
-                                              content:
-                                                  Text('카카오 로그인에 실패했습니다.')));
+                                          .showSnackBar(SnackBar(
+                                        content:
+                                            Text('카카오 로그인 실패: ${e.toString()}'),
+                                      ));
                                     }
                                   } finally {
                                     if (mounted)

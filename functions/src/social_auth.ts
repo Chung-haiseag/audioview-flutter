@@ -117,9 +117,9 @@ export const verifyNaverToken = functions.https.onCall(async (data, context) => 
 
         const naverUser = naverData.response;
         const naverId = naverUser.id;
-        const email = naverUser.email;
-        const nickname = naverUser.nickname;
-        const profileImage = naverUser.profile_image;
+        const email = naverUser.email || null;
+        const nickname = naverUser.nickname || "Naver User";
+        const profileImage = naverUser.profile_image || null;
 
         // 2. 파이어베이스 UID 생성
         const firebaseUid = `naver:${naverId}`;
@@ -132,8 +132,8 @@ export const verifyNaverToken = functions.https.onCall(async (data, context) => 
                 await admin.auth().createUser({
                     uid: firebaseUid,
                     displayName: nickname,
-                    email: email,
-                    photoURL: profileImage,
+                    email: email || undefined,
+                    photoURL: profileImage || undefined,
                 });
             } else {
                 throw error;

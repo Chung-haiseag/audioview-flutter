@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="naver_client_id">uHSuiU1bL4Ze7ILycFZr</string>
+    <string name="naver_client_secret">kqsj7mc50B</string>
+    <string name="naver_client_name">AudioView</string>
+</resources>

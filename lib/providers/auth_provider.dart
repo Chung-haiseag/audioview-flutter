@@ -167,6 +167,11 @@ class AuthProvider with ChangeNotifier {
       // 1. Get Kakao Token
       kakao.OAuthToken token;
       print('DEBUG: Starting Kakao Login...');
+      try {
+        print('KAKAO_KEY_HASH: ${await kakao.KakaoSdk.origin}');
+      } catch (e) {
+        print('Could not get KeyHash: $e');
+      }
       if (await kakao.isKakaoTalkInstalled()) {
         try {
           print('DEBUG: Attempting login with KakaoTalk...');
@@ -193,7 +198,10 @@ class AuthProvider with ChangeNotifier {
       // 3. Sign in to Firebase
       await _auth.signInWithCustomToken(customToken);
     } catch (e) {
-      // print('Kakao Login Error: $e');
+      print('CRITICAL: Kakao Login Error: $e');
+      if (e is kakao.KakaoAuthException) {
+        print('Kakao Auth Exception: ${e.message}');
+      }
       rethrow;
     }
   }
