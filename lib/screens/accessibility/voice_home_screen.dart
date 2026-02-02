@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import '../../config/theme.dart';
 
 class VoiceHomeScreen extends StatefulWidget {
@@ -12,6 +13,7 @@ class VoiceHomeScreen extends StatefulWidget {
 class _VoiceHomeScreenState extends State<VoiceHomeScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+  final FlutterTts _flutterTts = FlutterTts();
   bool _isListening = false;
 
   @override
@@ -21,11 +23,19 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen>
       vsync: this,
       duration: const Duration(seconds: 2),
     );
+    _initTts();
+  }
+
+  Future<void> _initTts() async {
+    await _flutterTts.setLanguage("ko-KR");
+    await _flutterTts.setSpeechRate(0.5);
+    await _flutterTts.setPitch(1.0);
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _flutterTts.stop();
     super.dispose();
   }
 
@@ -41,6 +51,15 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen>
     });
   }
 
+  Future<void> _speakGuide() async {
+    await _flutterTts.speak("원하는 기능을 말씀하시면 됩니다.");
+    // Optional: Start listening after speaking?
+    // For now, just speak as requested.
+    if (!_isListening) {
+      _toggleListening();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +70,7 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen>
           children: [
             // Status Text
             Text(
-              _isListening ? "듣고 있어요..." : "마이크를 눌러 말씀해주세요",
+              _isListening ? "듣고 있어요..." : "화면을 두 번 탭하세요",
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 24,
@@ -63,7 +82,10 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen>
             // Microphone Button with Ripple Effect
             Center(
               child: GestureDetector(
-                onTap: _toggleListening,
+                onDoubleTap: _speakGuide,
+                onTap: () {
+                  // Optional: Visual feedback or single tap instruction
+                },
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
