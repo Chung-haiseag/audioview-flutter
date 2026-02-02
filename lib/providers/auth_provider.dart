@@ -344,4 +344,19 @@ class AuthProvider with ChangeNotifier {
       return {'success': false, 'message': '체크인 실패: $e'};
     }
   }
+
+  // 프로필 업데이트
+  Future<void> updateUserProfile({required String nickname}) async {
+    if (_user == null) return;
+
+    try {
+      await _firestore.collection('users').doc(_user!.uid).update({
+        'username': nickname,
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+      // Snapshot listener will update local state
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
