@@ -5,7 +5,14 @@ import * as admin from "firebase-admin";
  * Kakao 액세스 토큰 검증 및 커스텀 토큰 발급
  */
 export const verifyKakaoToken = functions.https.onCall(async (data, context) => {
+    // 0. Ensure Admin Intialized
+    if (admin.apps.length === 0) {
+        admin.initializeApp();
+        console.log("Initialized Firebase Admin inside verifyKakaoToken");
+    }
+
     const { accessToken } = data;
+    console.log("verifyKakaoToken called with accessToken length:", accessToken ? accessToken.length : "null");
 
     if (!accessToken) {
         throw new functions.https.HttpsError("invalid-argument", "Access token is required.");
@@ -13,6 +20,7 @@ export const verifyKakaoToken = functions.https.onCall(async (data, context) => 
 
     try {
         // 1. 카카오 API 호출하여 사용자 정보 가져오기
+        console.log("Fetching Kakao User info...");
         const response = await fetch("https://kapi.kakao.com/v2/user/me", {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
@@ -20,13 +28,18 @@ export const verifyKakaoToken = functions.https.onCall(async (data, context) => 
             },
         });
 
+        console.log("Kakao API Response Status:", response.status);
+
         if (!response.ok) {
-            const errorData = await response.json();
-            throw new functions.https.HttpsError("internal", `Kakao verification failed: ${JSON.stringify(errorData)}`);
+            const errorText = await response.text();
+            console.error("Kakao API Error Body:", errorText);
+            throw new functions.https.HttpsError("internal", `Kakao verification failed: ${errorText}`);
         }
 
         const kakaoUser = await response.json();
         const kakaoId = kakaoUser.id.toString();
+        console.log("Kakao User ID:", kakaoId);
+
         const email = kakaoUser.kakao_account?.email;
         const nickname = kakaoUser.properties?.nickname;
         const profileImage = kakaoUser.properties?.profile_image;
@@ -37,8 +50,10 @@ export const verifyKakaoToken = functions.https.onCall(async (data, context) => 
         // 3. 사용자 정보 업데이트/생성
         try {
             await admin.auth().getUser(firebaseUid);
+            console.log("Existing user found:", firebaseUid);
         } catch (error: any) {
             if (error.code === "auth/user-not-found") {
+                console.log("Creating new user:", firebaseUid);
                 await admin.auth().createUser({
                     uid: firebaseUid,
                     displayName: nickname,
@@ -62,10 +77,11 @@ export const verifyKakaoToken = functions.https.onCall(async (data, context) => 
 
         // 5. 커스텀 토큰 생성
         const customToken = await admin.auth().createCustomToken(firebaseUid);
+        console.log("Custom token generated successfully");
 
         return { customToken };
     } catch (error) {
-        console.error("Kakao Login Error:", error);
+        console.error("Kakao Login Error Details:", error);
         throw new functions.https.HttpsError("internal", "Social login failed.");
     }
 });
