@@ -29,7 +29,10 @@ void main() async {
   await dotenv.load(fileName: "assets/env.txt");
 
   // Kakao SDK 초기화
-  KakaoSdk.init(nativeAppKey: '4538351b8dd330e9f41491a83effc087');
+  KakaoSdk.init(
+    nativeAppKey: '4538351b8dd330e9f41491a83effc087',
+    javaScriptAppKey: 'fe91dbd556b61e43c4c907bcd75d5298',
+  );
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
