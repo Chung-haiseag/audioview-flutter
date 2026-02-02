@@ -213,6 +213,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   onChanged: (String? newValue) {
                     setState(() {
                       _selectedDisabilityType = newValue;
+                      if (_selectedDisabilityType != '시각장애') {
+                        _isVisuallyImpaired = false;
+                      }
                     });
                   },
                   items: _disabilityTypes
@@ -262,11 +265,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   Switch(
                     value: _isVisuallyImpaired,
-                    onChanged: (bool value) {
-                      setState(() {
-                        _isVisuallyImpaired = value;
-                      });
-                    },
+                    onChanged: _selectedDisabilityType == '시각장애'
+                        ? (bool value) {
+                            setState(() {
+                              _isVisuallyImpaired = value;
+                            });
+                          }
+                        : null,
                     activeColor: const Color(0xFFE50914),
                     activeTrackColor: const Color(0xFFE50914).withOpacity(0.3),
                   ),
