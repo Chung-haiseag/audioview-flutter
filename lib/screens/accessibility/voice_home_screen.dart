@@ -31,11 +31,11 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: 20),
         children: [
-          _buildSectionTitle("추천 영화"),
-          _buildMovieSection(movieService.getPopularMovies()),
-          const SizedBox(height: 40),
           _buildSectionTitle("신규 영화"),
-          _buildMovieSection(movieService.getNewMovies()),
+          _buildMovieSection(movieService.getNewMovies(), limit: 3),
+          const SizedBox(height: 40),
+          _buildSectionTitle("추천 영화"),
+          _buildMovieSection(movieService.getPopularMovies(), limit: 5),
           const SizedBox(height: 40),
         ],
       ),
@@ -59,7 +59,7 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
     );
   }
 
-  Widget _buildMovieSection(Stream<List<Movie>> movieStream) {
+  Widget _buildMovieSection(Stream<List<Movie>> movieStream, {int? limit}) {
     return StreamBuilder<List<Movie>>(
       stream: movieStream,
       builder: (context, snapshot) {
@@ -79,7 +79,12 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
         }
 
         // Filter only AD movies
-        final movies = (snapshot.data ?? []).where((m) => m.hasAD).toList();
+        var movies = (snapshot.data ?? []).where((m) => m.hasAD).toList();
+
+        // Apply limit if provided
+        if (limit != null) {
+          movies = movies.take(limit).toList();
+        }
 
         if (movies.isEmpty) {
           return const Padding(
