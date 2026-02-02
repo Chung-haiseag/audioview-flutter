@@ -29,6 +29,27 @@ class CustomHeader extends StatefulWidget implements PreferredSizeWidget {
 class _CustomHeaderState extends State<CustomHeader> {
   bool _showBrightness = false;
 
+  String _getSemanticLabel(String text) {
+    switch (text.toUpperCase()) {
+      case 'AUDIOVIEW':
+        return '오디오뷰';
+      case '공지/이벤트':
+        return '공지 및 이벤트';
+      case '마이페이지':
+        return '마이 페이지';
+      case '오늘의 관람':
+        return '오늘의 관람'; // Spacing seems fine, but explicit is good
+      case '장르':
+        return '장르';
+      case '설정':
+        return '설정';
+      case '검색':
+        return '검색';
+      default:
+        return text;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -45,26 +66,34 @@ class _CustomHeaderState extends State<CustomHeader> {
                   // Left side - Back button or Menu button
                   SizedBox(
                     width: 60,
-                    child: IconButton(
-                      icon: Icon(
-                        widget.isSubPage && widget.onBackPressed == null
-                            ? LucideIcons.menu
-                            : (widget.isSubPage
-                                ? LucideIcons.chevronLeft
-                                : LucideIcons.menu),
-                        color: Colors.white,
-                        size: 28,
+                    child: Semantics(
+                      label: widget.isSubPage && widget.onBackPressed != null
+                          ? "뒤로 가기"
+                          : "메뉴",
+                      button: true,
+                      excludeSemantics: true,
+                      child: IconButton(
+                        icon: Icon(
+                          widget.isSubPage && widget.onBackPressed == null
+                              ? LucideIcons.menu
+                              : (widget.isSubPage
+                                  ? LucideIcons.chevronLeft
+                                  : LucideIcons.menu),
+                          color: Colors.white,
+                          size: 28,
+                        ),
+                        onPressed: () {
+                          if (widget.isSubPage &&
+                              widget.onBackPressed != null) {
+                            widget.onBackPressed!();
+                          } else if (widget.isSubPage &&
+                              widget.onBackPressed == null) {
+                            Scaffold.of(context).openDrawer();
+                          } else {
+                            Scaffold.of(context).openDrawer();
+                          }
+                        },
                       ),
-                      onPressed: () {
-                        if (widget.isSubPage && widget.onBackPressed != null) {
-                          widget.onBackPressed!();
-                        } else if (widget.isSubPage &&
-                            widget.onBackPressed == null) {
-                          Scaffold.of(context).openDrawer();
-                        } else {
-                          Scaffold.of(context).openDrawer();
-                        }
-                      },
                     ),
                   ),
 
@@ -74,6 +103,8 @@ class _CustomHeaderState extends State<CustomHeader> {
                       child: widget.customTitle != null
                           ? Text(
                               widget.customTitle!,
+                              semanticsLabel:
+                                  _getSemanticLabel(widget.customTitle!),
                               style: const TextStyle(
                                 color: Color(0xFFE50914),
                                 fontSize: 20,
@@ -83,6 +114,7 @@ class _CustomHeaderState extends State<CustomHeader> {
                             )
                           : const Text(
                               'AudioView',
+                              semanticsLabel: '오디오뷰',
                               style: TextStyle(
                                 color: Color(0xFFE50914),
                                 fontSize: 22,
@@ -101,13 +133,18 @@ class _CustomHeaderState extends State<CustomHeader> {
                       if (widget.onSearchPressed != null)
                         SizedBox(
                           width: 48,
-                          child: IconButton(
-                            icon: const Icon(
-                              LucideIcons.search,
-                              color: Colors.white,
-                              size: 24,
+                          child: Semantics(
+                            label: "영화검색",
+                            button: true,
+                            excludeSemantics: true,
+                            child: IconButton(
+                              icon: const Icon(
+                                LucideIcons.search,
+                                color: Colors.white,
+                                size: 24,
+                              ),
+                              onPressed: widget.onSearchPressed,
                             ),
-                            onPressed: widget.onSearchPressed,
                           ),
                         ),
                       // Brightness button

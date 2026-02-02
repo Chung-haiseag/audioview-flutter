@@ -49,6 +49,7 @@ export interface User {
     authProvider: 'email' | 'kakao' | 'naver' | 'google' | 'apple';
     socialId?: string;
     disabilityType?: 'visual' | 'hearing' | 'none';
+    isVisuallyImpaired?: boolean;
     isActive: boolean;
     lastLoginAt?: Date;
     createdAt: Date;

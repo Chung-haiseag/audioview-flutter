@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
-import 'package:flutter_tts/flutter_tts.dart';
-import '../../config/theme.dart';
+import 'package:provider/provider.dart';
+import '../../services/movie_service.dart';
+import '../../models/movie.dart';
+import '../movie/movie_detail_screen.dart';
 
 class VoiceHomeScreen extends StatefulWidget {
   const VoiceHomeScreen({super.key});
@@ -10,146 +11,133 @@ class VoiceHomeScreen extends StatefulWidget {
   State<VoiceHomeScreen> createState() => _VoiceHomeScreenState();
 }
 
-class _VoiceHomeScreenState extends State<VoiceHomeScreen>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  final FlutterTts _flutterTts = FlutterTts();
-  bool _isListening = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 2),
-    );
-    _initTts();
-  }
-
-  Future<void> _initTts() async {
-    await _flutterTts.setLanguage("ko-KR");
-    await _flutterTts.setSpeechRate(0.5);
-    await _flutterTts.setPitch(1.0);
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    _flutterTts.stop();
-    super.dispose();
-  }
-
-  void _toggleListening() {
-    setState(() {
-      _isListening = !_isListening;
-      if (_isListening) {
-        _controller.repeat(reverse: true);
-      } else {
-        _controller.stop();
-        _controller.reset();
-      }
-    });
-  }
-
-  Future<void> _speakGuide() async {
-    await _flutterTts.speak("원하는 기능을 말씀하시면 됩니다.");
-    // Optional: Start listening after speaking?
-    // For now, just speak as requested.
-    if (!_isListening) {
-      _toggleListening();
-    }
-  }
-
+class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
   @override
   Widget build(BuildContext context) {
+    final movieService = Provider.of<MovieService>(context, listen: false);
+
     return Scaffold(
       backgroundColor: Colors.black,
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Status Text
-            Text(
-              _isListening ? "듣고 있어요..." : "화면을 두 번 탭하세요",
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 60),
+      appBar: AppBar(
+        title: const Text(
+          "간편 모드",
+          style: TextStyle(
+              color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: Colors.black,
+        iconTheme: const IconThemeData(color: Colors.white, size: 32),
+        elevation: 0,
+      ),
+      body: ListView(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        children: [
+          _buildSectionTitle("추천 영화"),
+          _buildMovieSection(movieService.getPopularMovies()),
+          const SizedBox(height: 40),
+          _buildSectionTitle("신규 영화"),
+          _buildMovieSection(movieService.getNewMovies()),
+          const SizedBox(height: 40),
+        ],
+      ),
+    );
+  }
 
-            // Microphone Button with Ripple Effect
-            Center(
-              child: GestureDetector(
-                onDoubleTap: _speakGuide,
-                onTap: () {
-                  // Optional: Visual feedback or single tap instruction
-                },
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    if (_isListening)
-                      AnimatedBuilder(
-                        animation: _controller,
-                        builder: (context, child) {
-                          return Container(
-                            width: 200 + (_controller.value * 50),
-                            height: 200 + (_controller.value * 50),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppTheme.brandRed
-                                  .withOpacity(0.3 - (_controller.value * 0.2)),
-                            ),
-                          );
-                        },
-                      ),
-                    Container(
-                      width: 180,
-                      height: 180,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: _isListening
-                            ? AppTheme.brandRed
-                            : const Color(0xFF1E1E1E),
-                        border: Border.all(
-                          color: AppTheme.brandRed,
-                          width: 4,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppTheme.brandRed.withOpacity(0.4),
-                            blurRadius: 20,
-                            spreadRadius: 5,
-                          ),
-                        ],
-                      ),
-                      child: Icon(
-                        LucideIcons.mic,
-                        size: 80,
-                        color: _isListening ? Colors.white : Colors.grey,
-                      ),
-                    ),
-                  ],
+  Widget _buildSectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+      child: Semantics(
+        header: true,
+        child: Text(
+          title,
+          style: const TextStyle(
+            color: Colors.yellow, // High contrast
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMovieSection(Stream<List<Movie>> movieStream) {
+    return StreamBuilder<List<Movie>>(
+      stream: movieStream,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return const Padding(
+            padding: EdgeInsets.all(16),
+            child: Text("목록을 불러오는데 실패했습니다.",
+                style: TextStyle(color: Colors.white, fontSize: 18)),
+          );
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Padding(
+            padding: EdgeInsets.all(16),
+            child: CircularProgressIndicator(color: Colors.white),
+          );
+        }
+
+        final movies = snapshot.data ?? [];
+
+        if (movies.isEmpty) {
+          return const Padding(
+            padding: EdgeInsets.all(16),
+            child: Text("영화가 없습니다.",
+                style: TextStyle(color: Colors.white, fontSize: 18)),
+          );
+        }
+
+        return Column(
+          children: movies.map((movie) => _buildMovieTile(movie)).toList(),
+        );
+      },
+    );
+  }
+
+  Widget _buildMovieTile(Movie movie) {
+    return Semantics(
+      label: "${movie.title}, ${movie.year}년 개봉, ${movie.genres.join(', ')}",
+      button: true,
+      hint: "두 번 탭하면 상세 정보를 확인합니다.",
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MovieDetailScreen(movie: movie),
+            ),
+          );
+        },
+        child: Container(
+          width: double.infinity,
+          constraints: const BoxConstraints(
+              minHeight: 80), // Ensure minimum touch target size
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          decoration: const BoxDecoration(
+            border: Border(bottom: BorderSide(color: Colors.grey, width: 0.5)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                movie.title,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 24, // Large text for readability
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-            ),
-            const SizedBox(height: 60),
-
-            // Instructional Text (High Contrast)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
-              child: Text(
-                "영화 검색, 상영 시간표 확인 등\n원하는 기능을 말씀해주세요.",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.grey[400],
+              const SizedBox(height: 8),
+              Text(
+                "${movie.year} | ${movie.genres.join(', ')}",
+                style: const TextStyle(
+                  color: Colors.white70,
                   fontSize: 18,
-                  height: 1.5,
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -149,22 +149,32 @@ class _SearchScreenState extends State<SearchScreen> {
                         prefixIcon:
                             const Icon(Icons.search, color: Colors.blue),
                         suffixIcon: _searchController.text.isNotEmpty
-                            ? IconButton(
-                                icon:
-                                    const Icon(Icons.clear, color: Colors.grey),
-                                onPressed: () {
-                                  _searchController.clear();
-                                  _onSearchChanged('');
-                                },
-                              )
-                            : IconButton(
-                                icon: Icon(
-                                  // Always show mic icon, color changes on state
-                                  Icons.mic,
-                                  color:
-                                      _isListening ? Colors.red : Colors.white,
+                            ? Semantics(
+                                label: '검색어 지우기',
+                                button: true,
+                                child: IconButton(
+                                  icon: const Icon(Icons.clear,
+                                      color: Colors.grey),
+                                  onPressed: () {
+                                    _searchController.clear();
+                                    _onSearchChanged('');
+                                  },
                                 ),
-                                onPressed: _toggleListening,
+                              )
+                            : Semantics(
+                                label: '음성 검색',
+                                button: true,
+                                excludeSemantics: true,
+                                child: IconButton(
+                                  icon: Icon(
+                                    // Always show mic icon, color changes on state
+                                    Icons.mic,
+                                    color: _isListening
+                                        ? Colors.red
+                                        : Colors.white,
+                                  ),
+                                  onPressed: _toggleListening,
+                                ),
                               ),
                         filled: true,
                         fillColor: Colors.white.withOpacity(0.1),
@@ -181,7 +191,12 @@ class _SearchScreenState extends State<SearchScreen> {
               // Search Results
               Expanded(
                 child: _isLoading
-                    ? const Center(child: CircularProgressIndicator())
+                    ? Center(
+                        child: Semantics(
+                          label: '검색 중입니다',
+                          child: CircularProgressIndicator(),
+                        ),
+                      )
                     : _searchResults.isEmpty
                         ? _searchController.text.isEmpty
                             ? _buildRecommendationSection()
@@ -319,51 +334,56 @@ class _SearchScreenState extends State<SearchScreen> {
       itemCount: _searchResults.length,
       itemBuilder: (context, index) {
         final movie = _searchResults[index];
-        return GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MovieDetailScreen(movie: movie),
-              ),
-            );
-          },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Container(
-                    color: Colors.grey[900], // Fallback background
-                    child: movie.posterUrl.isNotEmpty
-                        ? CachedNetworkImage(
-                            imageUrl: movie.posterUrl,
-                            fit: BoxFit.cover,
-                            memCacheWidth:
-                                200, // Optimize memory usage for grid items
-                            errorWidget: (context, url, error) => const Center(
-                                child:
-                                    Icon(Icons.movie, color: Colors.white54)),
-                            placeholder: (context, url) => const Center(
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
+        return Semantics(
+          label: movie.title,
+          button: true, // Announcements: "Title, Button"
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MovieDetailScreen(movie: movie),
+                ),
+              );
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Container(
+                      color: Colors.grey[900], // Fallback background
+                      child: movie.posterUrl.isNotEmpty
+                          ? CachedNetworkImage(
+                              imageUrl: movie.posterUrl,
+                              fit: BoxFit.cover,
+                              memCacheWidth:
+                                  200, // Optimize memory usage for grid items
+                              errorWidget: (context, url, error) =>
+                                  const Center(
+                                      child: Icon(Icons.movie,
+                                          color: Colors.white54)),
+                              placeholder: (context, url) => const Center(
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
                               ),
-                            ),
-                          )
-                        : const Center(
-                            child: Icon(Icons.movie, color: Colors.white54)),
+                            )
+                          : const Center(
+                              child: Icon(Icons.movie, color: Colors.white54)),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                movie.title,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(color: Colors.white, fontSize: 12),
-              ),
-            ],
+                const SizedBox(height: 4),
+                Text(
+                  movie.title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(color: Colors.white, fontSize: 12),
+                ),
+              ],
+            ),
           ),
         );
       },

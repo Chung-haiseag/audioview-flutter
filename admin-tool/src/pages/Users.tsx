@@ -65,6 +65,7 @@ const Users: React.FC = () => {
         email: '',
         authProvider: 'email',
         disabilityType: 'none',
+        isVisuallyImpaired: false,
         isActive: true,
     });
 
@@ -150,6 +151,7 @@ const Users: React.FC = () => {
             email: '',
             authProvider: 'email',
             disabilityType: 'none',
+            isVisuallyImpaired: false,
             isActive: true,
         });
         setOpenEditDialog(true);
@@ -163,6 +165,7 @@ const Users: React.FC = () => {
             email: user.email || '',
             authProvider: user.authProvider,
             disabilityType: user.disabilityType || 'none',
+            isVisuallyImpaired: user.isVisuallyImpaired || false,
             isActive: user.isActive,
         });
         setOpenEditDialog(true);
@@ -315,6 +318,7 @@ const Users: React.FC = () => {
                                 <TableCell>가입 방법</TableCell>
                                 <TableCell>장애 유형</TableCell>
                                 <TableCell>가입일</TableCell>
+                                <TableCell align="center">모드</TableCell>
                                 <TableCell>상태</TableCell>
                                 <TableCell align="center">액션</TableCell>
                             </TableRow>
@@ -339,6 +343,17 @@ const Users: React.FC = () => {
                                         <TableCell>{getDisabilityTypeLabel(user.disabilityType)}</TableCell>
                                         <TableCell>
                                             {user.createdAt ? format(user.createdAt, 'yyyy-MM-dd') : '-'}
+                                        </TableCell>
+                                        <TableCell align="center">
+                                            {user.isVisuallyImpaired && (
+                                                <Chip
+                                                    label="시각"
+                                                    size="small"
+                                                    color="primary"
+                                                    variant="outlined"
+                                                    sx={{ mr: 1, height: 20 }}
+                                                />
+                                            )}
                                         </TableCell>
                                         <TableCell>
                                             <FormControlLabel
@@ -603,6 +618,19 @@ const Users: React.FC = () => {
                             <FormControlLabel
                                 control={
                                     <Switch
+                                        name="isVisuallyImpaired"
+                                        checked={formData.isVisuallyImpaired}
+                                        onChange={handleInputChange}
+                                        color="warning"
+                                    />
+                                }
+                                label="시각장애인 모드 (앱 강제 적용)"
+                            />
+                        </Grid>
+                        <Grid size={12}>
+                            <FormControlLabel
+                                control={
+                                    <Switch
                                         name="isActive"
                                         checked={formData.isActive}
                                         onChange={handleInputChange}
@@ -661,7 +689,7 @@ const Users: React.FC = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
-        </Box>
+        </Box >
     );
 };
 
