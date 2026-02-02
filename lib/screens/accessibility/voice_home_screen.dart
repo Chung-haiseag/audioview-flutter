@@ -78,12 +78,13 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
           );
         }
 
-        final movies = snapshot.data ?? [];
+        // Filter only AD movies
+        final movies = (snapshot.data ?? []).where((m) => m.hasAD).toList();
 
         if (movies.isEmpty) {
           return const Padding(
             padding: EdgeInsets.all(16),
-            child: Text("영화가 없습니다.",
+            child: Text("화면해설 영화가 없습니다.",
                 style: TextStyle(color: Colors.white, fontSize: 18)),
           );
         }
@@ -97,7 +98,7 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
 
   Widget _buildMovieTile(Movie movie) {
     return Semantics(
-      label: "${movie.title}, ${movie.year}년 개봉, ${movie.genres.join(', ')}",
+      label: "${movie.title}, ${movie.duration}분",
       button: true,
       hint: "두 번 탭하면 상세 정보를 확인합니다.",
       child: InkWell(
@@ -111,29 +112,32 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
         },
         child: Container(
           width: double.infinity,
-          constraints: const BoxConstraints(
-              minHeight: 80), // Ensure minimum touch target size
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          constraints: const BoxConstraints(minHeight: 80),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
           decoration: const BoxDecoration(
             border: Border(bottom: BorderSide(color: Colors.grey, width: 0.5)),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            textBaseline: TextBaseline.alphabetic,
             children: [
-              Text(
-                movie.title,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 24, // Large text for readability
-                  fontWeight: FontWeight.bold,
+              Expanded(
+                child: Text(
+                  movie.title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(width: 16),
               Text(
-                "${movie.year} | ${movie.genres.join(', ')}",
+                "${movie.duration}분",
                 style: const TextStyle(
                   color: Colors.white70,
-                  fontSize: 18,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ],
