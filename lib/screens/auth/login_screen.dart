@@ -264,9 +264,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                   } catch (e) {
                                     if (mounted) {
                                       ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
-                                              content:
-                                                  Text('네이버 로그인에 실패했습니다.')));
+                                          .showSnackBar(SnackBar(
+                                              content: Text(e
+                                                  .toString()
+                                                  .replaceAll(
+                                                      'Exception: ', ''))));
                                     }
                                   } finally {
                                     if (mounted)
