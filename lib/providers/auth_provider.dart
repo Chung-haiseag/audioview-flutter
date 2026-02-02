@@ -208,6 +208,9 @@ class AuthProvider with ChangeNotifier {
 
   // Social Login: Naver
   Future<void> signInWithNaver() async {
+    if (kIsWeb) {
+      throw Exception('네이버 로그인은 현재 모바일(Android/iOS) 전용입니다.\n(플러그인 미지원)');
+    }
     try {
       // 1. Get Naver Token
       final dynamic res = await FlutterNaverLogin.logIn();
