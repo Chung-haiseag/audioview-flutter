@@ -59,6 +59,7 @@ const Movies: React.FC = () => {
         hasClosedCaption: false,
         audioCommentaryFile: '',
         closedCaptionFile: '',
+        audioIntroUrl: '',
         genreId: '',
         productionCountry: '',
         searchKeywords: [],
@@ -107,6 +108,29 @@ const Movies: React.FC = () => {
         }
     };
 
+    const handleAudioUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        if (file.size > 10 * 1024 * 1024) {
+            alert('파일 크기가 너무 큽니다. 10MB 이하의 MP3 파일만 업로드 가능합니다.');
+            return;
+        }
+
+        try {
+            setUploading(true);
+            const url = await uploadFile(file, 'audio-intros');
+            setFormData(prev => ({ ...prev, audioIntroUrl: url }));
+            alert('음성 파일이 성공적으로 업로드되었습니다.');
+        } catch (error: any) {
+            console.error('음성 파일 업로드 실패:', error);
+            alert('음성 파일 업로드 중 오류가 발생했습니다.');
+        } finally {
+            setUploading(false);
+            e.target.value = '';
+        }
+    };
+
     const handleOpenAdd = () => {
         setEditingMovie(null);
         setFormData({
@@ -120,6 +144,7 @@ const Movies: React.FC = () => {
             hasClosedCaption: false,
             audioCommentaryFile: '',
             closedCaptionFile: '',
+            audioIntroUrl: '',
             genreId: '',
             productionCountry: '',
             searchKeywords: [],
@@ -388,6 +413,33 @@ const Movies: React.FC = () => {
                                     <input type="file" hidden accept="image/*" onChange={handleFileUpload} />
                                 </Button>
                             </Box>
+                        </Grid>
+                        <Grid size={12}>
+                            <Typography variant="subtitle2" color="primary" sx={{ mb: 1 }}>영화 소개 음성 (MP3)</Typography>
+                            <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                                <TextField
+                                    fullWidth
+                                    label="음성 파일 URL"
+                                    name="audioIntroUrl"
+                                    value={formData.audioIntroUrl || ''}
+                                    onChange={handleInputChange}
+                                    helperText="직접 입력하거나 옆의 버튼을 통해 MP3 파일을 업로드하세요."
+                                />
+                                <Button
+                                    variant="outlined"
+                                    component="label"
+                                    disabled={uploading}
+                                    sx={{ whiteSpace: 'nowrap', minWidth: '120px', height: '56px' }}
+                                >
+                                    {uploading ? <CircularProgress size={24} /> : 'MP3 업로드'}
+                                    <input type="file" hidden accept="audio/mp3,audio/mpeg" onChange={handleAudioUpload} />
+                                </Button>
+                            </Box>
+                            {formData.audioIntroUrl && (
+                                <Box sx={{ mt: 1 }}>
+                                    <audio controls src={formData.audioIntroUrl} style={{ width: '100%', maxWidth: '400px' }} />
+                                </Box>
+                            )}
                         </Grid>
                         <Grid size={12}><Typography variant="subtitle2" color="primary">베리어프리 리소스</Typography></Grid>
                         <Grid size={{ xs: 12, sm: 6 }}>

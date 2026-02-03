@@ -16,6 +16,7 @@ class Movie {
   final String? director;
   final List<String> actors;
   final List<String> searchKeywords;
+  final String? audioIntroUrl;
 
   Movie({
     required this.id,
@@ -32,6 +33,7 @@ class Movie {
     this.director,
     this.actors = const [],
     this.searchKeywords = const [],
+    this.audioIntroUrl,
   });
 
   factory Movie.fromFirestore(DocumentSnapshot doc) {
@@ -70,6 +72,7 @@ class Movie {
       director: data['director'] ?? '',
       actors: _parseList(data['actors']),
       searchKeywords: _parseList(data['searchKeywords']),
+      audioIntroUrl: data['audioIntroUrl'],
     );
   }
 
@@ -118,6 +121,7 @@ class Movie {
       'director': director,
       'actors': actors,
       'searchKeywords': searchKeywords,
+      'audioIntroUrl': audioIntroUrl,
     };
   }
 }

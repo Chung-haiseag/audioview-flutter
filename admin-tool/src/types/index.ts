@@ -31,6 +31,7 @@ export interface Movie {
     hasClosedCaption: boolean;
     audioCommentaryFile?: string;
     closedCaptionFile?: string;
+    audioIntroUrl?: string;
     isLatest: boolean;
     isPopular: boolean;
     genreId?: string;
