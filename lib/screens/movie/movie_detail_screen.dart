@@ -1,8 +1,10 @@
 ﻿import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'dart:ui';
 import '../../models/movie.dart';
 import 'sync_screen.dart';
+import '../../providers/auth_provider.dart';
 
 class MovieDetailScreen extends StatefulWidget {
   final Movie movie;
@@ -94,6 +96,13 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<AuthProvider>(context);
+    final isLiteMode = auth.userData?['isVisuallyImpaired'] == true;
+
+    if (isLiteMode) {
+      return _buildLiteModeUI(context);
+    }
+
     return Scaffold(
       backgroundColor: const Color(0xFF0A0A0A),
       body: Stack(
@@ -338,6 +347,149 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                 ),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLiteModeUI(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.black,
+        elevation: 0,
+        title: Row(
+          children: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+                minimumSize: const Size(60, 48),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Icon(Icons.arrow_back, size: 28),
+                  SizedBox(width: 8),
+                  Text(
+                    "뒤로가기",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Title
+            Text(
+              widget.movie.title,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // Meta Info
+            Text(
+              '${widget.movie.year}년 | ${widget.movie.duration}분',
+              style: const TextStyle(
+                color: Colors.grey,
+                fontSize: 24,
+              ),
+            ),
+            const SizedBox(height: 40),
+
+            // Action Buttons
+            if (widget.movie.hasAD)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: _buildLiteModeActionButton(
+                  context: context,
+                  label: '화면해설(AD) 감상하기',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SyncScreen(syncType: 'AD'),
+                      ),
+                    );
+                  },
+                  isPrimary: true,
+                ),
+              ),
+
+            if (widget.movie.hasCC)
+              _buildLiteModeActionButton(
+                context: context,
+                label: '문자해설(CC) 감상하기',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SyncScreen(syncType: 'CC'),
+                    ),
+                  );
+                },
+                isPrimary: !widget.movie.hasAD,
+              ),
+
+            if (!widget.movie.hasAD && !widget.movie.hasCC)
+              const Text(
+                '재생 가능한 콘텐츠가 없습니다.',
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 24,
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLiteModeActionButton({
+    required BuildContext context,
+    required String label,
+    required VoidCallback onTap,
+    bool isPrimary = false,
+  }) {
+    return Semantics(
+      label: label,
+      button: true,
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          width: double.infinity,
+          height: 80,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: isPrimary ? Colors.yellow : Colors.grey[900],
+            borderRadius: BorderRadius.circular(8),
+            border:
+                isPrimary ? null : Border.all(color: Colors.white, width: 2),
+          ),
+          child: Text(
+            label,
+            style: TextStyle(
+              color: isPrimary ? Colors.black : Colors.white,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),
