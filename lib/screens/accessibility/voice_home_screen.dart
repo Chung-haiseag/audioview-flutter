@@ -40,7 +40,7 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
         elevation: 0,
         title: Row(
           children: [
-            // Left: Menu Button
+            // Left: Menu Button with Hamburger Icon
             Expanded(
               child: Align(
                 alignment: Alignment.centerLeft,
@@ -54,13 +54,22 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
                       style: TextButton.styleFrom(
                         foregroundColor: Colors.white,
                         minimumSize: const Size(60, 48),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 8),
                       ),
-                      child: const Text(
-                        "메뉴",
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: const [
+                          Icon(Icons.menu, size: 28),
+                          SizedBox(width: 8),
+                          Text(
+                            "메뉴",
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -76,7 +85,7 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            // Right: Voice Search Button
+            // Right: Voice Search Button with Mic Icon
             Expanded(
               child: Align(
                 alignment: Alignment.centerRight,
@@ -94,13 +103,22 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.white,
                       minimumSize: const Size(60, 48),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 8),
                     ),
-                    child: const Text(
-                      "음성검색",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: const [
+                        Icon(Icons.mic, size: 28),
+                        SizedBox(width: 8),
+                        Text(
+                          "음성검색",
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
