@@ -50,7 +50,7 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
       drawer: CustomDrawer(
         currentIndex: -1, // No active tab in Lite Mode
         onItemTapped: (index) {
-          // Navigator.pop(context); // CustomDrawer already pops
+          Navigator.pop(context); // Close drawer first
           _handleDrawerNavigation(index);
         },
       ),
@@ -145,36 +145,41 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
   }
 
   void _handleDrawerNavigation(int index) {
-    Widget? page;
-    switch (index) {
-      case 0: // Home - Stay here
-        return;
-      case 1: // Genre
-        page = const GenreListScreen();
-        break;
-      case 2: // Settings
-        page = const SettingsScreen();
-        break;
-      case 3: // Search (If accessible from drawer)
-        page = const SearchScreen();
-        break;
-      case 4: // My Page
-        page = const MyPageScreen();
-        break;
-      case 5: // Notice
-        page = const NoticeListScreen();
-        break;
-      case 6: // Today Movie
-        page = const TodayMovieScreen();
-        break;
-    }
+    // Wait for drawer to close before navigating
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (!mounted) return;
 
-    if (page != null) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => page!),
-      );
-    }
+      Widget? page;
+      switch (index) {
+        case 0: // Home - Stay here
+          return;
+        case 1: // Genre
+          page = const GenreListScreen();
+          break;
+        case 2: // Settings
+          page = const SettingsScreen();
+          break;
+        case 3: // Search (If accessible from drawer)
+          page = const SearchScreen();
+          break;
+        case 4: // My Page
+          page = const MyPageScreen();
+          break;
+        case 5: // Notice
+          page = const NoticeListScreen();
+          break;
+        case 6: // Today Movie
+          page = const TodayMovieScreen();
+          break;
+      }
+
+      if (page != null && mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => page!),
+        );
+      }
+    });
   }
 
   Widget _buildSectionTitle(String title) {
