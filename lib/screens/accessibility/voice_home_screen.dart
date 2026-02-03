@@ -114,6 +114,7 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
         centerTitle: true,
         backgroundColor: Colors.black,
         elevation: 0,
+        toolbarHeight: 120, // Increased height for two-row layout
         title: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
