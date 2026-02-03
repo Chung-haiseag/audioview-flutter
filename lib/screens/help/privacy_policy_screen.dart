@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../providers/auth_provider.dart';
 
 class PrivacyPolicyScreen extends StatelessWidget {
   const PrivacyPolicyScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<AuthProvider>(context);
+    final isLiteMode = auth.userData?['isVisuallyImpaired'] == true;
+
+    if (isLiteMode) {
+      return _buildLiteModeUI(context);
+    }
+
     return Scaffold(
       backgroundColor: const Color(0xFF0A0A0A),
       appBar: AppBar(
@@ -83,6 +92,105 @@ class PrivacyPolicyScreen extends StatelessWidget {
               color: Colors.grey,
               fontSize: 14,
               height: 1.6,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLiteModeUI(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.black,
+        elevation: 0,
+        title: Row(
+          children: [
+            TextButton(
+              onPressed: () {
+                if (Navigator.of(context).canPop()) {
+                  Navigator.of(context).pop();
+                } else {
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil('/main', (route) => false);
+                }
+              },
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+                minimumSize: const Size(60, 48),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Icon(Icons.arrow_back, size: 28),
+                  SizedBox(width: 8),
+                  Text(
+                    "뒤로가기",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Title
+            const Text(
+              '개인정보 처리방침',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 40),
+
+            _buildLiteModeSection(
+                '1. 수집 목적', '회원 가입 및 관리, 서비스 제공 및 개선, 고객 문의 응대, 마케팅 활용'),
+            _buildLiteModeSection(
+                '2. 수집 항목', '필수: 이메일, 비밀번호, 이름\n선택: 전화번호, 주소'),
+            _buildLiteModeSection('3. 보유 기간', '법령에 따른 기간 내에서 보유'),
+            _buildLiteModeSection('4. 제3자 제공', '원칙적으로 제공하지 않음 (법령에 의한 경우 제외)'),
+            _buildLiteModeSection('5. 권리 행사', '언제든지 열람, 정정, 삭제, 처리정지 요구 가능'),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLiteModeSection(String title, String content) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 40),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              color: Colors.yellow,
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            content,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              height: 1.5,
             ),
           ),
         ],

@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../providers/auth_provider.dart';
 
 class FAQScreen extends StatelessWidget {
   const FAQScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<AuthProvider>(context);
+    final isLiteMode = auth.userData?['isVisuallyImpaired'] == true;
+
+    if (isLiteMode) {
+      return _buildLiteModeUI(context);
+    }
+
     return Scaffold(
       backgroundColor: const Color(0xFF0A0A0A),
       appBar: AppBar(
@@ -97,6 +106,106 @@ class FAQScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildLiteModeUI(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.black,
+        elevation: 0,
+        title: Row(
+          children: [
+            TextButton(
+              onPressed: () {
+                if (Navigator.of(context).canPop()) {
+                  Navigator.of(context).pop();
+                } else {
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil('/main', (route) => false);
+                }
+              },
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+                minimumSize: const Size(60, 48),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Icon(Icons.arrow_back, size: 28),
+                  SizedBox(width: 8),
+                  Text(
+                    "뒤로가기",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          // Title
+          const Padding(
+            padding: EdgeInsets.only(bottom: 24),
+            child: Text(
+              '자주 묻는 질문',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+
+          _buildLiteModeFAQItem(
+              '화면해설(AD)이란?', '화면해설은 영상의 장면, 동작 등을 음성으로 설명해주는 기능입니다.'),
+          _buildLiteModeFAQItem(
+              '문자자막(CC)이란?', '대사뿐만 아니라 모든 소리 정보를 텍스트로 제공하는 자막입니다.'),
+          _buildLiteModeFAQItem('스마트 안경 연동법', '설정에서 스마트 안경 선택 후 블루투스 페어링하세요.'),
+          _buildLiteModeFAQItem('데이터 사용 가능?', '설정에서 3G/LTE 사용 활성화 시 가능합니다.'),
+          _buildLiteModeFAQItem('다운로드 가능?', '현재는 스트리밍만 제공합니다.'),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLiteModeFAQItem(String question, String answer) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 32),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            question,
+            style: const TextStyle(
+              color: Colors.yellow,
+              fontSize: 26,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            answer,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 22,
+              height: 1.4,
+            ),
+          ),
+          const SizedBox(height: 16),
+          const Divider(color: Colors.grey),
+        ],
       ),
     );
   }

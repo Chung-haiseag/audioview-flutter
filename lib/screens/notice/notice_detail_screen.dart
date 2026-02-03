@@ -4,6 +4,9 @@ import '../../models/notice.dart';
 import '../../services/movie_service.dart';
 import '../movie/movie_detail_screen.dart';
 
+import 'package:provider/provider.dart';
+import '../../providers/auth_provider.dart';
+
 class NoticeDetailScreen extends StatelessWidget {
   final Notice notice;
 
@@ -48,6 +51,13 @@ class NoticeDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<AuthProvider>(context);
+    final isLiteMode = auth.userData?['isVisuallyImpaired'] == true;
+
+    if (isLiteMode) {
+      return _buildLiteModeUI(context);
+    }
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -125,6 +135,117 @@ class NoticeDetailScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     elevation: 4,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLiteModeUI(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.black,
+        elevation: 0,
+        title: Row(
+          children: [
+            TextButton(
+              onPressed: () {
+                if (Navigator.of(context).canPop()) {
+                  Navigator.of(context).pop();
+                } else {
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil('/main', (route) => false);
+                }
+              },
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+                minimumSize: const Size(60, 48),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Icon(Icons.arrow_back, size: 28),
+                  SizedBox(width: 8),
+                  Text(
+                    "뒤로가기",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Title
+            Text(
+              notice.title,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
+            // Date
+            Text(
+              DateFormat('yyyy년 MM월 dd일').format(notice.date),
+              style: const TextStyle(
+                color: Colors.grey,
+                fontSize: 24,
+              ),
+            ),
+            const SizedBox(height: 40),
+
+            // Content
+            Text(
+              notice.content,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                height: 1.5,
+              ),
+            ),
+
+            if (notice.movieId != null && notice.movieId!.isNotEmpty) ...[
+              const SizedBox(height: 60),
+              Semantics(
+                label: '관련 영화 보러가기',
+                button: true,
+                child: InkWell(
+                  onTap: () => _navigateToMovie(context),
+                  child: Container(
+                    width: double.infinity,
+                    height: 80,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Colors.yellow,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Text(
+                      '관련 영화 보러가기',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
               ),

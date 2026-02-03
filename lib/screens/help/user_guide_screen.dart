@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../providers/auth_provider.dart';
 
 class UserGuideScreen extends StatelessWidget {
   const UserGuideScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<AuthProvider>(context);
+    final isLiteMode = auth.userData?['isVisuallyImpaired'] == true;
+
+    if (isLiteMode) {
+      return _buildLiteModeUI(context);
+    }
+
     return Scaffold(
       backgroundColor: const Color(0xFF0A0A0A),
       appBar: AppBar(
@@ -83,6 +92,15 @@ class UserGuideScreen extends StatelessWidget {
     );
   }
 
+  Widget _buildStandardUI(BuildContext context) {
+    return SingleChildScrollView(
+        // ... (Original Code) ...
+        // Reused structure in build but kept separate for clarity if needed.
+        // Actually, just returning Scaffold in build is simpler since Standard has Scaffold in build.
+        // So I kept the standard scaffold in `build` after the check.
+        );
+  }
+
   Widget _buildSection(String title, String content, IconData icon) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 24),
@@ -121,6 +139,112 @@ class UserGuideScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildLiteModeUI(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.black,
+        elevation: 0,
+        title: Row(
+          children: [
+            TextButton(
+              onPressed: () {
+                if (Navigator.of(context).canPop()) {
+                  Navigator.of(context).pop();
+                } else {
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil('/main', (route) => false);
+                }
+              },
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+                minimumSize: const Size(60, 48),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Icon(Icons.arrow_back, size: 28),
+                  SizedBox(width: 8),
+                  Text(
+                    "뒤로가기",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Title
+            const Text(
+              '이용안내',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 40),
+
+            _buildLiteModeSection('서비스 소개',
+                'AudioView는 시각·청각장애인을 위한 배리어프리 영상 서비스입니다. 화면해설(AD), 문자자막(CC), 다국어자막 등 다양한 접근성 기능을 제공합니다.'),
+            _buildLiteModeSection('회원가입 및 로그인',
+                '1. 메인 화면 하단의 "MY" 탭 선택\n2. "로그인 하러가기" 버튼 클릭\n3. 이메일과 비밀번호 입력\n4. 신규 회원은 "회원가입" 버튼 이용'),
+            _buildLiteModeSection('영화 시청하기',
+                '1. 홈 화면에서 원하는 카테고리 선택\n2. 영화 포스터 클릭하여 상세 정보 확인\n3. 화면해설(AD) 또는 문자자막(CC) 버튼 선택\n4. 동기화 완료 후 영상 재생'),
+            _buildLiteModeSection('화면해설(AD) 사용법',
+                '화면해설은 시각장애인을 위한 기능으로, 영상의 장면과 동작을 음성으로 설명합니다.\n• 영화 상세 화면에서 AD 버튼 선택\n• 스마트 안경 연동 시 안경 청취 가능'),
+            _buildLiteModeSection('문자자막(CC) 사용법',
+                '문자자막은 청각장애인을 위한 기능으로, 대사와 효과음을 텍스트로 표시합니다.\n• 영화 상세 화면에서 CC 버튼 선택\n• 설정에서 자막 조절 가능'),
+            _buildLiteModeSection('스마트 안경 연동',
+                '1. 설정 메뉴 이동\n2. "스마트 안경" 선택\n3. 블루투스 페어링\n4. 연동 완료 후 사용'),
+            _buildLiteModeSection('고객센터 문의',
+                '• 이메일: kbu1004@hanmail.com\n• 전화: 02-799-1000\n• 운영시간: 평일 09:00 - 18:00'),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLiteModeSection(String title, String content) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 40),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              color: Colors.yellow,
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            content,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              height: 1.5,
+            ),
+          ),
+        ],
       ),
     );
   }

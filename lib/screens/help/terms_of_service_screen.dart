@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../providers/auth_provider.dart';
 
 class TermsOfServiceScreen extends StatelessWidget {
   const TermsOfServiceScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<AuthProvider>(context);
+    final isLiteMode = auth.userData?['isVisuallyImpaired'] == true;
+
+    if (isLiteMode) {
+      return _buildLiteModeUI(context);
+    }
+
     return Scaffold(
       backgroundColor: const Color(0xFF0A0A0A),
       appBar: AppBar(
@@ -84,6 +93,108 @@ class TermsOfServiceScreen extends StatelessWidget {
               color: Colors.grey,
               fontSize: 14,
               height: 1.6,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLiteModeUI(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.black,
+        elevation: 0,
+        title: Row(
+          children: [
+            TextButton(
+              onPressed: () {
+                if (Navigator.of(context).canPop()) {
+                  Navigator.of(context).pop();
+                } else {
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil('/main', (route) => false);
+                }
+              },
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+                minimumSize: const Size(60, 48),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Icon(Icons.arrow_back, size: 28),
+                  SizedBox(width: 8),
+                  Text(
+                    "뒤로가기",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Title
+            const Text(
+              '이용약관',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 40),
+
+            _buildLiteModeSection('제1조 (목적)',
+                '본 약관은 AudioView가 제공하는 배리어프리 영상 서비스의 이용 규정을 목적으로 합니다.'),
+            _buildLiteModeSection('제2조 (정의)',
+                '1. 서비스: 배리어프리 영상 콘텐츠 스트리밍\n2. 이용자: 서비스를 이용하는 회원 및 비회원\n3. 회원: 이용계약을 체결하고 아이디를 부여받은 자'),
+            _buildLiteModeSection('제3조 (약관의 효력)',
+                '본 약관은 모든 이용자에게 효력이 발생하며, 회사는 필요한 경우 약관을 변경할 수 있습니다.'),
+            _buildLiteModeSection(
+                '제4조 (서비스 제공)', '화면해설, 문자자막, 다국어자막 등을 24시간 제공합니다.'),
+            _buildLiteModeSection(
+                '제5조 (이용자의 의무)', '타인 정보 도용, 정보 변경, 저작권 침해, 업무 방해 등을 금지합니다.'),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLiteModeSection(String title, String content) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 40),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              color: Colors.yellow,
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            content,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              height: 1.5,
             ),
           ),
         ],
