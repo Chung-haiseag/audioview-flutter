@@ -10,6 +10,8 @@ import '../settings/settings_screen.dart';
 import '../downloads/downloads_screen.dart';
 import '../notice/notice_list_screen.dart';
 import '../movie/today_movie_screen.dart';
+import '../../providers/auth_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class VoiceHomeScreen extends StatefulWidget {
   const VoiceHomeScreen({super.key});
@@ -19,6 +21,80 @@ class VoiceHomeScreen extends StatefulWidget {
 }
 
 class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
+  int _tapCount = 0;
+  DateTime? _lastTapTime;
+
+  Future<void> _handleTripleTap() async {
+    final now = DateTime.now();
+
+    // Reset counter if more than 1 second has passed
+    if (_lastTapTime == null ||
+        now.difference(_lastTapTime!) > const Duration(seconds: 1)) {
+      _tapCount = 1;
+    } else {
+      _tapCount++;
+    }
+
+    _lastTapTime = now;
+
+    if (_tapCount == 3) {
+      _tapCount = 0;
+      _lastTapTime = null;
+
+      // Show confirmation dialog
+      final confirmed = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          backgroundColor: Colors.grey[900],
+          title: const Text(
+            '일반 모드로 전환',
+            style: TextStyle(color: Colors.white),
+          ),
+          content: const Text(
+            '간편 모드를 종료하고 일반 모드로 전환하시겠습니까?',
+            style: TextStyle(color: Colors.white70, fontSize: 18),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('취소', style: TextStyle(fontSize: 18)),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('확인', style: TextStyle(fontSize: 18)),
+            ),
+          ],
+        ),
+      );
+
+      if (confirmed == true && mounted) {
+        try {
+          final auth = Provider.of<AuthProvider>(context, listen: false);
+          final userId = auth.user?.uid;
+
+          if (userId != null) {
+            // Update Firestore
+            await FirebaseFirestore.instance
+                .collection('users')
+                .doc(userId)
+                .update({'isVisuallyImpaired': false});
+
+            // Navigate back to main screen (will rebuild with normal mode)
+            if (mounted) {
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            }
+          }
+        } catch (e) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('모드 전환에 실패했습니다.')),
+            );
+          }
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final movieService = Provider.of<MovieService>(context, listen: false);
@@ -38,13 +114,35 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
         centerTitle: true,
         backgroundColor: Colors.black,
         elevation: 0,
-        title: Row(
+        title: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            // Left: Menu Button with Hamburger Icon
-            Expanded(
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
+            // First Row: Center "간편모드" Title with Triple Tap
+            GestureDetector(
+              onTap: _handleTripleTap,
+              child: Semantics(
+                label: "간편모드, 세 번 탭하면 일반 모드로 전환",
+                button: true,
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Text(
+                    "간편모드",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            // Second Row: Menu and Voice Search Buttons
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Left: Menu Button with Hamburger Icon
+                Padding(
                   padding: const EdgeInsets.only(left: 8.0),
                   child: Builder(
                     builder: (context) => TextButton(
@@ -74,22 +172,8 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
                     ),
                   ),
                 ),
-              ),
-            ),
-            // Center: "간편모드" Title
-            const Text(
-              "간편모드",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            // Right: Voice Search Button with Mic Icon
-            Expanded(
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Padding(
+                // Right: Voice Search Button with Mic Icon
+                Padding(
                   padding: const EdgeInsets.only(right: 8.0),
                   child: TextButton(
                     onPressed: () {
@@ -122,7 +206,7 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
                     ),
                   ),
                 ),
-              ),
+              ],
             ),
           ],
         ),
@@ -134,7 +218,7 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
           _buildMovieSection(movieService.getNewMovies(), limit: 3),
           const SizedBox(height: 40),
           _buildSectionTitle("추천 영화"),
-          _buildMovieSection(movieService.getPopularMovies(), limit: 5),
+          _buildMovieSection(movieService.getPopularMovies(), limit: 4),
           const SizedBox(height: 40),
         ],
       ),
