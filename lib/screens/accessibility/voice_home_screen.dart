@@ -9,6 +9,7 @@ import '../category/genre_list_screen.dart';
 import '../settings/settings_screen.dart';
 import '../downloads/downloads_screen.dart';
 import '../notice/notice_list_screen.dart';
+import '../player/lite_audio_player_screen.dart';
 
 import 'package:flutter_tts/flutter_tts.dart';
 
@@ -241,9 +242,9 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
 
   Widget _buildMovieTile(Movie movie) {
     return Semantics(
-      label: "${movie.title}, ${movie.duration}분",
-      button: true,
-      hint: "두 번 탭하면 상세 정보를 확인합니다.",
+      container: true,
+      explicitChildNodes:
+          true, // Allow children (like the intro button) to be focused separately
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -255,23 +256,74 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
         },
         child: Container(
           width: double.infinity,
-          constraints: const BoxConstraints(minHeight: 80),
+          constraints: const BoxConstraints(minHeight: 100), // Increased height
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
           decoration: const BoxDecoration(
             border: Border(bottom: BorderSide(color: Colors.grey, width: 0.5)),
           ),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.alphabetic,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
-                child: Text(
-                  movie.title,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Flexible(
+                          child: Text(
+                            movie.title,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 26, // Slightly larger
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        if (movie.audioIntroUrl != null &&
+                            movie.audioIntroUrl!.isNotEmpty) ...[
+                          const SizedBox(width: 12),
+                          // Intro Button
+                          Semantics(
+                            label: '영화소개 듣기',
+                            button: true,
+                            hint: '이 버튼을 두 번 탭하여 영화 소개를 듣습니다.',
+                            excludeSemantics: true,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => LiteAudioPlayerScreen(
+                                      audioUrl: movie.audioIntroUrl!,
+                                      title: movie.title,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 8),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(color: Colors.white),
+                                ),
+                                child: const Text(
+                                  "영화소개",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(width: 16),
