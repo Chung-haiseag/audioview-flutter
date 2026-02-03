@@ -37,7 +37,10 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
     await _flutterTts.setLanguage("ko-KR");
     await _flutterTts.setPitch(1.0);
     await _flutterTts.setSpeechRate(0.5);
-    await _flutterTts.speak("간편모드");
+    await _flutterTts.speak("간편모드입니다. "
+        "메뉴를 열려면 왼쪽 상단의 메뉴 버튼을, "
+        "영화를 검색하려면 오른쪽 상단의 음성검색 버튼을 누르세요. "
+        "아래로 스와이프하여 영화 목록을 탐색할 수 있습니다.");
   }
 
   @override
@@ -65,9 +68,53 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
               child: Builder(
-                builder: (context) => TextButton(
+                builder: (context) => Semantics(
+                  label: "메뉴 버튼",
+                  hint: "선택하면 메뉴가 열립니다",
+                  button: true,
+                  child: TextButton(
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      minimumSize: const Size(60, 48),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 8),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: const [
+                        Icon(Icons.menu, size: 28),
+                        SizedBox(width: 8),
+                        Text(
+                          "메뉴",
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            // Right: Voice Search Button with Mic Icon
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: Semantics(
+                label: "음성검색 버튼",
+                hint: "선택하면 음성으로 영화를 검색할 수 있습니다",
+                button: true,
+                child: TextButton(
                   onPressed: () {
-                    Scaffold.of(context).openDrawer();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SearchScreen(),
+                      ),
+                    );
                   },
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.white,
@@ -78,10 +125,10 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: const [
-                      Icon(Icons.menu, size: 28),
+                      Icon(Icons.mic, size: 28),
                       SizedBox(width: 8),
                       Text(
-                        "메뉴",
+                        "음성검색",
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -89,40 +136,6 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
                       ),
                     ],
                   ),
-                ),
-              ),
-            ),
-            // Right: Voice Search Button with Mic Icon
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SearchScreen(),
-                    ),
-                  );
-                },
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  minimumSize: const Size(60, 48),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    Icon(Icons.mic, size: 28),
-                    SizedBox(width: 8),
-                    Text(
-                      "음성검색",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
                 ),
               ),
             ),
@@ -240,9 +253,9 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
 
   Widget _buildMovieTile(Movie movie) {
     return Semantics(
-      container: true,
-      explicitChildNodes:
-          true, // Allow children (like the intro button) to be focused separately
+      label: "${movie.title}, 재생시간 ${movie.duration}분",
+      hint: "선택하려면 두 번 탭하세요",
+      button: true,
       child: InkWell(
         onTap: () {
           Navigator.push(
