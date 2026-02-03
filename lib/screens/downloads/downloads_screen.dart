@@ -119,6 +119,36 @@ class _MyPageScreenState extends State<MyPageScreen>
                                       ),
                                     ),
                                   ),
+                                  const SizedBox(width: 12),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const ModeSelectionScreen()),
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 6),
+                                      decoration: BoxDecoration(
+                                        color:
+                                            Colors.white.withValues(alpha: 0.1),
+                                        borderRadius: BorderRadius.circular(12),
+                                        border:
+                                            Border.all(color: Colors.white54),
+                                      ),
+                                      child: const Text(
+                                        '모드설정',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               ),
                               const SizedBox(height: 4),
@@ -178,36 +208,6 @@ class _MyPageScreenState extends State<MyPageScreen>
               ),
 
               const SizedBox(height: 20),
-
-              // Mode Selection Button
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ModeSelectionScreen()),
-                    );
-                  },
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.grey,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      Icon(Icons.settings_accessibility, size: 18),
-                      SizedBox(width: 8),
-                      Text(
-                        '모드 설정',
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
 
               // Logout Button
               Padding(
