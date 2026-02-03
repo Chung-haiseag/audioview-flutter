@@ -36,9 +36,6 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
 
   Future<void> _initializeTts() async {
     try {
-      // Try to set Google TTS engine (Android)
-      await _flutterTts.setEngine("com.google.android.tts");
-
       // Set language to Korean
       await _flutterTts.setLanguage("ko-KR");
 
