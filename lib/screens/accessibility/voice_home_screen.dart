@@ -9,6 +9,7 @@ import '../category/genre_list_screen.dart';
 import '../settings/settings_screen.dart';
 import '../downloads/downloads_screen.dart';
 import '../notice/notice_list_screen.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 class VoiceHomeScreen extends StatefulWidget {
   const VoiceHomeScreen({super.key});
@@ -18,9 +19,64 @@ class VoiceHomeScreen extends StatefulWidget {
 }
 
 class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
+  final FlutterTts _flutterTts = FlutterTts();
+
   @override
   void initState() {
     super.initState();
+    _initializeTts();
+    _announceMode();
+  }
+
+  @override
+  void dispose() {
+    _flutterTts.stop();
+    super.dispose();
+  }
+
+  Future<void> _initializeTts() async {
+    try {
+      // Try to set Google TTS engine (Android)
+      await _flutterTts.setEngine("com.google.android.tts");
+
+      // Set language to Korean
+      await _flutterTts.setLanguage("ko-KR");
+
+      // Try to set a specific Google voice
+      var voices = await _flutterTts.getVoices;
+      if (voices != null) {
+        // Look for Google Korean voice
+        var googleKoreanVoice = voices.firstWhere(
+          (voice) =>
+              voice["name"].toString().contains("ko-kr") &&
+              voice["name"].toString().contains("network"),
+          orElse: () => voices.firstWhere(
+            (voice) => voice["locale"].toString().contains("ko"),
+            orElse: () => voices.first,
+          ),
+        );
+        await _flutterTts.setVoice({
+          "name": googleKoreanVoice["name"],
+          "locale": googleKoreanVoice["locale"]
+        });
+      }
+
+      // Set speech parameters for natural sound
+      await _flutterTts.setSpeechRate(0.5);
+      await _flutterTts.setPitch(1.0);
+    } catch (e) {
+      // Fallback to default settings
+      await _flutterTts.setLanguage("ko-KR");
+      await _flutterTts.setSpeechRate(0.5);
+      await _flutterTts.setPitch(1.0);
+    }
+  }
+
+  Future<void> _announceMode() async {
+    await _flutterTts.speak("간편모드입니다. "
+        "메뉴를 열려면 왼쪽 상단의 메뉴 버튼을, "
+        "영화를 검색하려면 오른쪽 상단의 음성검색 버튼을 누르세요. "
+        "아래로 스와이프하여 영화 목록을 탐색할 수 있습니다.");
   }
 
   @override
