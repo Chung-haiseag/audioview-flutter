@@ -212,7 +212,14 @@ class NoticeListScreen extends StatelessWidget {
         title: Row(
           children: [
             TextButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                if (Navigator.of(context).canPop()) {
+                  Navigator.of(context).pop();
+                } else {
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil('/main', (route) => false);
+                }
+              },
               style: TextButton.styleFrom(
                 foregroundColor: Colors.white,
                 minimumSize: const Size(60, 48),
