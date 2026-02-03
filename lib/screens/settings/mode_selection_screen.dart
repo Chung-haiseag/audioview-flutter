@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
 
@@ -169,7 +168,7 @@ class ModeSelectionScreen extends StatelessWidget {
               color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
         ),
         content: Text(
-          '$title로 변경하시겠습니까?\n변경 사항을 적용하기 위해 앱이 종료됩니다.\n다시 실행해 주시기 바랍니다.',
+          '$title로 변경하시겠습니까?',
           style: const TextStyle(color: Colors.white, fontSize: 18),
         ),
         actions: [
@@ -180,7 +179,7 @@ class ModeSelectionScreen extends StatelessWidget {
           ),
           TextButton(
             onPressed: () async {
-              Navigator.pop(context); // Close dialog
+              Navigator.pop(context); // Close confirm dialog
 
               // Show loading
               showDialog(
@@ -199,14 +198,39 @@ class ModeSelectionScreen extends StatelessWidget {
                 );
 
                 // Wait a bit for propagation
-                await Future.delayed(const Duration(milliseconds: 500));
+                await Future.delayed(const Duration(seconds: 1));
 
                 if (context.mounted) {
-                  // Navigate to Main using pushNamedAndRemoveUntil to reset stack and reload checks
-                  // Navigator.of(context)
-                  //    .pushNamedAndRemoveUntil('/main', (route) => false);
-                  // Request to exit app
-                  SystemNavigator.pop();
+                  Navigator.pop(context); // Close loading
+
+                  // Show Restart Usage Dialog
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      backgroundColor: const Color(0xFF1E1E1E),
+                      title: const Text(
+                        '설정 변경 알림',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      content: const Text(
+                        '종료하고 새로 오디오뷰를 실행하면\n설정한 모드로 적용됩니다.',
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text('확인',
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                      ],
+                    ),
+                  );
                 }
               } catch (e) {
                 if (context.mounted) {
