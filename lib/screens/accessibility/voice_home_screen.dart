@@ -9,7 +9,7 @@ import '../category/genre_list_screen.dart';
 import '../settings/settings_screen.dart';
 import '../downloads/downloads_screen.dart';
 import '../notice/notice_list_screen.dart';
-import '../movie/today_movie_screen.dart';
+
 import 'package:flutter_tts/flutter_tts.dart';
 
 class VoiceHomeScreen extends StatefulWidget {
@@ -167,9 +167,6 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
           break;
         case 5: // Notice
           page = const NoticeListScreen();
-          break;
-        case 6: // Today Movie
-          page = const TodayMovieScreen();
           break;
       }
 

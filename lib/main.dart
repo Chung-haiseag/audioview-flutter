@@ -13,7 +13,7 @@ import 'screens/search/search_screen.dart';
 import 'screens/downloads/downloads_screen.dart'; // Contains MyPageScreen class
 import 'screens/notice/notice_list_screen.dart';
 import 'screens/category/genre_list_screen.dart';
-import 'screens/movie/today_movie_screen.dart'; // Add this import
+
 import 'screens/accessibility/voice_home_screen.dart';
 import 'widgets/custom_header.dart';
 import 'widgets/custom_drawer.dart';
@@ -102,7 +102,6 @@ class _MainScreenState extends State<MainScreen> {
     SearchScreen(),
     MyPageScreen(),
     NoticeListScreen(),
-    TodayMovieScreen(), // Index 6
   ];
 
   final List<String> _titles = [
@@ -112,7 +111,6 @@ class _MainScreenState extends State<MainScreen> {
     '검색',
     '마이페이지',
     '공지/이벤트',
-    '오늘의 관람', // Index 6
   ];
 
   @override

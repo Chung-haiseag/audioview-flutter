@@ -48,12 +48,6 @@ class CustomDrawer extends StatelessWidget {
                     context: context,
                   ),
                   _buildDrawerItem(
-                    icon: LucideIcons.calendar,
-                    label: '오늘의 관람',
-                    index: 6, // TodayMovieScreen index
-                    context: context,
-                  ),
-                  _buildDrawerItem(
                     icon: LucideIcons.settings,
                     label: '설정',
                     index: 2, // SettingsScreen index in MainScreen
