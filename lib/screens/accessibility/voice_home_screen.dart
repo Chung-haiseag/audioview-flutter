@@ -151,7 +151,8 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
 
       Widget? page;
       switch (index) {
-        case 0: // Home - Stay here
+        case 0: // Home - Go to MainScreen (Lite Mode Home)
+          Navigator.pushNamedAndRemoveUntil(context, '/main', (route) => false);
           return;
         case 1: // Genre
           page = const GenreListScreen();
