@@ -42,29 +42,49 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
       // Set language to Korean
       await _flutterTts.setLanguage("ko-KR");
 
-      // Try to set a specific Google voice
+      // Try to set a specific high-quality Google voice
       var voices = await _flutterTts.getVoices;
-      if (voices != null) {
-        // Look for Google Korean voice
-        var googleKoreanVoice = voices.firstWhere(
-          (voice) =>
-              voice["name"].toString().contains("ko-kr") &&
-              voice["name"].toString().contains("network"),
-          orElse: () => voices.firstWhere(
-            (voice) => voice["locale"].toString().contains("ko"),
-            orElse: () => voices.first,
-          ),
-        );
-        await _flutterTts.setVoice({
-          "name": googleKoreanVoice["name"],
-          "locale": googleKoreanVoice["locale"]
-        });
+      if (voices != null && voices.isNotEmpty) {
+        print("Available voices: $voices"); // Debug
+
+        // Priority 1: Google network voices (highest quality)
+        var networkVoices = voices.where((voice) {
+          String name = voice["name"].toString().toLowerCase();
+          return name.contains("ko-kr") && name.contains("network");
+        }).toList();
+
+        if (networkVoices.isNotEmpty) {
+          print("Using network voice: ${networkVoices.first}");
+          await _flutterTts.setVoice({
+            "name": networkVoices.first["name"],
+            "locale": networkVoices.first["locale"]
+          });
+        } else {
+          // Priority 2: Google standard voices (good quality)
+          var standardVoices = voices.where((voice) {
+            String name = voice["name"].toString().toLowerCase();
+            String locale = voice["locale"].toString().toLowerCase();
+            return (name.contains("ko-kr") || locale.contains("ko-kr")) &&
+                name.contains("google");
+          }).toList();
+
+          if (standardVoices.isNotEmpty) {
+            print("Using standard Google voice: ${standardVoices.first}");
+            await _flutterTts.setVoice({
+              "name": standardVoices.first["name"],
+              "locale": standardVoices.first["locale"]
+            });
+          } else {
+            print("No suitable Google voice found, using default");
+          }
+        }
       }
 
       // Set speech parameters for natural sound
       await _flutterTts.setSpeechRate(0.5);
       await _flutterTts.setPitch(1.0);
     } catch (e) {
+      print("TTS initialization error: $e");
       // Fallback to default settings
       await _flutterTts.setLanguage("ko-KR");
       await _flutterTts.setSpeechRate(0.5);
