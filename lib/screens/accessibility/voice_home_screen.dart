@@ -268,21 +268,20 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Flexible(
-                          child: Text(
-                            movie.title,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 26, // Slightly larger
-                              fontWeight: FontWeight.bold,
-                            ),
+                        Text(
+                          movie.title,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 26, // Slightly larger
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                         if (movie.audioIntroUrl != null &&
                             movie.audioIntroUrl!.isNotEmpty) ...[
-                          const SizedBox(width: 12),
+                          const SizedBox(height: 12),
                           // Intro Button
                           Semantics(
                             label: '영화소개 듣기',
@@ -303,11 +302,11 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 12, vertical: 8),
+                                    horizontal: 16, vertical: 8),
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color: Colors.yellow, // High visibility
                                   borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(color: Colors.white),
+                                  border: Border.all(color: Colors.yellow),
                                 ),
                                 child: const Text(
                                   "영화소개",
