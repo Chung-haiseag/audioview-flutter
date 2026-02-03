@@ -100,33 +100,39 @@ class CustomDrawer extends StatelessWidget {
     final iconSize = isLiteMode ? 36.0 : 24.0;
     final verticalPadding = isLiteMode ? 12.0 : 4.0;
 
-    return ListTile(
-      leading: Icon(
-        icon,
-        color: isSelected ? activeColor : inactiveColor,
-        size: iconSize,
-      ),
-      title: Text(
-        label,
-        style: TextStyle(
-          color: isSelected
-              ? (isLiteMode ? Colors.yellow : Colors.white)
-              : inactiveColor,
-          fontSize: fontSize,
-          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-        ),
-      ),
+    return Semantics(
+      label: "$label ${isSelected ? '현재 선택됨' : ''}",
+      hint: isSelected ? "" : "선택하려면 두 번 탭하세요",
+      button: true,
       selected: isSelected,
-      selectedTileColor: activeColor.withAlpha(
-          25), // withValues(alpha: 0.1) replacement for older flutter if needed, but keeping simple
-      onTap: () {
-        onItemTapped(index);
-        Navigator.pop(context); // Close drawer
-      },
-      contentPadding:
-          EdgeInsets.symmetric(horizontal: 24, vertical: verticalPadding),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
+      child: ListTile(
+        leading: Icon(
+          icon,
+          color: isSelected ? activeColor : inactiveColor,
+          size: iconSize,
+        ),
+        title: Text(
+          label,
+          style: TextStyle(
+            color: isSelected
+                ? (isLiteMode ? Colors.yellow : Colors.white)
+                : inactiveColor,
+            fontSize: fontSize,
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          ),
+        ),
+        selected: isSelected,
+        selectedTileColor: activeColor.withAlpha(
+            25), // withValues(alpha: 0.1) replacement for older flutter if needed, but keeping simple
+        onTap: () {
+          onItemTapped(index);
+          Navigator.pop(context); // Close drawer
+        },
+        contentPadding:
+            EdgeInsets.symmetric(horizontal: 24, vertical: verticalPadding),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
       ),
     );
   }
