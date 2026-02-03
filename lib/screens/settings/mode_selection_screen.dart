@@ -202,33 +202,10 @@ class ModeSelectionScreen extends StatelessWidget {
 
                 if (context.mounted) {
                   Navigator.pop(context); // Close loading
-
-                  // Show Restart Usage Dialog
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      backgroundColor: const Color(0xFF1E1E1E),
-                      title: const Text(
-                        '설정 변경 알림',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      content: const Text(
-                        '종료하고 새로 오디오뷰를 실행하면\n설정한 모드로 적용됩니다.',
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: const Text('확인',
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold)),
-                        ),
-                      ],
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('설정이 저장되었습니다. 앱을 재실행하면 적용됩니다.'),
+                      duration: Duration(seconds: 2),
                     ),
                   );
                 }
