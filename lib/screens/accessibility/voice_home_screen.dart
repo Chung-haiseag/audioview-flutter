@@ -309,6 +309,7 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
       label: "${movie.title}, 재생시간 ${movie.duration}분",
       hint: "선택하려면 두 번 탭하세요",
       button: true,
+      excludeSemantics: true, // Prevent child text from being read separately
       child: InkWell(
         onTap: () {
           Navigator.push(
