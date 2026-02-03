@@ -39,51 +39,69 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
         backgroundColor: Colors.black,
         elevation: 0,
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             // Left: Menu Button
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Builder(
-                builder: (context) => TextButton(
-                  onPressed: () {
-                    Scaffold.of(context).openDrawer();
-                  },
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    minimumSize: const Size(60, 48), // Large touch target
-                  ),
-                  child: const Text(
-                    "메뉴",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+            Expanded(
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Builder(
+                    builder: (context) => TextButton(
+                      onPressed: () {
+                        Scaffold.of(context).openDrawer();
+                      },
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        minimumSize: const Size(60, 48),
+                      ),
+                      child: const Text(
+                        "메뉴",
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
+            // Center: "간편모드" Title
+            const Text(
+              "간편모드",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             // Right: Voice Search Button
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SearchScreen(),
+            Expanded(
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SearchScreen(),
+                        ),
+                      );
+                    },
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      minimumSize: const Size(60, 48),
                     ),
-                  );
-                },
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  minimumSize: const Size(60, 48), // Large touch target
-                ),
-                child: const Text(
-                  "음성검색",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                    child: const Text(
+                      "음성검색",
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
               ),
