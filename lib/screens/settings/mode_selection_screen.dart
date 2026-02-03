@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
 
@@ -168,7 +169,7 @@ class ModeSelectionScreen extends StatelessWidget {
               color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
         ),
         content: Text(
-          '$title로 변경하시겠습니까?\n앱이 새로고침됩니다.',
+          '$title로 변경하시겠습니까?\n변경 사항을 적용하기 위해 앱이 종료됩니다.\n다시 실행해 주시기 바랍니다.',
           style: const TextStyle(color: Colors.white, fontSize: 18),
         ),
         actions: [
@@ -202,8 +203,10 @@ class ModeSelectionScreen extends StatelessWidget {
 
                 if (context.mounted) {
                   // Navigate to Main using pushNamedAndRemoveUntil to reset stack and reload checks
-                  Navigator.of(context)
-                      .pushNamedAndRemoveUntil('/main', (route) => false);
+                  // Navigator.of(context)
+                  //    .pushNamedAndRemoveUntil('/main', (route) => false);
+                  // Request to exit app
+                  SystemNavigator.pop();
                 }
               } catch (e) {
                 if (context.mounted) {
