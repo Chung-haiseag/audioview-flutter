@@ -112,9 +112,15 @@ class ModeSelectionScreen extends StatelessWidget {
 
             if (context.mounted) {
               Navigator.pop(context); // Close loading
+
+              // Navigate to main screen to apply mode change
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil('/main', (route) => false);
+
+              // Show feedback
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text('설정이 저장되었습니다. 앱을 재실행하면 적용됩니다.'),
+                  content: Text('설정이 저장되었습니다.'),
                   duration: Duration(seconds: 2),
                 ),
               );
