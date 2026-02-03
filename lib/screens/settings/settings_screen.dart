@@ -27,6 +27,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<AuthProvider>(context);
+    final isLiteMode = auth.userData?['isVisuallyImpaired'] == true;
+
+    if (isLiteMode) {
+      return _buildLiteModeUI(context);
+    }
+
     return Scaffold(
       backgroundColor: const Color(0xFF0A0A0A),
       body: Column(
@@ -428,6 +435,124 @@ class _SettingsScreenState extends State<SettingsScreen> {
               const Icon(Icons.chevron_right, color: Colors.grey),
             ],
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLiteModeUI(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.black,
+        elevation: 0,
+        title: Row(
+          children: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+                minimumSize: const Size(60, 48),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Icon(Icons.arrow_back, size: 28),
+                  SizedBox(width: 8),
+                  Text(
+                    "뒤로가기",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      body: ListView(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        children: [
+          _buildLiteModeItem(
+            context: context,
+            title: '개인정보 처리방침',
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const PrivacyPolicyScreen()),
+            ),
+          ),
+          _buildLiteModeItem(
+            context: context,
+            title: '이용약관',
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const TermsOfServiceScreen()),
+            ),
+          ),
+          _buildLiteModeItem(
+            context: context,
+            title: '자주 묻는 질문',
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const FAQScreen()),
+            ),
+          ),
+          _buildLiteModeItem(
+            context: context,
+            title: '이용안내',
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const UserGuideScreen()),
+            ),
+          ),
+          _buildLiteModeItem(
+            context: context,
+            title: '새로운 작품 요청하기',
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const RequestContentScreen()),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLiteModeItem({
+    required BuildContext context,
+    required String title,
+    required VoidCallback onTap,
+  }) {
+    return Semantics(
+      label: title,
+      button: true,
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          width: double.infinity,
+          constraints: const BoxConstraints(minHeight: 80),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+          decoration: const BoxDecoration(
+            border: Border(
+              bottom: BorderSide(color: Colors.grey, width: 0.5),
+            ),
+          ),
+          child: Text(
+            title,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
       ),
     );

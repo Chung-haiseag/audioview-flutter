@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../../models/notice.dart';
 import '../../services/notice_service.dart'; // Import NoticeService
 import 'notice_detail_screen.dart';
+import '../../providers/auth_provider.dart';
 
 class NoticeListScreen extends StatelessWidget {
   const NoticeListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<AuthProvider>(context);
+    final isLiteMode = auth.userData?['isVisuallyImpaired'] == true;
+
+    if (isLiteMode) {
+      return _buildLiteModeUI(context);
+    }
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -190,6 +199,130 @@ class NoticeListScreen extends StatelessWidget {
         ),
         Divider(height: 1, color: Colors.grey[800]),
       ],
+    );
+  }
+
+  Widget _buildLiteModeUI(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.black,
+        elevation: 0,
+        title: Row(
+          children: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.white,
+                minimumSize: const Size(60, 48),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Icon(Icons.arrow_back, size: 28),
+                  SizedBox(width: 8),
+                  Text(
+                    "뒤로가기",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      body: StreamBuilder<List<Notice>>(
+        stream: NoticeService().getNotices(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                '오류가 발생했습니다',
+                style: const TextStyle(color: Colors.white, fontSize: 24),
+              ),
+            );
+          }
+
+          final allNotices = snapshot.data ?? [];
+
+          if (allNotices.isEmpty) {
+            return const Center(
+              child: Text(
+                '등록된 공지가 없습니다',
+                style: TextStyle(color: Colors.grey, fontSize: 24),
+              ),
+            );
+          }
+
+          return ListView.builder(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            itemCount: allNotices.length,
+            itemBuilder: (context, index) {
+              final notice = allNotices[index];
+              return _buildLiteModeNoticeItem(context, notice);
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildLiteModeNoticeItem(BuildContext context, Notice notice) {
+    return Semantics(
+      label:
+          "${notice.title}, ${DateFormat('yyyy년 MM월 dd일').format(notice.date)}",
+      button: true,
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => NoticeDetailScreen(notice: notice),
+            ),
+          );
+        },
+        child: Container(
+          width: double.infinity,
+          constraints: const BoxConstraints(minHeight: 80),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+          decoration: const BoxDecoration(
+            border: Border(
+              bottom: BorderSide(color: Colors.grey, width: 0.5),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                notice.title,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                DateFormat('yyyy-MM-dd').format(notice.date),
+                style: const TextStyle(
+                  color: Colors.grey,
+                  fontSize: 20,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
