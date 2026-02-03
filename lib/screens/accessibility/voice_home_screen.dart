@@ -93,10 +93,7 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
     await _flutterTts.speak("간편모드입니다. "
         "메뉴를 열려면 왼쪽 상단의 메뉴 버튼을, "
         "영화를 검색하려면 오른쪽 상단의 음성검색 버튼을 누르세요. "
-        "아래로 스와이프하여 영화 목록을 탐색할 수 있습니다. "
-        "자연스러운 한국어 음성을 사용하려면, "
-        "안드로이드 설정에서 접근성, 톡백, 설정, 음성 피드백, 음성 선택으로 이동하여 "
-        "구글 한국어 음성을 선택해주세요.");
+        "아래로 스와이프하여 영화 목록을 탐색할 수 있습니다. ");
   }
 
   @override
@@ -125,9 +122,12 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
               padding: const EdgeInsets.only(left: 8.0),
               child: Builder(
                 builder: (context) => Semantics(
-                  label: "메뉴 버튼",
-                  hint: "선택하면 메뉴가 열립니다",
+                  label: "메뉴",
+                  hint: "메뉴 열기",
                   button: true,
+                  onDidGainAccessibilityFocus: () {
+                    _flutterTts.speak("메뉴 버튼");
+                  },
                   child: TextButton(
                     onPressed: () {
                       Scaffold.of(context).openDrawer();
@@ -160,9 +160,12 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
             Padding(
               padding: const EdgeInsets.only(right: 8.0),
               child: Semantics(
-                label: "음성검색 버튼",
-                hint: "선택하면 음성으로 영화를 검색할 수 있습니다",
+                label: "음성검색",
+                hint: "영화 검색",
                 button: true,
+                onDidGainAccessibilityFocus: () {
+                  _flutterTts.speak("음성검색 버튼");
+                },
                 child: TextButton(
                   onPressed: () {
                     Navigator.push(
@@ -309,10 +312,14 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
 
   Widget _buildMovieTile(Movie movie) {
     return Semantics(
-      label: "${movie.title}, 재생시간 ${movie.duration}분",
-      hint: "선택하려면 두 번 탭하세요",
+      label: "${movie.title}", // Shortened label for TalkBack
+      hint: "영화 상세 정보",
       button: true,
-      excludeSemantics: true, // Prevent child text from being read separately
+      excludeSemantics: true,
+      onDidGainAccessibilityFocus: () {
+        // Read full movie info with FlutterTts when focused
+        _flutterTts.speak("${movie.title}, 재생시간 ${movie.duration}분");
+      },
       child: InkWell(
         onTap: () {
           Navigator.push(
