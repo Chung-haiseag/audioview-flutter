@@ -6,6 +6,7 @@ import '../auth/login_screen.dart';
 
 import '../settings/point_history_screen.dart';
 import '../profile/edit_profile_screen.dart'; // Add import
+import '../settings/mode_selection_screen.dart';
 
 class MyPageScreen extends StatefulWidget {
   const MyPageScreen({super.key});
@@ -177,6 +178,36 @@ class _MyPageScreenState extends State<MyPageScreen>
               ),
 
               const SizedBox(height: 20),
+
+              // Mode Selection Button
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ModeSelectionScreen()),
+                    );
+                  },
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.grey,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      Icon(Icons.settings_accessibility, size: 18),
+                      SizedBox(width: 8),
+                      Text(
+                        '모드 설정',
+                        style: TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
 
               // Logout Button
               Padding(
@@ -487,6 +518,17 @@ class _MyPageScreenState extends State<MyPageScreen>
               context,
               MaterialPageRoute(
                   builder: (context) => const PointHistoryScreen()),
+            ),
+          ),
+
+          // Mode Selection
+          _buildLiteModeMenuItem(
+            context: context,
+            title: '모드 설정',
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const ModeSelectionScreen()),
             ),
           ),
 
