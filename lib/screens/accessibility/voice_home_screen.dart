@@ -9,8 +9,6 @@ import '../category/genre_list_screen.dart';
 import '../settings/settings_screen.dart';
 import '../downloads/downloads_screen.dart';
 import '../notice/notice_list_screen.dart';
-import '../player/lite_audio_player_screen.dart';
-
 import 'package:flutter_tts/flutter_tts.dart';
 
 class VoiceHomeScreen extends StatefulWidget {
@@ -265,64 +263,13 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          movie.title,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 26, // Slightly larger
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        if (movie.audioIntroUrl != null &&
-                            movie.audioIntroUrl!.isNotEmpty) ...[
-                          const SizedBox(height: 12),
-                          // Intro Button
-                          Semantics(
-                            label: '영화소개 듣기',
-                            button: true,
-                            hint: '이 버튼을 두 번 탭하여 영화 소개를 듣습니다.',
-                            excludeSemantics: true,
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => LiteAudioPlayerScreen(
-                                      audioUrl: movie.audioIntroUrl!,
-                                      title: movie.title,
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 8),
-                                decoration: BoxDecoration(
-                                  color: Colors.yellow, // High visibility
-                                  borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(color: Colors.yellow),
-                                ),
-                                child: const Text(
-                                  "영화소개",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
-                  ],
+                child: Text(
+                  movie.title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               const SizedBox(width: 16),

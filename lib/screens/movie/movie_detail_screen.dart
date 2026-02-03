@@ -5,6 +5,7 @@ import 'dart:ui';
 import '../../models/movie.dart';
 import 'sync_screen.dart';
 import '../../providers/auth_provider.dart';
+import '../player/lite_audio_player_screen.dart';
 
 class MovieDetailScreen extends StatefulWidget {
   final Movie movie;
@@ -422,6 +423,28 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
             const SizedBox(height: 40),
 
             // Action Buttons
+            if (widget.movie.audioIntroUrl != null &&
+                widget.movie.audioIntroUrl!.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: _buildLiteModeActionButton(
+                  context: context,
+                  label: '영화소개 듣기',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LiteAudioPlayerScreen(
+                          audioUrl: widget.movie.audioIntroUrl!,
+                          title: widget.movie.title,
+                        ),
+                      ),
+                    );
+                  },
+                  isPrimary: true,
+                ),
+              ),
+
             if (widget.movie.hasAD)
               Padding(
                 padding: const EdgeInsets.only(bottom: 20),
