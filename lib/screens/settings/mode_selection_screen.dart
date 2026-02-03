@@ -83,14 +83,50 @@ class ModeSelectionScreen extends StatelessWidget {
       button: true,
       hint: isCurrent ? '현재 사용 중인 모드입니다.' : '$title로 변경하려면 두 번 탭하세요.',
       child: GestureDetector(
-        onTap: () {
+        onTap: () async {
           if (isCurrent) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('이미 사용 중인 모드입니다.')),
             );
             return;
           }
-          _showConfirmationDialog(context, title, isTargetLite, auth);
+
+          // Show loading
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) => const Center(
+              child: CircularProgressIndicator(color: Colors.white),
+            ),
+          );
+
+          try {
+            // Update user profile
+            await auth.updateUserProfile(
+              nickname: auth.userData?['username'] ?? 'User',
+              isVisuallyImpaired: isTargetLite,
+            );
+
+            // Wait for propagation
+            await Future.delayed(const Duration(seconds: 1));
+
+            if (context.mounted) {
+              Navigator.pop(context); // Close loading
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('설정이 저장되었습니다. 앱을 재실행하면 적용됩니다.'),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+            }
+          } catch (e) {
+            if (context.mounted) {
+              Navigator.pop(context); // Close loading
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('변경 실패: $e')),
+              );
+            }
+          }
         },
         child: Container(
           width: double.infinity,
@@ -151,80 +187,6 @@ class ModeSelectionScreen extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  void _showConfirmationDialog(BuildContext context, String title,
-      bool isTargetLite, AuthProvider auth) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF1E1E1E),
-        title: Text(
-          '$title 선택',
-          style: const TextStyle(
-              color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
-        ),
-        content: Text(
-          '$title로 변경하시겠습니까?',
-          style: const TextStyle(color: Colors.white, fontSize: 18),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('취소',
-                style: TextStyle(color: Colors.grey, fontSize: 20)),
-          ),
-          TextButton(
-            onPressed: () async {
-              Navigator.pop(context); // Close confirm dialog
-
-              // Show loading
-              showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (context) => const Center(
-                  child: CircularProgressIndicator(color: Colors.white),
-                ),
-              );
-
-              try {
-                // Update user profile
-                await auth.updateUserProfile(
-                  nickname: auth.userData?['username'] ?? 'User',
-                  isVisuallyImpaired: isTargetLite,
-                );
-
-                // Wait a bit for propagation
-                await Future.delayed(const Duration(seconds: 1));
-
-                if (context.mounted) {
-                  Navigator.pop(context); // Close loading
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('설정이 저장되었습니다. 앱을 재실행하면 적용됩니다.'),
-                      duration: Duration(seconds: 2),
-                    ),
-                  );
-                }
-              } catch (e) {
-                if (context.mounted) {
-                  Navigator.pop(context); // Close loading
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('변경 실패: $e')),
-                  );
-                }
-              }
-            },
-            child: const Text(
-              '확인',
-              style: TextStyle(
-                  color: Colors.red, fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ],
       ),
     );
   }
