@@ -385,6 +385,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         ),
                       ),
                     ),
+                  ),
                   const SizedBox(height: 30),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 32),
