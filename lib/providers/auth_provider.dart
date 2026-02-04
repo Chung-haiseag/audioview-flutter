@@ -166,29 +166,17 @@ class AuthProvider with ChangeNotifier {
     try {
       // 1. Get Kakao Token
       kakao.OAuthToken token;
-      print('DEBUG: Starting Kakao Login...');
-      try {
-        print('KAKAO_KEY_HASH: ${await kakao.KakaoSdk.origin}');
-      } catch (e) {
-        print('Could not get KeyHash: $e');
-      }
       if (await kakao.isKakaoTalkInstalled()) {
         try {
-          print('DEBUG: Attempting login with KakaoTalk...');
           token = await kakao.UserApi.instance.loginWithKakaoTalk();
         } catch (error) {
-          print('DEBUG: KakaoTalk login failed, trying account login: $error');
           token = await kakao.UserApi.instance.loginWithKakaoAccount();
         }
       } else {
-        print('DEBUG: Attempting login with KakaoAccount...');
         token = await kakao.UserApi.instance.loginWithKakaoAccount();
       }
-      print(
-          'DEBUG: Kakao Token obtained: ${token.accessToken.substring(0, 5)}...');
 
       // 2. Call Cloud Function to get Custom Token
-      print('DEBUG: Calling Cloud Function verifyKakaoToken...');
       final HttpsCallable callable =
           FirebaseFunctions.instance.httpsCallable('verifyKakaoToken');
       final result = await callable.call({'accessToken': token.accessToken});
@@ -198,10 +186,6 @@ class AuthProvider with ChangeNotifier {
       // 3. Sign in to Firebase
       await _auth.signInWithCustomToken(customToken);
     } catch (e) {
-      print('CRITICAL: Kakao Login Error: $e');
-      if (e is kakao.KakaoAuthException) {
-        print('Kakao Auth Exception: ${e.message}');
-      }
       rethrow;
     }
   }

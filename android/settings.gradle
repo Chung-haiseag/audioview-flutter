@@ -1,6 +1,6 @@
 pluginManagement {
     // Flutter SDK 경로를 하드코딩 (한글 경로 문제 우회)
-    def flutterSdkPath = "C:\\flutter"
+    def flutterSdkPath = "/opt/homebrew/share/flutter"
     
     println "=== Flutter SDK Path (hardcoded): $flutterSdkPath ==="
     
@@ -9,7 +9,7 @@ pluginManagement {
     def properties = new Properties()
     
     // Android SDK 경로 읽기
-    def androidSdkPath = "C:\\AndroidSDK\\sdk"  // 기본값
+    def androidSdkPath = "/Users/nctoo/Library/Android/sdk"  // 기본값 (Mac)
     if (localPropertiesFile.exists()) {
         try {
             localPropertiesFile.withInputStream { 

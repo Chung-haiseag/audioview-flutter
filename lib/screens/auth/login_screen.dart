@@ -210,8 +210,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                     await Provider.of<AuthProvider>(context,
                                             listen: false)
                                         .signInWithKakao();
-                                    if (mounted && !widget.isEmbedded)
+                                    if (mounted && !widget.isEmbedded) {
                                       Navigator.pop(context);
+                                    }
                                   } catch (e) {
                                     if (mounted) {
                                       ScaffoldMessenger.of(context)
@@ -259,8 +260,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                     await Provider.of<AuthProvider>(context,
                                             listen: false)
                                         .signInWithNaver();
-                                    if (mounted && !widget.isEmbedded)
+                                    if (mounted && !widget.isEmbedded) {
                                       Navigator.pop(context);
+                                    }
                                   } catch (e) {
                                     if (mounted) {
                                       ScaffoldMessenger.of(context)
@@ -312,8 +314,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                     await Provider.of<AuthProvider>(context,
                                             listen: false)
                                         .signInWithGoogle();
-                                    if (mounted && !widget.isEmbedded)
+                                    if (mounted && !widget.isEmbedded) {
                                       Navigator.pop(context);
+                                    }
                                   } catch (e) {
                                     if (mounted) {
                                       ScaffoldMessenger.of(context)

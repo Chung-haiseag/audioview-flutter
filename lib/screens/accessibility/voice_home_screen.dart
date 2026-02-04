@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import '../../services/movie_service.dart';
 import '../../models/movie.dart';
@@ -25,7 +26,10 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
   void initState() {
     super.initState();
     _initializeTts();
-    _announceMode();
+    // 화면 로드 완료 후 안전하게 음성 안내를 시작합니다.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _announceMode();
+    });
   }
 
   @override
@@ -35,65 +39,18 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
   }
 
   Future<void> _initializeTts() async {
-    try {
-      // Set language to Korean
-      await _flutterTts.setLanguage("ko-KR");
-
-      // Try to set a specific high-quality Google voice
-      var voices = await _flutterTts.getVoices;
-      if (voices != null && voices.isNotEmpty) {
-        print("Available voices: $voices"); // Debug
-
-        // Priority 1: Google network voices (highest quality)
-        var networkVoices = voices.where((voice) {
-          String name = voice["name"].toString().toLowerCase();
-          return name.contains("ko-kr") && name.contains("network");
-        }).toList();
-
-        if (networkVoices.isNotEmpty) {
-          print("Using network voice: ${networkVoices.first}");
-          await _flutterTts.setVoice({
-            "name": networkVoices.first["name"],
-            "locale": networkVoices.first["locale"]
-          });
-        } else {
-          // Priority 2: Google standard voices (good quality)
-          var standardVoices = voices.where((voice) {
-            String name = voice["name"].toString().toLowerCase();
-            String locale = voice["locale"].toString().toLowerCase();
-            return (name.contains("ko-kr") || locale.contains("ko-kr")) &&
-                name.contains("google");
-          }).toList();
-
-          if (standardVoices.isNotEmpty) {
-            print("Using standard Google voice: ${standardVoices.first}");
-            await _flutterTts.setVoice({
-              "name": standardVoices.first["name"],
-              "locale": standardVoices.first["locale"]
-            });
-          } else {
-            print("No suitable Google voice found, using default");
-          }
-        }
-      }
-
-      // Set speech parameters for natural sound
-      await _flutterTts.setSpeechRate(0.5);
-      await _flutterTts.setPitch(1.0);
-    } catch (e) {
-      print("TTS initialization error: $e");
-      // Fallback to default settings
-      await _flutterTts.setLanguage("ko-KR");
-      await _flutterTts.setSpeechRate(0.5);
-      await _flutterTts.setPitch(1.0);
-    }
+    // TTS initialization can be kept if needed for other features, 
+    // but focus narration should use system Semantics to avoid duplication.
   }
 
   Future<void> _announceMode() async {
-    await _flutterTts.speak("간편모드입니다. "
-        "메뉴를 열려면 왼쪽 상단의 메뉴 버튼을, "
-        "영화를 검색하려면 오른쪽 상단의 음성검색 버튼을 누르세요. "
-        "아래로 스와이프하여 영화 목록을 탐색할 수 있습니다. ");
+    SemanticsService.announce(
+      "간편모드입니다. "
+      "메뉴를 열려면 왼쪽 상단의 메뉴 버튼을, "
+      "영화를 검색하려면 오른쪽 상단의 음성검색 버튼을 누르세요. "
+      "아래로 스와이프하여 영화 목록을 탐색할 수 있습니다. ",
+      TextDirection.ltr,
+    );
   }
 
   @override
@@ -122,12 +79,9 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
               padding: const EdgeInsets.only(left: 8.0),
               child: Builder(
                 builder: (context) => Semantics(
-                  label: "메뉴",
+                  label: "메뉴 버튼",
                   hint: "메뉴 열기",
                   button: true,
-                  onDidGainAccessibilityFocus: () {
-                    _flutterTts.speak("메뉴 버튼");
-                  },
                   child: TextButton(
                     onPressed: () {
                       Scaffold.of(context).openDrawer();
@@ -160,12 +114,9 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
             Padding(
               padding: const EdgeInsets.only(right: 8.0),
               child: Semantics(
-                label: "음성검색",
+                label: "음성검색 버튼",
                 hint: "영화 검색",
                 button: true,
-                onDidGainAccessibilityFocus: () {
-                  _flutterTts.speak("음성검색 버튼");
-                },
                 child: TextButton(
                   onPressed: () {
                     Navigator.push(
@@ -312,14 +263,10 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
 
   Widget _buildMovieTile(Movie movie) {
     return Semantics(
-      label: "${movie.title}", // Shortened label for TalkBack
+      label: "${movie.title}, 재생시간 ${movie.duration}분",
       hint: "영화 상세 정보",
       button: true,
       excludeSemantics: true,
-      onDidGainAccessibilityFocus: () {
-        // Read full movie info with FlutterTts when focused
-        _flutterTts.speak("${movie.title}, 재생시간 ${movie.duration}분");
-      },
       child: InkWell(
         onTap: () {
           Navigator.push(
