@@ -23,10 +23,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -65,5 +62,14 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1074786462696',
     projectId: 'audioview-f62dd',
     storageBucket: 'audioview-f62dd.firebasestorage.app',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyDGG46GzuoGX8S2Vn-kCJRv4OuHVs-_CQg',
+    appId: '1:1074786462696:ios:b82b12cfd6c68fc311925d',
+    messagingSenderId: '1074786462696',
+    projectId: 'audioview-f62dd',
+    storageBucket: 'audioview-f62dd.firebasestorage.app',
+    iosBundleId: 'com.audioview.audioviewFlutter',
   );
 }

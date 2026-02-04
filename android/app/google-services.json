@@ -41,6 +41,35 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1074786462696:android:96deee385baa232111925d",
+        "android_client_info": {
+          "package_name": "com.audioview.audioview_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1074786462696-qenusv3je8q1685rimvas7tri2jidht0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZt0x1t48pW5z9L92qgJmo0hsZzXmX5s8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1074786462696-qenusv3je8q1685rimvas7tri2jidht0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

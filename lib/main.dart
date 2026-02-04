@@ -173,6 +173,25 @@ class _MainScreenState extends State<MainScreen> {
           child: Scaffold(
             key: _scaffoldKey,
             backgroundColor: const Color(0xFF0A0A0A),
+            appBar: CustomHeader(
+              isSubPage: _currentIndex != 0,
+              customTitle:
+                  _currentIndex == 0 ? null : _titles[_currentIndex],
+              brightness: _brightness,
+              onBrightnessChanged: (value) {
+                setState(() {
+                  _brightness = value;
+                });
+              },
+              onSearchPressed: _currentIndex == 3
+                  ? null
+                  : () {
+                      setState(() {
+                        _currentIndex = 3;
+                      });
+                    },
+              onBackPressed: null,
+            ),
             drawer: CustomDrawer(
               currentIndex: _currentIndex,
               onItemTapped: (index) async {
@@ -184,51 +203,12 @@ class _MainScreenState extends State<MainScreen> {
             body: Stack(
               children: [
                 // 1. Content Layer
-                Column(
-                  children: [
-                    // Spacer for Header (StatusBar + Header Height)
-                    SizedBox(height: MediaQuery.of(context).padding.top + 68),
-                    Expanded(child: _screens[_currentIndex]),
-                  ],
-                ),
+                _screens[_currentIndex],
 
-                // 2. Brightness Overlay Layer (Covers content below header)
-                Positioned(
-                  top: MediaQuery.of(context).padding.top + 68,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: IgnorePointer(
-                    child: Container(
-                      color:
-                          Colors.black.withOpacity((100 - _brightness) / 100),
-                    ),
-                  ),
-                ),
-
-                // 3. Header Layer (Floating on top)
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: CustomHeader(
-                    isSubPage: _currentIndex != 0,
-                    customTitle:
-                        _currentIndex == 0 ? null : _titles[_currentIndex],
-                    brightness: _brightness,
-                    onBrightnessChanged: (value) {
-                      setState(() {
-                        _brightness = value;
-                      });
-                    },
-                    onSearchPressed: _currentIndex == 3
-                        ? null
-                        : () {
-                            setState(() {
-                              _currentIndex = 3;
-                            });
-                          },
-                    onBackPressed: null,
+                // 2. Brightness Overlay Layer
+                IgnorePointer(
+                  child: Container(
+                    color: Colors.black.withOpacity((100 - _brightness) / 100),
                   ),
                 ),
               ],

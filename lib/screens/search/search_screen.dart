@@ -49,49 +49,83 @@ class _SearchScreenState extends State<SearchScreen> {
 
   void _initSpeech() async {
     try {
-      await _speech.initialize(
+      bool available = await _speech.initialize(
         onStatus: (status) => debugPrint('STT Status: $status'),
         onError: (error) => debugPrint('STT Error: $error'),
       );
+      debugPrint('STT is available: $available');
     } catch (e) {
       debugPrint('STT Initialization failed: $e');
     }
   }
 
   Future<void> _toggleListening() async {
+    debugPrint('STT: _toggleListening called. current state _isListening: $_isListening');
     if (_isListening) {
+      debugPrint('STT: Stopping listening...');
       await _speech.stop();
       if (!mounted) return;
       setState(() => _isListening = false);
     } else {
-      var status = await Permission.microphone.request();
+      debugPrint('STT: Requesting permissions...');
+      // iOS requires both Microphone and Speech permissions
+      Map<Permission, PermissionStatus> statuses = await [
+        Permission.microphone,
+        Permission.speech,
+      ].request();
+
+      debugPrint('STT: Permission statuses: $statuses');
+
       if (!mounted) return;
-      if (status.isGranted) {
-        setState(() => _isListening = true);
-        await _speech.listen(
-          onResult: (result) {
-            if (!mounted) return;
-            setState(() {
-              _searchController.text = result.recognizedWords;
-              if (result.finalResult) {
-                _isListening = false;
-                _performSearch(result.recognizedWords);
-              }
-            });
-          },
-          localeId: 'ko_KR', // Ensure Korean recognition
+
+      if (statuses[Permission.microphone]!.isGranted &&
+          statuses[Permission.speech]!.isGranted) {
+        debugPrint('STT: Permissions granted. Initializing speech...');
+        bool available = await _speech.initialize(
+          onStatus: (status) => debugPrint('STT Status changed: $status'),
+          onError: (error) => debugPrint('STT Error occurred: $error'),
         );
-      } else {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('마이크 권한이 필요합니다.')),
+        debugPrint('STT: Initialization result: $available');
+        
+        if (available) {
+          debugPrint('STT: Starting to listen...');
+          setState(() => _isListening = true);
+          await _speech.listen(
+            onResult: (result) {
+              debugPrint('STT Result: ${result.recognizedWords} (final: ${result.finalResult})');
+              if (!mounted) return;
+              setState(() {
+                _searchController.text = result.recognizedWords;
+                if (result.finalResult) {
+                  _isListening = false;
+                  _performSearch(result.recognizedWords);
+                }
+              });
+            },
+            localeId: 'ko_KR',
           );
+        } else {
+          debugPrint('STT: Speech not available on this device/environment');
+          _showErrorSnackBar('음성 인식을 초기화할 수 없습니다. (시뮬레이터 미지원 가능성)');
         }
+      } else {
+        debugPrint('STT: Permissions denied');
+        _showErrorSnackBar('마이크 및 음성 인식 권한이 필요합니다.');
       }
     }
   }
 
+  void _showErrorSnackBar(String message) {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(message)),
+      );
+    }
+  }
+
   void _onSearchChanged(String query) {
+    debugPrint('UI: _onSearchChanged: "$query"');
+    setState(() {}); // To update clear icon visibility immediately
     if (_debounce?.isActive ?? false) _debounce!.cancel();
     _debounce = Timer(const Duration(milliseconds: 500), () {
       _performSearch(query);
@@ -140,9 +174,9 @@ class _SearchScreenState extends State<SearchScreen> {
       return _buildLiteModeUI();
     }
 
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Stack(
+    return Container(
+      color: Colors.black,
+      child: Stack(
         children: [
           Column(
             children: [
@@ -151,50 +185,53 @@ class _SearchScreenState extends State<SearchScreen> {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
-                    TextField(
-                      controller: _searchController,
-                      onChanged: _onSearchChanged,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        hintText: '영화, 시리즈, 배우 검색',
-                        hintStyle: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.5)),
-                        prefixIcon:
-                            const Icon(Icons.search, color: Colors.blue),
-                        suffixIcon: _searchController.text.isNotEmpty
-                            ? Semantics(
-                                label: '검색어 지우기',
-                                button: true,
-                                child: IconButton(
-                                  icon: const Icon(Icons.clear,
-                                      color: Colors.grey),
-                                  onPressed: () {
-                                    _searchController.clear();
-                                    _onSearchChanged('');
-                                  },
-                                ),
-                              )
-                            : Semantics(
-                                label: '음성 검색',
-                                button: true,
-                                excludeSemantics: true,
-                                child: IconButton(
-                                  icon: Icon(
-                                    // Always show mic icon, color changes on state
-                                    Icons.mic,
-                                    color: _isListening
-                                        ? Colors.red
-                                        : Colors.white,
-                                  ),
-                                  onPressed: _toggleListening,
-                                ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 12),
+                            child: Icon(Icons.search, color: Colors.blue),
+                          ),
+                          Expanded(
+                            child: TextField(
+                              controller: _searchController,
+                              onChanged: _onSearchChanged,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: const InputDecoration(
+                                hintText: '영화, 시리즈, 배우 검색',
+                                hintStyle: TextStyle(color: Colors.grey),
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.symmetric(vertical: 12),
                               ),
-                        filled: true,
-                        fillColor: Colors.white.withValues(alpha: 0.1),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide.none,
-                        ),
+                            ),
+                          ),
+                          if (_searchController.text.isNotEmpty)
+                            IconButton(
+                              icon: const Icon(Icons.clear, color: Colors.white70),
+                              onPressed: () {
+                                debugPrint('UI: Search clear button pressed');
+                                setState(() {
+                                  _searchController.clear();
+                                  _searchResults = [];
+                                });
+                                _performSearch('');
+                              },
+                            ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.mic,
+                              color: _isListening ? Colors.red : Colors.white,
+                            ),
+                            onPressed: () {
+                              debugPrint('UI: Mic button pressed');
+                              _toggleListening();
+                            },
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -204,12 +241,7 @@ class _SearchScreenState extends State<SearchScreen> {
               // Search Results
               Expanded(
                 child: _isLoading
-                    ? Center(
-                        child: Semantics(
-                          label: '검색 중입니다',
-                          child: const CircularProgressIndicator(),
-                        ),
-                      )
+                    ? const Center(child: CircularProgressIndicator())
                     : _searchResults.isEmpty
                         ? _searchController.text.isEmpty
                             ? _buildRecommendationSection()
@@ -338,8 +370,8 @@ class _SearchScreenState extends State<SearchScreen> {
                         padding: const EdgeInsets.all(40),
                         decoration: BoxDecoration(
                           color: _isListening
-                              ? Colors.red.withValues(alpha: 0.2)
-                              : Colors.grey.withValues(alpha: 0.2),
+                              ? Colors.red.withOpacity(0.2)
+                              : Colors.grey.withOpacity(0.2),
                           shape: BoxShape.circle,
                           border: Border.all(
                             color: _isListening ? Colors.red : Colors.white,
@@ -353,7 +385,6 @@ class _SearchScreenState extends State<SearchScreen> {
                         ),
                       ),
                     ),
-                  ),
                   const SizedBox(height: 30),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 32),
