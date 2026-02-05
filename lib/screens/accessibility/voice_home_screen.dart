@@ -11,7 +11,6 @@ import '../category/genre_list_screen.dart';
 import '../settings/settings_screen.dart';
 import '../downloads/downloads_screen.dart';
 import '../notice/notice_list_screen.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 
 class VoiceHomeScreen extends StatefulWidget {
   const VoiceHomeScreen({super.key});
@@ -21,12 +20,10 @@ class VoiceHomeScreen extends StatefulWidget {
 }
 
 class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
-  final FlutterTts _flutterTts = FlutterTts();
-
   @override
   void initState() {
     super.initState();
-    _initializeTts();
+
     // 화면 로드 완료 후 안전하게 음성 안내를 시작합니다.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _announceMode();
@@ -35,21 +32,37 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
 
   @override
   void dispose() {
-    _flutterTts.stop();
     super.dispose();
   }
 
-  Future<void> _initializeTts() async {
-    // TTS initialization can be kept if needed for other features, 
-    // but focus narration should use system Semantics to avoid duplication.
-  }
-
   Future<void> _announceMode() async {
+    await Future.delayed(const Duration(milliseconds: 500));
     SemanticsService.announce(
       "간편모드입니다. "
-      "메뉴를 열려면 왼쪽 상단의 메뉴 버튼을, "
-      "영화를 검색하려면 오른쪽 상단의 음성검색 버튼을 누르세요. "
-      "아래로 스와이프하여 영화 목록을 탐색할 수 있습니다. ",
+      "메뉴를 열려면 왼쪽 상단의 메뉴를, "
+      "영화를 검색하려면 오른쪽 상단의 음성검색을 누르세요. "
+      "아래로 스와이프하여 영화 목록을 탐색할 수 있습니다.",
+      TextDirection.ltr,
+    );
+  }
+
+  Future<void> _announceMenuButton() async {
+    SemanticsService.announce(
+      "메뉴. 메뉴를 엽니다.",
+      TextDirection.ltr,
+    );
+  }
+
+  Future<void> _announceSearchButton() async {
+    SemanticsService.announce(
+      "음성검색. 영화를 검색합니다.",
+      TextDirection.ltr,
+    );
+  }
+
+  Future<void> _announceMovieItem(Movie movie) async {
+    SemanticsService.announce(
+      "${movie.title}. 재생시간 ${movie.duration}분. 영화 상세 정보로 이동합니다.",
       TextDirection.ltr,
     );
   }
@@ -80,11 +93,19 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
               padding: const EdgeInsets.only(left: 8.0),
               child: Builder(
                 builder: (context) => Semantics(
-                  label: "메뉴 버튼",
-                  hint: "메뉴 열기",
-                  button: true,
+                  label: "", // 빈 라벨로 TalkBack 읽기 방지
+                  // button: true, // "버튼" 시스템 음성 제거
+                  excludeSemantics: true,
+                  onDidGainAccessibilityFocus: () {
+                    _announceMenuButton();
+                  },
+                  onTap: () {
+                    HapticFeedback.mediumImpact();
+                    Scaffold.of(context).openDrawer();
+                  },
                   child: TextButton(
                     onPressed: () {
+                      // Visual touch (optional if Semantics absorbs it, but safer to keep for non-a11y touch)
                       HapticFeedback.mediumImpact();
                       Scaffold.of(context).openDrawer();
                     },
@@ -116,9 +137,21 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
             Padding(
               padding: const EdgeInsets.only(right: 8.0),
               child: Semantics(
-                label: "음성검색 버튼",
-                hint: "영화 검색",
-                button: true,
+                label: "", // 빈 라벨로 TalkBack 읽기 방지
+                // button: true, // "버튼" 시스템 음성 제거
+                excludeSemantics: true,
+                onDidGainAccessibilityFocus: () {
+                  _announceSearchButton();
+                },
+                onTap: () {
+                  HapticFeedback.mediumImpact();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SearchScreen(),
+                    ),
+                  );
+                },
                 child: TextButton(
                   onPressed: () {
                     HapticFeedback.mediumImpact();
@@ -209,13 +242,24 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       child: Semantics(
-        header: true,
-        child: Text(
-          title,
-          style: const TextStyle(
-            color: Colors.yellow, // High contrast
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
+        label: "", // 빈 라벨로 TalkBack 읽기 방지
+        container: true,
+        // header: true, // "헤더" 시스템 음성 제거
+        excludeSemantics: true,
+        onDidGainAccessibilityFocus: () {
+          SemanticsService.announce(
+            "$title 목록입니다.",
+            TextDirection.ltr,
+          );
+        },
+        child: ExcludeSemantics(
+          child: Text(
+            title,
+            style: const TextStyle(
+              color: Colors.yellow, // High contrast
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),
@@ -227,17 +271,45 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
       stream: movieStream,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const Padding(
-            padding: EdgeInsets.all(16),
-            child: Text("목록을 불러오는데 실패했습니다.",
-                style: TextStyle(color: Colors.white, fontSize: 18)),
+          return Padding(
+            padding: const EdgeInsets.all(16),
+            child: Semantics(
+              label: "",
+              container: true,
+              excludeSemantics: true,
+              onDidGainAccessibilityFocus: () {
+                SemanticsService.announce(
+                  "목록을 불러오는데 실패했습니다.",
+                  TextDirection.ltr,
+                );
+              },
+              child: ExcludeSemantics(
+                child: const Text(
+                  "목록을 불러오는데 실패했습니다.",
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
+              ),
+            ),
           );
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Padding(
-            padding: EdgeInsets.all(16),
-            child: CircularProgressIndicator(color: Colors.white),
+          return Padding(
+            padding: const EdgeInsets.all(16),
+            child: Semantics(
+              label: "",
+              container: true,
+              excludeSemantics: true,
+              onDidGainAccessibilityFocus: () {
+                SemanticsService.announce(
+                  "영화 목록을 불러오는 중입니다.",
+                  TextDirection.ltr,
+                );
+              },
+              child: ExcludeSemantics(
+                child: const CircularProgressIndicator(color: Colors.white),
+              ),
+            ),
           );
         }
 
@@ -250,10 +322,25 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
         }
 
         if (movies.isEmpty) {
-          return const Padding(
-            padding: EdgeInsets.all(16),
-            child: Text("화면해설 영화가 없습니다.",
-                style: TextStyle(color: Colors.white, fontSize: 18)),
+          return Padding(
+            padding: const EdgeInsets.all(16),
+            child: Semantics(
+              label: "",
+              container: true,
+              excludeSemantics: true,
+              onDidGainAccessibilityFocus: () {
+                SemanticsService.announce(
+                  "화면해설 영화가 없습니다.",
+                  TextDirection.ltr,
+                );
+              },
+              child: ExcludeSemantics(
+                child: const Text(
+                  "화면해설 영화가 없습니다.",
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
+              ),
+            ),
           );
         }
 
@@ -266,50 +353,67 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
 
   Widget _buildMovieTile(Movie movie) {
     return Semantics(
-      label: "${movie.title}, 재생시간 ${movie.duration}분",
-      hint: "영화 상세 정보",
-      button: true,
+      label: "", // 빈 라벨로 TalkBack 읽기 방지
+      container: true,
+      // button: true, // "버튼" 시스템 음성 제거
       excludeSemantics: true,
-      child: InkWell(
-        onTap: () {
-          HapticFeedback.lightImpact();
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => MovieDetailScreen(movie: movie),
-            ),
-          );
-        },
-        child: Container(
-          width: double.infinity,
-          constraints: const BoxConstraints(minHeight: 100), // Increased height
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-          decoration: const BoxDecoration(
-            border: Border(bottom: BorderSide(color: Colors.grey, width: 0.5)),
+      onDidGainAccessibilityFocus: () {
+        _announceMovieItem(movie);
+      },
+      onTap: () {
+        HapticFeedback.lightImpact();
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MovieDetailScreen(movie: movie),
           ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Text(
-                  movie.title,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
+        );
+      },
+      child: ExcludeSemantics(
+        child: InkWell(
+          onTap: () {
+            // Visual touch
+            HapticFeedback.lightImpact();
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MovieDetailScreen(movie: movie),
+              ),
+            );
+          },
+          child: Container(
+            width: double.infinity,
+            constraints:
+                const BoxConstraints(minHeight: 100), // Increased height
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+            decoration: const BoxDecoration(
+              border:
+                  Border(bottom: BorderSide(color: Colors.grey, width: 0.5)),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Text(
+                    movie.title,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 16),
-              Text(
-                "${movie.duration}분",
-                style: const TextStyle(
-                  color: Colors.white70,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
+                const SizedBox(width: 16),
+                Text(
+                  "${movie.duration}분",
+                  style: const TextStyle(
+                    color: Colors.white70,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

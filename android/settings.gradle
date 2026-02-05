@@ -1,43 +1,53 @@
 pluginManagement {
-    // Flutter SDK 경로를 하드코딩 (한글 경로 문제 우회)
-    def flutterSdkPath = "/opt/homebrew/share/flutter"
-    
-    println "=== Flutter SDK Path (hardcoded): $flutterSdkPath ==="
-    
-    // local.properties 강제 업데이트
+    // Flutter SDK 경로를 동적으로 감지 (Windows/Mac 호환)
     def localPropertiesFile = file("local.properties")
     def properties = new Properties()
     
-    // Android SDK 경로 읽기
-    def androidSdkPath = "/Users/nctoo/Library/Android/sdk"  // 기본값 (Mac)
+    // local.properties에서 flutter.sdk 읽기 시도
+    def flutterSdkPath = null
     if (localPropertiesFile.exists()) {
         try {
             localPropertiesFile.withInputStream { 
                 properties.load(it) 
             }
-            def sdkDir = properties.getProperty("sdk.dir")
-            if (sdkDir != null) {
-                androidSdkPath = sdkDir
+            flutterSdkPath = properties.getProperty("flutter.sdk")
+        } catch (Exception e) {
+            println "Warning: Could not read local.properties: ${e.message}"
+        }
+    }
+    
+    // 환경변수에서 읽기 시도
+    if (flutterSdkPath == null || flutterSdkPath.isEmpty()) {
+        flutterSdkPath = System.env.FLUTTER_ROOT
+    }
+    
+    // Flutter 명령어로부터 경로 감지 시도
+    if (flutterSdkPath == null || flutterSdkPath.isEmpty()) {
+        try {
+            def isWindows = System.properties['os.name'].toLowerCase().contains('windows')
+            def flutterCommand = isWindows ? 'where flutter' : 'which flutter'
+            def process = flutterCommand.execute()
+            process.waitFor()
+            if (process.exitValue() == 0) {
+                def flutterBin = process.text.trim().split('\n')[0]
+                def flutterBinFile = new File(flutterBin)
+                if (flutterBinFile.exists()) {
+                    // bin/flutter -> Flutter SDK root
+                    flutterSdkPath = flutterBinFile.getParentFile().getParent()
+                }
             }
         } catch (Exception e) {
-            println "Warning: Could not read local.properties"
+            println "Warning: Could not auto-detect Flutter SDK path: ${e.message}"
         }
     }
     
-    // local.properties 다시 쓰기 (한글 없는 경로로)
-    properties.setProperty("sdk.dir", androidSdkPath)
-    properties.setProperty("flutter.sdk", flutterSdkPath)
-    properties.setProperty("flutter.buildMode", "release")
-    properties.setProperty("flutter.versionName", "1.0.0")
-    properties.setProperty("flutter.versionCode", "1")
-    
-    try {
-        localPropertiesFile.withWriter('UTF-8') { writer ->
-            properties.store(writer, "Flutter configuration - Auto-generated")
-        }
-    } catch (Exception e) {
-        println "Warning: Could not write local.properties: ${e.message}"
+    if (flutterSdkPath == null || flutterSdkPath.isEmpty()) {
+        throw new GradleException(
+            "Flutter SDK not found. Define flutter.sdk in local.properties or set FLUTTER_ROOT environment variable."
+        )
     }
+    
+    println "=== Flutter SDK Path: $flutterSdkPath ==="
     
     includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
 
