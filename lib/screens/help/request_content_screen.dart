@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
@@ -301,6 +302,7 @@ class _RequestContentScreenState extends State<RequestContentScreen> {
           children: [
             TextButton(
               onPressed: () {
+                HapticFeedback.mediumImpact();
                 if (Navigator.of(context).canPop()) {
                   Navigator.of(context).pop();
                 } else {
@@ -452,7 +454,10 @@ class _RequestContentScreenState extends State<RequestContentScreen> {
                 width: double.infinity,
                 height: 60,
                 child: ElevatedButton(
-                  onPressed: _submitRequest,
+                  onPressed: () {
+                    HapticFeedback.mediumImpact();
+                    _submitRequest();
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.yellow,
                     foregroundColor: Colors.black,

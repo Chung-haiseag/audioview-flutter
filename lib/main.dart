@@ -105,12 +105,12 @@ class _MainScreenState extends State<MainScreen> {
   ];
 
   final List<String> _titles = [
-    'AUDIOVIEW',
+    'AudioView',
     '장르',
-    '설정',
+    '고객센터',
     '검색',
     '마이페이지',
-    '공지/이벤트',
+    '공지사항',
   ];
 
   @override

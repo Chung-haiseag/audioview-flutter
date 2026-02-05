@@ -15,16 +15,6 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  int _selectedTab = 0; // 0: 환경설정, 1: 고객센터
-
-  // Settings states
-  bool _smartGlasses = true;
-  bool _use3GLTE = true;
-  bool _expandRecognition = false;
-  bool _audioDescription = false;
-  bool _closedCaption = false;
-  bool _multiLanguage = false;
-
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<AuthProvider>(context);
@@ -36,153 +26,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     return Scaffold(
       backgroundColor: const Color(0xFF0A0A0A),
-      body: Column(
-        children: [
-          // Tab bar
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Row(
-              children: [
-                Expanded(
-                  child: _buildTab('환경설정', 0),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: _buildTab('고객센터', 1),
-                ),
-              ],
-            ),
-          ),
-
-          // Content
-          Expanded(
-            child: _selectedTab == 0
-                ? _buildEnvironmentSettings()
-                : _buildCustomerCenter(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTab(String title, int index) {
-    final isSelected = _selectedTab == index;
-    return GestureDetector(
-      onTap: () => setState(() => _selectedTab = index),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12),
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color: isSelected ? Colors.red : Colors.transparent,
-              width: 2,
-            ),
-          ),
-        ),
-        child: Text(
-          title,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: isSelected ? Colors.white : Colors.grey,
-            fontSize: 16,
-            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildEnvironmentSettings() {
-    return Consumer<AuthProvider>(
-      builder: (context, auth, _) {
-        return ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            const SizedBox(height: 16),
-
-            // Smart Glasses
-            _buildSettingItem(
-              title: '스마트 안경',
-              subtitle: '스마트 안경 연동 설정',
-              value: _smartGlasses,
-              onChanged: (value) => setState(() => _smartGlasses = value),
-              badge: '연동됨',
-            ),
-
-            const SizedBox(height: 16),
-
-            // 3G/LTE Usage
-            _buildSettingItem(
-              title: '3G/LTE 사용',
-              subtitle: '체크 해제시 WiFi에서만 사용가능',
-              value: _use3GLTE,
-              onChanged: (value) => setState(() => _use3GLTE = value),
-            ),
-
-            const SizedBox(height: 16),
-
-            // Expand Recognition
-            _buildSettingItem(
-              title: '인식구간 확장하기',
-              subtitle: '음성인식 영상물 전체로 확장',
-              value: _expandRecognition,
-              onChanged: (value) => setState(() => _expandRecognition = value),
-            ),
-
-            const SizedBox(height: 32),
-
-            // Accessibility Settings Header
-            const Text(
-              '접근성 기능 설정',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              '화면해설, 자막 등 모든 보조 기능 켜기/끄기',
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 12,
-              ),
-            ),
-
-            const SizedBox(height: 16),
-
-            // Audio Description (AD)
-            _buildSettingItem(
-              title: '화면해설 (AD)',
-              subtitle: '시각장애인용 오디오자막',
-              value: _audioDescription,
-              onChanged: (value) => setState(() => _audioDescription = value),
-            ),
-
-            const SizedBox(height: 16),
-
-            // Closed Caption (CC)
-            _buildSettingItem(
-              title: '문자자막 (CC)',
-              subtitle: '청각장애인용 대사 및 소리자막',
-              value: _closedCaption,
-              onChanged: (value) => setState(() => _closedCaption = value),
-            ),
-
-            const SizedBox(height: 16),
-
-            // Multi-language Subtitle
-            _buildSettingItem(
-              title: '다국어자막',
-              subtitle: '외국인용 다국어 문자자막',
-              value: _multiLanguage,
-              onChanged: (value) => setState(() => _multiLanguage = value),
-            ),
-
-            const SizedBox(height: 32),
-          ],
-        );
-      },
+      body: _buildCustomerCenter(),
     );
   }
 
@@ -485,6 +329,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: 20),
         children: [
+          // Title
+          const Padding(
+            padding: EdgeInsets.fromLTRB(16, 0, 16, 20),
+            child: Text(
+              '고객센터',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
           _buildLiteModeItem(
             context: context,
             title: '개인정보 처리방침',

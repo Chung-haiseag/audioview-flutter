@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../../models/notice.dart';
@@ -18,57 +19,37 @@ class NoticeListScreen extends StatelessWidget {
       return _buildLiteModeUI(context);
     }
 
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        backgroundColor: Colors.black,
-        body: Column(
-          children: [
-            const TabBar(
-              indicatorColor: Color(0xFFE50914),
-              labelColor: Color(0xFFE50914),
-              unselectedLabelColor: Colors.grey,
-              tabs: [
-                Tab(text: '공지사항'),
-                Tab(text: '이벤트'),
-              ],
-            ),
-            Expanded(
-              child: StreamBuilder<List<Notice>>(
-                stream: NoticeService().getNotices(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Column(
+        children: [
+          Expanded(
+            child: StreamBuilder<List<Notice>>(
+              stream: NoticeService().getNotices(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-                  if (snapshot.hasError) {
-                    return Center(
-                      child: Text(
-                        '오류가 발생했습니다: ${snapshot.error}',
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                    );
-                  }
-
-                  final allNotices = snapshot.data ?? [];
-                  final notices = allNotices
-                      .where((n) => n.type == NoticeType.notice)
-                      .toList();
-                  final events = allNotices
-                      .where((n) => n.type == NoticeType.event)
-                      .toList();
-
-                  return TabBarView(
-                    children: [
-                      _buildNoticeList(notices),
-                      _buildNoticeList(events),
-                    ],
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text(
+                      '오류가 발생했습니다: ${snapshot.error}',
+                      style: const TextStyle(color: Colors.white),
+                    ),
                   );
-                },
-              ),
+                }
+
+                final allNotices = snapshot.data ?? [];
+                final notices = allNotices
+                    .where((n) => n.type == NoticeType.notice)
+                    .toList();
+
+                return _buildNoticeList(notices);
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -213,6 +194,7 @@ class NoticeListScreen extends StatelessWidget {
           children: [
             TextButton(
               onPressed: () {
+                HapticFeedback.mediumImpact();
                 if (Navigator.of(context).canPop()) {
                   Navigator.of(context).pop();
                 } else {
@@ -291,6 +273,7 @@ class NoticeListScreen extends StatelessWidget {
       button: true,
       child: InkWell(
         onTap: () {
+          HapticFeedback.lightImpact();
           Navigator.push(
             context,
             MaterialPageRoute(

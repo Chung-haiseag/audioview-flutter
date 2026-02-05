@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import '../../services/movie_service.dart';
@@ -84,6 +85,7 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
                   button: true,
                   child: TextButton(
                     onPressed: () {
+                      HapticFeedback.mediumImpact();
                       Scaffold.of(context).openDrawer();
                     },
                     style: TextButton.styleFrom(
@@ -119,6 +121,7 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
                 button: true,
                 child: TextButton(
                   onPressed: () {
+                    HapticFeedback.mediumImpact();
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -269,6 +272,7 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
       excludeSemantics: true,
       child: InkWell(
         onTap: () {
+          HapticFeedback.lightImpact();
           Navigator.push(
             context,
             MaterialPageRoute(

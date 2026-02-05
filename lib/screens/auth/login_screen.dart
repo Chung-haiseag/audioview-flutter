@@ -76,16 +76,17 @@ class _LoginScreenState extends State<LoginScreen> {
                       horizontal: 16.0, vertical: 12.0),
                   child: Row(
                     children: [
-                      if (!widget.isEmbedded)
-                        IconButton(
-                          icon: const Icon(LucideIcons.chevronLeft,
-                              color: Colors.white, size: 28),
-                          onPressed: () => Navigator.of(context).maybePop(),
-                        )
-                      else
-                        const SizedBox(
-                            width:
-                                48), // Spacer to balance if needed, or just nothing
+                      IconButton(
+                        icon: const Icon(LucideIcons.chevronLeft,
+                            color: Colors.white, size: 28),
+                        onPressed: () {
+                          if (Navigator.of(context).canPop()) {
+                            Navigator.of(context).pop();
+                          } else {
+                            Navigator.of(context).pushReplacementNamed('/main');
+                          }
+                        },
+                      ),
                     ],
                   ),
                 ),

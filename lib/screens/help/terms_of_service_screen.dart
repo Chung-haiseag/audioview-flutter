@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
 
@@ -111,6 +112,7 @@ class TermsOfServiceScreen extends StatelessWidget {
           children: [
             TextButton(
               onPressed: () {
+                HapticFeedback.mediumImpact();
                 if (Navigator.of(context).canPop()) {
                   Navigator.of(context).pop();
                 } else {

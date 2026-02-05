@@ -140,7 +140,7 @@ class _MyPageScreenState extends State<MyPageScreen>
                                             Border.all(color: Colors.white54),
                                       ),
                                       child: const Text(
-                                        '모드설정',
+                                        '모드변경',
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 15,
@@ -524,7 +524,7 @@ class _MyPageScreenState extends State<MyPageScreen>
           // Mode Selection
           _buildLiteModeMenuItem(
             context: context,
-            title: '모드 설정',
+            title: '모드 변경',
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(

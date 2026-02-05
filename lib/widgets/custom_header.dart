@@ -32,17 +32,17 @@ class _CustomHeaderState extends State<CustomHeader> {
   String _getSemanticLabel(String text) {
     switch (text.toUpperCase()) {
       case 'AUDIOVIEW':
-        return '오디오뷰';
-      case '공지/이벤트':
-        return '공지 및 이벤트';
+        return 'AudioView';
+      case '공지사항':
+        return '공지사항';
       case '마이페이지':
         return '마이 페이지';
       case '오늘의 관람':
         return '오늘의 관람'; // Spacing seems fine, but explicit is good
       case '장르':
         return '장르';
-      case '설정':
-        return '설정';
+      case '고객센터':
+        return '고객센터';
       case '검색':
         return '검색';
       default:
@@ -114,7 +114,7 @@ class _CustomHeaderState extends State<CustomHeader> {
                             )
                           : const Text(
                               'AudioView',
-                              semanticsLabel: '오디오뷰',
+                              semanticsLabel: 'AudioView',
                               style: TextStyle(
                                 color: Color(0xFFE50914),
                                 fontSize: 22,

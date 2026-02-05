@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../models/movie.dart';
@@ -310,6 +311,7 @@ class _SearchScreenState extends State<SearchScreen> {
               padding: const EdgeInsets.only(left: 8.0),
               child: TextButton(
                 onPressed: () {
+                  HapticFeedback.mediumImpact();
                   Navigator.pop(context);
                 },
                 style: TextButton.styleFrom(
@@ -365,7 +367,10 @@ class _SearchScreenState extends State<SearchScreen> {
                     button: true,
                     label: _isListening ? "듣고 있어요" : "음성 검색 시작",
                     child: GestureDetector(
-                      onTap: _toggleListening,
+                      onTap: () {
+                        HapticFeedback.mediumImpact();
+                        _toggleListening();
+                      },
                       child: Container(
                         padding: const EdgeInsets.all(40),
                         decoration: BoxDecoration(
@@ -445,6 +450,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             label: "${movie.title}, ${movie.duration}분",
                             child: InkWell(
                               onTap: () {
+                                HapticFeedback.lightImpact();
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(

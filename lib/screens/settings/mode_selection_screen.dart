@@ -20,7 +20,7 @@ class ModeSelectionScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
-          '모드 설정',
+          '모드 변경',
           style: TextStyle(
               color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
         ),
@@ -120,7 +120,7 @@ class ModeSelectionScreen extends StatelessWidget {
               // Show feedback
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text('설정이 저장되었습니다.'),
+                  content: Text('변경사항이 저장되었습니다.'),
                   duration: Duration(seconds: 2),
                 ),
               );

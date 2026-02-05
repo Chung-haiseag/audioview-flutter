@@ -51,14 +51,14 @@ class CustomDrawer extends StatelessWidget {
                   ),
                   _buildDrawerItem(
                     icon: LucideIcons.megaphone,
-                    label: '공지/이벤트',
+                    label: '공지사항',
                     index: 5, // NoticeListScreen index in MainScreen
                     context: context,
                     isLiteMode: isLiteMode,
                   ),
                   _buildDrawerItem(
-                    icon: LucideIcons.settings,
-                    label: '설정',
+                    icon: LucideIcons.headphones,
+                    label: '고객센터',
                     index: 2, // SettingsScreen index in MainScreen
                     context: context,
                     isLiteMode: isLiteMode,

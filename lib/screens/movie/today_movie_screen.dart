@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -305,6 +306,7 @@ class _TodayMovieScreenState extends State<TodayMovieScreen> {
           children: [
             TextButton(
               onPressed: () {
+                HapticFeedback.mediumImpact();
                 if (Navigator.of(context).canPop()) {
                   Navigator.of(context).pop();
                 } else {
@@ -362,6 +364,7 @@ class _TodayMovieScreenState extends State<TodayMovieScreen> {
       button: true,
       child: InkWell(
         onTap: () {
+          HapticFeedback.lightImpact();
           // Optional: Navigate to movie detail if needed
         },
         child: Container(

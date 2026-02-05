@@ -1,4 +1,5 @@
 ﻿import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'dart:ui';
@@ -365,6 +366,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
           children: [
             TextButton(
               onPressed: () {
+                HapticFeedback.mediumImpact();
                 if (Navigator.of(context).canPop()) {
                   Navigator.of(context).pop();
                 } else {
@@ -502,7 +504,10 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
       label: label,
       button: true,
       child: InkWell(
-        onTap: onTap,
+        onTap: () {
+          HapticFeedback.lightImpact();
+          onTap();
+        },
         child: Container(
           width: double.infinity,
           height: 80,

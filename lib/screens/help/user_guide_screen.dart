@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
 
@@ -59,20 +60,20 @@ class UserGuideScreen extends StatelessWidget {
               '화면해설은 시각장애인을 위한 기능으로, 영상의 장면과 동작을 음성으로 설명합니다.\n\n'
                   '• 영화 상세 화면에서 "화면해설(AD)" 버튼 선택\n'
                   '• 스마트 안경 연동 시 안경을 통해 청취 가능\n'
-                  '• 설정에서 음량 조절 가능',
+                  '• 앱 설정에서 음량 조절 가능',
               Icons.record_voice_over,
             ),
             _buildSection(
               '문자자막(CC) 사용법',
               '문자자막은 청각장애인을 위한 기능으로, 대사와 효과음을 텍스트로 표시합니다.\n\n'
                   '• 영화 상세 화면에서 "문자자막(CC)" 버튼 선택\n'
-                  '• 설정에서 자막 크기, 색상, 배경 조절 가능\n'
+                  '• 앱 설정에서 자막 크기, 색상, 배경 조절 가능\n'
                   '• 다국어자막도 함께 제공',
               Icons.closed_caption,
             ),
             _buildSection(
               '스마트 안경 연동',
-              '1. 설정 메뉴로 이동합니다.\n'
+              '1. 고객센터 메뉴로 이동합니다. (앱 설정 탭 선택)\n'
                   '2. "스마트 안경" 항목을 선택합니다.\n'
                   '3. 블루투스를 켜고 안경을 페어링합니다.\n'
                   '4. 연동 완료 후 영상 시청 시 안경으로 화면해설을 들을 수 있습니다.',
@@ -154,6 +155,7 @@ class UserGuideScreen extends StatelessWidget {
           children: [
             TextButton(
               onPressed: () {
+                HapticFeedback.mediumImpact();
                 if (Navigator.of(context).canPop()) {
                   Navigator.of(context).pop();
                 } else {
@@ -210,9 +212,9 @@ class UserGuideScreen extends StatelessWidget {
             _buildLiteModeSection('화면해설(AD) 사용법',
                 '화면해설은 시각장애인을 위한 기능으로, 영상의 장면과 동작을 음성으로 설명합니다.\n• 영화 상세 화면에서 AD 버튼 선택\n• 스마트 안경 연동 시 안경 청취 가능'),
             _buildLiteModeSection('문자자막(CC) 사용법',
-                '문자자막은 청각장애인을 위한 기능으로, 대사와 효과음을 텍스트로 표시합니다.\n• 영화 상세 화면에서 CC 버튼 선택\n• 설정에서 자막 조절 가능'),
+                '문자자막은 청각장애인을 위한 기능으로, 대사와 효과음을 텍스트로 표시합니다.\n• 영화 상세 화면에서 CC 버튼 선택\n• 앱 설정에서 자막 조절 가능'),
             _buildLiteModeSection('스마트 안경 연동',
-                '1. 설정 메뉴 이동\n2. "스마트 안경" 선택\n3. 블루투스 페어링\n4. 연동 완료 후 사용'),
+                '1. 고객센터 메뉴 이동\n2. "스마트 안경" 선택\n3. 블루투스 페어링\n4. 연동 완료 후 사용'),
             _buildLiteModeSection('고객센터 문의',
                 '• 이메일: kbu1004@hanmail.com\n• 전화: 02-799-1000\n• 운영시간: 평일 09:00 - 18:00'),
           ],
