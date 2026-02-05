@@ -21,6 +21,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   late final MovieService _movieService;
   final TextEditingController _searchController = TextEditingController();
+  final FocusNode _searchFocusNode = FocusNode();
 
   List<Movie> _searchResults = [];
   bool _isLoading = false;
@@ -179,6 +180,7 @@ class _SearchScreenState extends State<SearchScreen> {
   void dispose() {
     _debounce?.cancel();
     _searchController.dispose();
+    _searchFocusNode.dispose();
     super.dispose();
   }
 
@@ -216,6 +218,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           Expanded(
                             child: TextField(
                               controller: _searchController,
+                              focusNode: _searchFocusNode,
                               onChanged: _onSearchChanged,
                               style: const TextStyle(color: Colors.white),
                               decoration: const InputDecoration(
@@ -224,6 +227,11 @@ class _SearchScreenState extends State<SearchScreen> {
                                 border: InputBorder.none,
                                 contentPadding: EdgeInsets.symmetric(vertical: 12),
                               ),
+                              onTap: () {
+                                if (!_searchFocusNode.hasFocus) {
+                                  _searchFocusNode.requestFocus();
+                                }
+                              },
                             ),
                           ),
                           if (_searchController.text.isNotEmpty)
@@ -387,10 +395,43 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
       ),
       body: _searchResults.isEmpty && !_isLoading
-          ? Center(
+          ? SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(vertical: 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // Added TextField for Lite Mode
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: Colors.white24, width: 2),
+                      ),
+                      child: TextField(
+                        controller: _searchController,
+                        focusNode: _searchFocusNode,
+                        onChanged: _onSearchChanged,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        decoration: const InputDecoration(
+                          hintText: '검색어를 직접 입력하려면 여기를 누르세요',
+                          hintStyle: TextStyle(color: Colors.grey, fontSize: 18),
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.all(20),
+                        ),
+                        onTap: () {
+                          HapticFeedback.mediumImpact();
+                          _announce("제목 입력을 위해 키보드를 엽니다");
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
                   Semantics(
                     label: _isListening ? "듣고 있어요" : "음성 검색 시작",
                     excludeSemantics: true,
