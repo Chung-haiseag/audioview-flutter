@@ -68,7 +68,7 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
 
   void _announceMovieItem(Movie movie) {
     _announce(
-      "${movie.title}. 재생시간 ${movie.duration}분. 영화 상세 정보로 이동합니다.",
+      "${movie.title}. 재생시간 ${movie.duration}분. 상세 정보로 이동합니다.",
       interrupt: true,
     );
   }

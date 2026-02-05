@@ -23,6 +23,22 @@ class MovieDetailScreen extends StatefulWidget {
 class _MovieDetailScreenState extends State<MovieDetailScreen> {
   double _brightness = 0.5; // 0.0 (어두움) ~ 1.0 (밝음)
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _announce("영화 정보 화면입니다. ${widget.movie.title}를 선택하셨습니다.");
+    });
+  }
+
+  void _announce(String message, {bool interrupt = false}) {
+    SemanticsService.announce(
+      message,
+      TextDirection.ltr,
+      assertiveness: interrupt ? Assertiveness.assertive : Assertiveness.polite,
+    );
+  }
+
   void _showBrightnessDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -403,23 +419,30 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Title
-            Text(
-              widget.movie.title,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // Meta Info
-            Text(
-              '${widget.movie.year}년 | ${widget.movie.duration}분',
-              style: const TextStyle(
-                color: Colors.grey,
-                fontSize: 24,
+            // Grouped Title and Meta Info
+            Semantics(
+              label: "${widget.movie.title}. ${widget.movie.year}년 제작. 재생시간 ${widget.movie.duration}분.",
+              excludeSemantics: true,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.movie.title,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    '${widget.movie.year}년 | ${widget.movie.duration}분',
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 24,
+                    ),
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 40),
