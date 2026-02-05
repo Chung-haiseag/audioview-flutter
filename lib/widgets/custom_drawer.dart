@@ -132,38 +132,46 @@ class CustomDrawer extends StatelessWidget {
 
     return Semantics(
       label: "", // 빈 라벨로 TalkBack 읽기 방지
-      button: true,
+      container: true,
+      // button: true, // "버튼" 시스템 음성 제거
       selected: isSelected,
       excludeSemantics: true,
       onDidGainAccessibilityFocus: () {
         _announceDrawerItem(label, isSelected);
       },
-      child: ListTile(
-        leading: Icon(
-          icon,
-          color: isSelected ? activeColor : inactiveColor,
-          size: iconSize,
-        ),
-        title: Text(
-          label,
-          style: TextStyle(
-            color: isSelected
-                ? (isLiteMode ? Colors.yellow : Colors.white)
-                : inactiveColor,
-            fontSize: fontSize,
-            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+      onTap: () {
+        HapticFeedback.mediumImpact();
+        onItemTapped(index);
+      },
+      child: ExcludeSemantics(
+        child: ListTile(
+          leading: Icon(
+            icon,
+            color: isSelected ? activeColor : inactiveColor,
+            size: iconSize,
           ),
-        ),
-        selected: isSelected,
-        selectedTileColor: activeColor.withAlpha(25),
-        onTap: () {
-          HapticFeedback.mediumImpact();
-          onItemTapped(index);
-        },
-        contentPadding:
-            EdgeInsets.symmetric(horizontal: 24, vertical: verticalPadding),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+          title: Text(
+            label,
+            style: TextStyle(
+              color: isSelected
+                  ? (isLiteMode ? Colors.yellow : Colors.white)
+                  : inactiveColor,
+              fontSize: fontSize,
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+          selected: isSelected,
+          selectedTileColor: activeColor.withAlpha(25),
+          onTap: () {
+            // Visual touch
+            HapticFeedback.mediumImpact();
+            onItemTapped(index);
+          },
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 24, vertical: verticalPadding),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
         ),
       ),
     );
