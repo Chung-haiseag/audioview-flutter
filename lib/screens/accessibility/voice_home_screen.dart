@@ -11,7 +11,6 @@ import '../category/genre_list_screen.dart';
 import '../settings/settings_screen.dart';
 import '../downloads/downloads_screen.dart';
 import '../notice/notice_list_screen.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 
 class VoiceHomeScreen extends StatefulWidget {
   const VoiceHomeScreen({super.key});
@@ -21,12 +20,10 @@ class VoiceHomeScreen extends StatefulWidget {
 }
 
 class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
-  final FlutterTts _flutterTts = FlutterTts();
-
   @override
   void initState() {
     super.initState();
-    _initializeTts();
+
     // 화면 로드 완료 후 안전하게 음성 안내를 시작합니다.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _announceMode();
@@ -35,13 +32,7 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
 
   @override
   void dispose() {
-    _flutterTts.stop();
     super.dispose();
-  }
-
-  Future<void> _initializeTts() async {
-    // TTS initialization can be kept if needed for other features, 
-    // but focus narration should use system Semantics to avoid duplication.
   }
 
   Future<void> _announceMode() async {
