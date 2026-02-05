@@ -39,16 +39,20 @@ class HeroSection extends StatelessWidget {
             fit: StackFit.expand,
             children: [
               // 1. Background Image
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MovieDetailScreen(movie: heroMovie),
-                    ),
-                  );
-                },
-                child: CachedNetworkImage(
+              Semantics(
+                label: '${heroMovie.title} 포스터 이미지',
+                hint: '영화 상세 정보를 보려면 두 번 탭하세요',
+                button: true,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MovieDetailScreen(movie: heroMovie),
+                      ),
+                    );
+                  },
+                  child: CachedNetworkImage(
                   imageUrl: heroMovie.posterUrl,
                   fit: BoxFit.cover,
                   alignment: Alignment.topCenter,
@@ -73,6 +77,7 @@ class HeroSection extends StatelessWidget {
                       ],
                     ),
                   ),
+                ),
                 ),
               ),
 
@@ -101,13 +106,16 @@ class HeroSection extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      heroMovie.title,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 28, // Slighly smaller to avoid overflow
-                        fontWeight: FontWeight.w900,
-                        height: 1.1,
+                    Semantics(
+                      header: true,
+                      child: Text(
+                        heroMovie.title,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 28, // Slighly smaller to avoid overflow
+                          fontWeight: FontWeight.w900,
+                          height: 1.1,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -126,54 +134,64 @@ class HeroSection extends StatelessWidget {
                     const SizedBox(height: 16),
                     Row(
                       children: [
-                        ElevatedButton.icon(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    MovieDetailScreen(movie: heroMovie),
-                              ),
-                            );
-                          },
-                          icon: const Icon(Icons.play_arrow_rounded,
-                              color: Colors.black),
-                          label: const Text('재생',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold)),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 12),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)),
+                        Semantics(
+                          label: '${heroMovie.title} 재생',
+                          hint: '영화를 재생하려면 두 번 탭하세요',
+                          button: true,
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      MovieDetailScreen(movie: heroMovie),
+                                ),
+                              );
+                            },
+                            icon: const Icon(Icons.play_arrow_rounded,
+                                color: Colors.black),
+                            label: const Text('재생',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold)),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 12),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
+                            ),
                           ),
                         ),
                         const SizedBox(width: 12),
-                        ElevatedButton.icon(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    MovieDetailScreen(movie: heroMovie),
-                              ),
-                            );
-                          },
-                          icon: const Icon(Icons.info_outline,
-                              color: Colors.white),
-                          label: const Text('상세 정보',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold)),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                Colors.white.withValues(alpha: 0.2),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 12),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)),
+                        Semantics(
+                          label: '${heroMovie.title} 상세 정보',
+                          hint: '영화 정보를 보려면 두 번 탭하세요',
+                          button: true,
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      MovieDetailScreen(movie: heroMovie),
+                                ),
+                              );
+                            },
+                            icon: const Icon(Icons.info_outline,
+                                color: Colors.white),
+                            label: const Text('상세 정보',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold)),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  Colors.white.withValues(alpha: 0.2),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 12),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
+                            ),
                           ),
                         ),
                       ],

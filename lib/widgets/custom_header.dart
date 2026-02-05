@@ -150,19 +150,27 @@ class _CustomHeaderState extends State<CustomHeader> {
                       // Brightness button
                       SizedBox(
                         width: 48, // Adjusted width slightly
-                        child: IconButton(
-                          icon: Icon(
-                            LucideIcons.sun,
-                            color: _showBrightness
-                                ? const Color(0xFFE50914)
-                                : Colors.white,
-                            size: 24,
+                        child: Semantics(
+                          label: _showBrightness ? "밝기 조절 닫기" : "밝기 조절",
+                          hint: _showBrightness
+                              ? "밝기 슬라이더를 닫으려면 두 번 탭하세요"
+                              : "밝기를 조절하려면 두 번 탭하세요",
+                          button: true,
+                          excludeSemantics: true,
+                          child: IconButton(
+                            icon: Icon(
+                              LucideIcons.sun,
+                              color: _showBrightness
+                                  ? const Color(0xFFE50914)
+                                  : Colors.white,
+                              size: 24,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _showBrightness = !_showBrightness;
+                              });
+                            },
                           ),
-                          onPressed: () {
-                            setState(() {
-                              _showBrightness = !_showBrightness;
-                            });
-                          },
                         ),
                       ),
                       const SizedBox(width: 8), // Right Padding
@@ -179,27 +187,44 @@ class _CustomHeaderState extends State<CustomHeader> {
                 color: const Color(0xFF141414),
                 child: Row(
                   children: [
-                    const Icon(LucideIcons.moon, size: 18, color: Colors.grey),
+                    Semantics(
+                      label: "어둡게",
+                      excludeSemantics: true,
+                      child: const Icon(LucideIcons.moon, size: 18, color: Colors.grey),
+                    ),
                     const SizedBox(width: 16),
                     Expanded(
-                      child: SliderTheme(
-                        data: SliderThemeData(
-                          activeTrackColor: const Color(0xFFE50914),
-                          inactiveTrackColor: Colors.grey[600],
-                          thumbColor: const Color(0xFFE50914),
-                          overlayColor:
-                              const Color(0xFFE50914).withValues(alpha: 0.2),
-                        ),
-                        child: Slider(
-                          value: widget.brightness,
-                          min: 10,
-                          max: 100,
-                          onChanged: widget.onBrightnessChanged,
+                      child: Semantics(
+                        label: "화면 밝기 조절 슬라이더, 현재 ${widget.brightness.round()}%",
+                        slider: true,
+                        value: "${widget.brightness.round()}%",
+                        increasedValue: "${(widget.brightness + 10).clamp(10, 100).round()}%",
+                        decreasedValue: "${(widget.brightness - 10).clamp(10, 100).round()}%",
+                        child: SliderTheme(
+                          data: SliderThemeData(
+                            activeTrackColor: const Color(0xFFE50914),
+                            inactiveTrackColor: Colors.grey[600],
+                            thumbColor: const Color(0xFFE50914),
+                            overlayColor:
+                                const Color(0xFFE50914).withValues(alpha: 0.2),
+                          ),
+                          child: Slider(
+                            value: widget.brightness,
+                            min: 10,
+                            max: 100,
+                            divisions: 9,
+                            label: "${widget.brightness.round()}%",
+                            onChanged: widget.onBrightnessChanged,
+                          ),
                         ),
                       ),
                     ),
                     const SizedBox(width: 16),
-                    const Icon(LucideIcons.sun, size: 18, color: Colors.grey),
+                    Semantics(
+                      label: "밝게",
+                      excludeSemantics: true,
+                      child: const Icon(LucideIcons.sun, size: 18, color: Colors.grey),
+                    ),
                   ],
                 ),
               ),

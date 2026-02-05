@@ -22,23 +22,28 @@ class MovieSection extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+          child: Semantics(
+            header: true,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              Icon(
-                Icons.chevron_right,
-                color: Colors.grey[600],
-                size: 24,
-              ),
-            ],
+                ExcludeSemantics(
+                  child: Icon(
+                    Icons.chevron_right,
+                    color: Colors.grey[600],
+                    size: 24,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         SizedBox(
