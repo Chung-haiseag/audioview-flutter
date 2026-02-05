@@ -15,26 +15,16 @@ class CustomDrawer extends StatelessWidget {
     required this.onItemTapped,
   });
 
-  Future<void> _announceDrawerItem(String label, bool isSelected) async {
-    String announcement = label;
-    if (isSelected) {
-      announcement += ". 현재 선택된 메뉴입니다.";
-    } else {
-      announcement += ". 선택하려면 두 번 탭하세요.";
-    }
-
+  /// 한국어 나레이션을 중첩 없이 안내합니다.
+  void _announce(String message, {bool interrupt = false}) {
+    // ignore: deprecated_member_use
     SemanticsService.announce(
-      announcement,
+      message,
       TextDirection.ltr,
+      assertiveness: interrupt ? Assertiveness.assertive : Assertiveness.polite,
     );
   }
 
-  Future<void> _announceVersion() async {
-    SemanticsService.announce(
-      "버전 1.0.0",
-      TextDirection.ltr,
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,11 +84,8 @@ class CustomDrawer extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(24.0),
               child: Semantics(
-                label: "", // 빈 라벨로 TalkBack 읽기 방지
+                label: "버전 1.0.0",
                 excludeSemantics: true,
-                onDidGainAccessibilityFocus: () {
-                  _announceVersion();
-                },
                 child: Text(
                   'v1.0.0',
                   style: TextStyle(
@@ -130,47 +117,50 @@ class CustomDrawer extends StatelessWidget {
     final iconSize = isLiteMode ? 36.0 : 24.0;
     final verticalPadding = isLiteMode ? 12.0 : 4.0;
 
+    // 접근성 라벨 구성
+    String accessibilityLabel = label;
+    if (isSelected) {
+      accessibilityLabel += ", 현재 선택됨";
+    }
+
     return Semantics(
-      label: "", // 빈 라벨로 TalkBack 읽기 방지
-      container: true,
-      // button: true, // "버튼" 시스템 음성 제거
+      label: accessibilityLabel,
+      hint: isSelected ? null : "선택하려면 두 번 탭하세요",
+      button: true,
       selected: isSelected,
       excludeSemantics: true,
-      onDidGainAccessibilityFocus: () {
-        _announceDrawerItem(label, isSelected);
-      },
-      onTap: () {
-        HapticFeedback.mediumImpact();
-        onItemTapped(index);
-      },
-      child: ExcludeSemantics(
-        child: ListTile(
-          leading: Icon(
-            icon,
-            color: isSelected ? activeColor : inactiveColor,
-            size: iconSize,
-          ),
-          title: Text(
-            label,
-            style: TextStyle(
-              color: isSelected
-                  ? (isLiteMode ? Colors.yellow : Colors.white)
-                  : inactiveColor,
-              fontSize: fontSize,
-              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-            ),
-          ),
-          selected: isSelected,
-          selectedTileColor: activeColor.withAlpha(25),
-          onTap: () {
-            // Visual touch
-            HapticFeedback.mediumImpact();
-            onItemTapped(index);
-          },
-          contentPadding:
-              EdgeInsets.symmetric(horizontal: 24, vertical: verticalPadding),
-          shape: RoundedRectangleBorder(
+      child: InkWell(
+        onTap: () {
+          HapticFeedback.mediumImpact();
+          _announce("$label 선택됨", interrupt: true);
+          onItemTapped(index);
+        },
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 24, vertical: verticalPadding + 12),
+          decoration: BoxDecoration(
+            color: isSelected ? activeColor.withAlpha(25) : Colors.transparent,
             borderRadius: BorderRadius.circular(8),
+          ),
+          child: Row(
+            children: [
+              Icon(
+                icon,
+                color: isSelected ? activeColor : inactiveColor,
+                size: iconSize,
+                semanticLabel: null, // 아이콘 시맨틱 라벨 제거
+              ),
+              const SizedBox(width: 16),
+              Text(
+                label,
+                style: TextStyle(
+                  color: isSelected
+                      ? (isLiteMode ? Colors.yellow : Colors.white)
+                      : inactiveColor,
+                  fontSize: fontSize,
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                ),
+              ),
+            ],
           ),
         ),
       ),

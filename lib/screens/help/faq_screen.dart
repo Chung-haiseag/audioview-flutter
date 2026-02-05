@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
 
 class FAQScreen extends StatelessWidget {
   const FAQScreen({super.key});
+
+  /// 한국어 나레이션을 중첩 없이 안내합니다.
+  void _announce(String message, {bool interrupt = false}) {
+    // ignore: deprecated_member_use
+    SemanticsService.announce(
+      message,
+      TextDirection.ltr,
+      assertiveness: interrupt ? Assertiveness.assertive : Assertiveness.polite,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -119,34 +131,43 @@ class FAQScreen extends StatelessWidget {
         elevation: 0,
         title: Row(
           children: [
-            TextButton(
-              onPressed: () {
-                if (Navigator.of(context).canPop()) {
-                  Navigator.of(context).pop();
-                } else {
-                  Navigator.of(context)
-                      .pushNamedAndRemoveUntil('/main', (route) => false);
-                }
+            Semantics(
+              label: "뒤로가기",
+              button: true,
+              excludeSemantics: true,
+              onDidGainAccessibilityFocus: () {
+                _announce("뒤로가기. 두 번 탭하여 이전 화면으로 돌아갑니다.", interrupt: true);
               },
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.white,
-                minimumSize: const Size(60, 48),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(Icons.arrow_back, size: 28),
-                  SizedBox(width: 8),
-                  Text(
-                    "뒤로가기",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+              child: TextButton(
+                onPressed: () {
+                  HapticFeedback.mediumImpact();
+                  if (Navigator.of(context).canPop()) {
+                    Navigator.of(context).pop();
+                  } else {
+                    Navigator.of(context)
+                        .pushNamedAndRemoveUntil('/main', (route) => false);
+                  }
+                },
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  minimumSize: const Size(60, 48),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    Icon(Icons.arrow_back, size: 28),
+                    SizedBox(width: 8),
+                    Text(
+                      "뒤로가기",
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
@@ -156,14 +177,21 @@ class FAQScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         children: [
           // Title
-          const Padding(
-            padding: EdgeInsets.only(bottom: 24),
-            child: Text(
-              '자주 묻는 질문',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
+          Semantics(
+            header: true,
+            excludeSemantics: true,
+            onDidGainAccessibilityFocus: () {
+              _announce("자주 묻는 질문 화면입니다. 아래로 스와이프하여 질문을 확인하세요.", interrupt: true);
+            },
+            child: const Padding(
+              padding: EdgeInsets.only(bottom: 24),
+              child: Text(
+                '자주 묻는 질문',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),
@@ -181,31 +209,38 @@ class FAQScreen extends StatelessWidget {
   }
 
   Widget _buildLiteModeFAQItem(String question, String answer) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 32),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            question,
-            style: const TextStyle(
-              color: Colors.yellow,
-              fontSize: 26,
-              fontWeight: FontWeight.bold,
+    return Semantics(
+      container: true,
+      excludeSemantics: true,
+      onDidGainAccessibilityFocus: () {
+        _announce("$question $answer", interrupt: true);
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 32),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              question,
+              style: const TextStyle(
+                color: Colors.yellow,
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            answer,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 22,
-              height: 1.4,
+            const SizedBox(height: 12),
+            Text(
+              answer,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 22,
+                height: 1.4,
+              ),
             ),
-          ),
-          const SizedBox(height: 16),
-          const Divider(color: Colors.grey),
-        ],
+            const SizedBox(height: 16),
+            const Divider(color: Colors.grey),
+          ],
+        ),
       ),
     );
   }

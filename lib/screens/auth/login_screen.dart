@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -22,6 +23,16 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   bool _showPassword = false;
   bool _isLoading = false;
+
+  /// 한국어 나레이션을 중첩 없이 안내합니다.
+  void _announce(String message, {bool interrupt = false}) {
+    // ignore: deprecated_member_use
+    SemanticsService.announce(
+      message,
+      TextDirection.ltr,
+      assertiveness: interrupt ? Assertiveness.assertive : Assertiveness.polite,
+    );
+  }
 
   Future<void> _handleLogin() async {
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
@@ -76,16 +87,24 @@ class _LoginScreenState extends State<LoginScreen> {
                       horizontal: 16.0, vertical: 12.0),
                   child: Row(
                     children: [
-                      IconButton(
-                        icon: const Icon(LucideIcons.chevronLeft,
-                            color: Colors.white, size: 28),
-                        onPressed: () {
-                          if (Navigator.of(context).canPop()) {
-                            Navigator.of(context).pop();
-                          } else {
-                            Navigator.of(context).pushReplacementNamed('/main');
-                          }
+                      Semantics(
+                        label: "뒤로가기",
+                        button: true,
+                        excludeSemantics: true,
+                        onDidGainAccessibilityFocus: () {
+                          _announce("뒤로가기. 이전 화면으로 돌아갑니다.", interrupt: true);
                         },
+                        child: IconButton(
+                          icon: const Icon(LucideIcons.chevronLeft,
+                              color: Colors.white, size: 28),
+                          onPressed: () {
+                            if (Navigator.of(context).canPop()) {
+                              Navigator.of(context).pop();
+                            } else {
+                              Navigator.of(context).pushReplacementNamed('/main');
+                            }
+                          },
+                        ),
                       ),
                     ],
                   ),
@@ -98,88 +117,130 @@ class _LoginScreenState extends State<LoginScreen> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         const SizedBox(height: 40),
-                        const Text(
-                          '로그인',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
+                        Semantics(
+                          header: true,
+                          label: "로그인 화면",
+                          excludeSemantics: true,
+                          onDidGainAccessibilityFocus: () {
+                            _announce("로그인 화면입니다. 이메일과 비밀번호를 입력하거나 소셜 로그인을 사용하세요.", interrupt: true);
+                          },
+                          child: const Text(
+                            '로그인',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 32,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                         const SizedBox(height: 32),
 
                         // Email Field
-                        TextField(
-                          controller: _emailController,
-                          keyboardType: TextInputType.emailAddress,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            hintText: '이메일 주소 또는 전화번호',
-                            hintStyle: TextStyle(color: Colors.grey[400]),
-                            filled: true,
-                            fillColor: const Color(0xFF333333),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide.none,
+                        Semantics(
+                          label: "이메일 주소 또는 전화번호 입력",
+                          textField: true,
+                          onDidGainAccessibilityFocus: () {
+                            _announce("이메일 주소 또는 전화번호 입력 필드입니다.", interrupt: true);
+                          },
+                          child: TextField(
+                            controller: _emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            style: const TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                              hintText: '이메일 주소 또는 전화번호',
+                              hintStyle: TextStyle(color: Colors.grey[400]),
+                              filled: true,
+                              fillColor: const Color(0xFF333333),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide.none,
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 16),
                             ),
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 16),
                           ),
                         ),
                         const SizedBox(height: 16),
 
                         // Password Field
-                        TextField(
-                          controller: _passwordController,
-                          obscureText: !_showPassword,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            hintText: '비밀번호',
-                            hintStyle: TextStyle(color: Colors.grey[400]),
-                            filled: true,
-                            fillColor: const Color(0xFF333333),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide.none,
-                            ),
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 16),
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                _showPassword
-                                    ? LucideIcons.eye
-                                    : LucideIcons.eyeOff,
-                                color: Colors.grey,
+                        Semantics(
+                          label: "비밀번호 입력",
+                          textField: true,
+                          obscured: !_showPassword,
+                          onDidGainAccessibilityFocus: () {
+                            _announce("비밀번호 입력 필드입니다. ${_showPassword ? '비밀번호가 보입니다.' : '비밀번호가 숨겨져 있습니다.'}", interrupt: true);
+                          },
+                          child: TextField(
+                            controller: _passwordController,
+                            obscureText: !_showPassword,
+                            style: const TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                              hintText: '비밀번호',
+                              hintStyle: TextStyle(color: Colors.grey[400]),
+                              filled: true,
+                              fillColor: const Color(0xFF333333),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide.none,
                               ),
-                              onPressed: () => setState(
-                                  () => _showPassword = !_showPassword),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 16),
+                              suffixIcon: Semantics(
+                                label: _showPassword ? "비밀번호 숨기기" : "비밀번호 보기",
+                                button: true,
+                                excludeSemantics: true,
+                                onDidGainAccessibilityFocus: () {
+                                  _announce(_showPassword ? "비밀번호 숨기기 버튼" : "비밀번호 보기 버튼", interrupt: true);
+                                },
+                                child: IconButton(
+                                  icon: Icon(
+                                    _showPassword
+                                        ? LucideIcons.eye
+                                        : LucideIcons.eyeOff,
+                                    color: Colors.grey,
+                                  ),
+                                  onPressed: () {
+                                    setState(() => _showPassword = !_showPassword);
+                                    _announce(_showPassword ? "비밀번호가 보입니다" : "비밀번호가 숨겨졌습니다", interrupt: true);
+                                  },
+                                ),
+                              ),
                             ),
                           ),
                         ),
                         const SizedBox(height: 24),
 
                         // Login Button
-                        ElevatedButton(
-                          onPressed: _isLoading ? null : _handleLogin,
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            backgroundColor: const Color(0xFFE50914),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)),
-                            disabledBackgroundColor:
-                                const Color(0xFFE50914).withValues(alpha: 0.5),
+                        Semantics(
+                          label: _isLoading ? "로그인 중" : "로그인",
+                          button: true,
+                          enabled: !_isLoading,
+                          excludeSemantics: true,
+                          onDidGainAccessibilityFocus: () {
+                            _announce(_isLoading ? "로그인 중입니다. 잠시만 기다려주세요." : "로그인 버튼. 두 번 탭하여 로그인합니다.", interrupt: true);
+                          },
+                          child: ElevatedButton(
+                            onPressed: _isLoading ? null : _handleLogin,
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              backgroundColor: const Color(0xFFE50914),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
+                              disabledBackgroundColor:
+                                  const Color(0xFFE50914).withValues(alpha: 0.5),
+                            ),
+                            child: _isLoading
+                                ? const SizedBox(
+                                    width: 24,
+                                    height: 24,
+                                    child: CircularProgressIndicator(
+                                        color: Colors.white, strokeWidth: 2))
+                                : const Text('로그인',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white)),
                           ),
-                          child: _isLoading
-                              ? const SizedBox(
-                                  width: 24,
-                                  height: 24,
-                                  child: CircularProgressIndicator(
-                                      color: Colors.white, strokeWidth: 2))
-                              : const Text('로그인',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white)),
                         ),
 
                         const SizedBox(height: 16),
@@ -202,155 +263,188 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: 16),
 
                         // Kakao Login Button
-                        ElevatedButton(
-                          onPressed: _isLoading
-                              ? null
-                              : () async {
-                                  setState(() => _isLoading = true);
-                                  try {
-                                    await Provider.of<AuthProvider>(context,
-                                            listen: false)
-                                        .signInWithKakao();
-                                    if (mounted && !widget.isEmbedded) {
-                                      Navigator.pop(context);
+                        Semantics(
+                          label: "카카오 계정으로 로그인",
+                          button: true,
+                          enabled: !_isLoading,
+                          excludeSemantics: true,
+                          onDidGainAccessibilityFocus: () {
+                            _announce("카카오 로그인 버튼. 두 번 탭하여 카카오 계정으로 로그인합니다.", interrupt: true);
+                          },
+                          child: ElevatedButton(
+                            onPressed: _isLoading
+                                ? null
+                                : () async {
+                                    setState(() => _isLoading = true);
+                                    _announce("카카오 로그인 중입니다.", interrupt: true);
+                                    try {
+                                      await Provider.of<AuthProvider>(context,
+                                              listen: false)
+                                          .signInWithKakao();
+                                      if (mounted && !widget.isEmbedded) {
+                                        Navigator.pop(context);
+                                      }
+                                    } catch (e) {
+                                      if (mounted) {
+                                        _announce("카카오 로그인에 실패했습니다.", interrupt: true);
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                          content:
+                                              Text('카카오 로그인 실패: ${e.toString()}'),
+                                        ));
+                                      }
+                                    } finally {
+                                      if (mounted)
+                                        setState(() => _isLoading = false);
                                     }
-                                  } catch (e) {
-                                    if (mounted) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                        content:
-                                            Text('카카오 로그인 실패: ${e.toString()}'),
-                                      ));
-                                    }
-                                  } finally {
-                                    if (mounted)
-                                      setState(() => _isLoading = false);
-                                  }
-                                },
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 14),
-                            backgroundColor: const Color(0xFFFEE500),
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(Icons.chat_bubble,
-                                  color: Colors.black, size: 20),
-                              const SizedBox(width: 8),
-                              const Text('카카오 로그인',
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black87)),
-                            ],
+                                  },
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              backgroundColor: const Color(0xFFFEE500),
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(Icons.chat_bubble,
+                                    color: Colors.black, size: 20),
+                                const SizedBox(width: 8),
+                                const Text('카카오 로그인',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black87)),
+                              ],
+                            ),
                           ),
                         ),
 
                         const SizedBox(height: 12),
 
                         // Naver Login Button
-                        ElevatedButton(
-                          onPressed: _isLoading
-                              ? null
-                              : () async {
-                                  setState(() => _isLoading = true);
-                                  try {
-                                    await Provider.of<AuthProvider>(context,
-                                            listen: false)
-                                        .signInWithNaver();
-                                    if (mounted && !widget.isEmbedded) {
-                                      Navigator.pop(context);
+                        Semantics(
+                          label: "네이버 계정으로 로그인",
+                          button: true,
+                          enabled: !_isLoading,
+                          excludeSemantics: true,
+                          onDidGainAccessibilityFocus: () {
+                            _announce("네이버 로그인 버튼. 두 번 탭하여 네이버 계정으로 로그인합니다.", interrupt: true);
+                          },
+                          child: ElevatedButton(
+                            onPressed: _isLoading
+                                ? null
+                                : () async {
+                                    setState(() => _isLoading = true);
+                                    _announce("네이버 로그인 중입니다.", interrupt: true);
+                                    try {
+                                      await Provider.of<AuthProvider>(context,
+                                              listen: false)
+                                          .signInWithNaver();
+                                      if (mounted && !widget.isEmbedded) {
+                                        Navigator.pop(context);
+                                      }
+                                    } catch (e) {
+                                      if (mounted) {
+                                        _announce("네이버 로그인에 실패했습니다.", interrupt: true);
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                                content: Text(e
+                                                    .toString()
+                                                    .replaceAll(
+                                                        'Exception: ', ''))));
+                                      }
+                                    } finally {
+                                      if (mounted)
+                                        setState(() => _isLoading = false);
                                     }
-                                  } catch (e) {
-                                    if (mounted) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                              content: Text(e
-                                                  .toString()
-                                                  .replaceAll(
-                                                      'Exception: ', ''))));
-                                    }
-                                  } finally {
-                                    if (mounted)
-                                      setState(() => _isLoading = false);
-                                  }
-                                },
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 14),
-                            backgroundColor: const Color(0xFF03C75A),
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text('N',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18)),
-                              const SizedBox(width: 8),
-                              const Text('네이버 로그인',
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white)),
-                            ],
+                                  },
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              backgroundColor: const Color(0xFF03C75A),
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text('N',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18)),
+                                const SizedBox(width: 8),
+                                const Text('네이버 로그인',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white)),
+                              ],
+                            ),
                           ),
                         ),
 
                         const SizedBox(height: 12),
 
                         // Google Login Button
-                        ElevatedButton(
-                          onPressed: _isLoading
-                              ? null
-                              : () async {
-                                  setState(() => _isLoading = true);
-                                  try {
-                                    await Provider.of<AuthProvider>(context,
-                                            listen: false)
-                                        .signInWithGoogle();
-                                    if (mounted && !widget.isEmbedded) {
-                                      Navigator.pop(context);
+                        Semantics(
+                          label: "구글 계정으로 로그인",
+                          button: true,
+                          enabled: !_isLoading,
+                          excludeSemantics: true,
+                          onDidGainAccessibilityFocus: () {
+                            _announce("구글 로그인 버튼. 두 번 탭하여 구글 계정으로 로그인합니다.", interrupt: true);
+                          },
+                          child: ElevatedButton(
+                            onPressed: _isLoading
+                                ? null
+                                : () async {
+                                    setState(() => _isLoading = true);
+                                    _announce("구글 로그인 중입니다.", interrupt: true);
+                                    try {
+                                      await Provider.of<AuthProvider>(context,
+                                              listen: false)
+                                          .signInWithGoogle();
+                                      if (mounted && !widget.isEmbedded) {
+                                        Navigator.pop(context);
+                                      }
+                                    } catch (e) {
+                                      if (mounted) {
+                                        _announce("구글 로그인에 실패했습니다.", interrupt: true);
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                                content:
+                                                    Text('구글 로그인에 실패했습니다.')));
+                                      }
+                                    } finally {
+                                      if (mounted)
+                                        setState(() => _isLoading = false);
                                     }
-                                  } catch (e) {
-                                    if (mounted) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
-                                              content:
-                                                  Text('구글 로그인에 실패했습니다.')));
-                                    }
-                                  } finally {
-                                    if (mounted)
-                                      setState(() => _isLoading = false);
-                                  }
-                                },
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 14),
-                            backgroundColor: Colors.white,
-                            elevation: 0,
-                            side: const BorderSide(color: Colors.grey),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              // Use a more reliable icon source or fallback
-                              Icon(Icons.g_mobiledata,
-                                  color: Colors.blue, size: 28),
-                              const SizedBox(width: 8),
-                              const Text('구글 로그인',
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black87)),
-                            ],
+                                  },
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              backgroundColor: Colors.white,
+                              elevation: 0,
+                              side: const BorderSide(color: Colors.grey),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                // Use a more reliable icon source or fallback
+                                Icon(Icons.g_mobiledata,
+                                    color: Colors.blue, size: 28),
+                                const SizedBox(width: 8),
+                                const Text('구글 로그인',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black87)),
+                              ],
+                            ),
                           ),
                         ),
 
@@ -358,10 +452,18 @@ class _LoginScreenState extends State<LoginScreen> {
 
                         Align(
                           alignment: Alignment.center,
-                          child: TextButton(
-                            onPressed: () {},
-                            child: const Text('비밀번호를 잊으셨나요?',
-                                style: TextStyle(color: Colors.grey)),
+                          child: Semantics(
+                            label: "비밀번호 찾기",
+                            button: true,
+                            excludeSemantics: true,
+                            onDidGainAccessibilityFocus: () {
+                              _announce("비밀번호 찾기 버튼. 두 번 탭하여 비밀번호를 찾습니다.", interrupt: true);
+                            },
+                            child: TextButton(
+                              onPressed: () {},
+                              child: const Text('비밀번호를 잊으셨나요?',
+                                  style: TextStyle(color: Colors.grey)),
+                            ),
                           ),
                         ),
 
@@ -369,25 +471,35 @@ class _LoginScreenState extends State<LoginScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('AudioView 회원이 아닌가요? ',
-                                style: TextStyle(color: Colors.grey[400])),
-                            MouseRegion(
-                              cursor: SystemMouseCursors.click,
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const SignUpScreen(),
+                            ExcludeSemantics(
+                              child: Text('AudioView 회원이 아닌가요? ',
+                                  style: TextStyle(color: Colors.grey[400])),
+                            ),
+                            Semantics(
+                              label: "회원가입",
+                              button: true,
+                              excludeSemantics: true,
+                              onDidGainAccessibilityFocus: () {
+                                _announce("회원가입 버튼. 두 번 탭하여 새 계정을 만듭니다.", interrupt: true);
+                              },
+                              child: MouseRegion(
+                                cursor: SystemMouseCursors.click,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const SignUpScreen(),
+                                      ),
+                                    );
+                                  },
+                                  child: const Text(
+                                    '지금 가입하세요.',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                  );
-                                },
-                                child: const Text(
-                                  '지금 가입하세요.',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
@@ -401,19 +513,26 @@ class _LoginScreenState extends State<LoginScreen> {
                         const Divider(color: Colors.grey, thickness: 0.5),
                         const SizedBox(height: 20),
 
-                        Row(
-                          children: [
-                            const Icon(LucideIcons.helpCircle,
-                                size: 16, color: Colors.grey),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                '문의 사항이 있으신가요? 고객 센터에 문의하세요.',
-                                style: TextStyle(
-                                    color: Colors.grey[400], fontSize: 13),
+                        Semantics(
+                          label: "고객센터 문의 안내",
+                          excludeSemantics: true,
+                          onDidGainAccessibilityFocus: () {
+                            _announce("문의 사항이 있으시면 고객센터에 문의하세요.", interrupt: true);
+                          },
+                          child: Row(
+                            children: [
+                              const Icon(LucideIcons.helpCircle,
+                                  size: 16, color: Colors.grey),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  '문의 사항이 있으신가요? 고객 센터에 문의하세요.',
+                                  style: TextStyle(
+                                      color: Colors.grey[400], fontSize: 13),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                         const SizedBox(height: 20),
 

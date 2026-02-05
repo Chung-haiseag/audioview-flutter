@@ -35,35 +35,41 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
     super.dispose();
   }
 
+  /// 한국어 나레이션을 중첩 없이 안내합니다.
+  /// assertiveness: Assertiveness.polite (기본값) - 현재 발화 후 안내
+  /// assertiveness: Assertiveness.assertive - 현재 발화를 중단하고 즉시 안내
+  void _announce(String message, {bool interrupt = false}) {
+    // ignore: deprecated_member_use
+    SemanticsService.announce(
+      message,
+      TextDirection.ltr,
+      assertiveness: interrupt ? Assertiveness.assertive : Assertiveness.polite,
+    );
+  }
+
   Future<void> _announceMode() async {
     await Future.delayed(const Duration(milliseconds: 500));
-    SemanticsService.announce(
+    _announce(
       "간편모드입니다. "
       "메뉴를 열려면 왼쪽 상단의 메뉴를, "
       "영화를 검색하려면 오른쪽 상단의 음성검색을 누르세요. "
       "아래로 스와이프하여 영화 목록을 탐색할 수 있습니다.",
-      TextDirection.ltr,
+      interrupt: true,
     );
   }
 
-  Future<void> _announceMenuButton() async {
-    SemanticsService.announce(
-      "메뉴. 메뉴를 엽니다.",
-      TextDirection.ltr,
-    );
+  void _announceMenuButton() {
+    _announce("메뉴. 메뉴를 엽니다.", interrupt: true);
   }
 
-  Future<void> _announceSearchButton() async {
-    SemanticsService.announce(
-      "음성검색. 영화를 검색합니다.",
-      TextDirection.ltr,
-    );
+  void _announceSearchButton() {
+    _announce("음성검색. 영화를 검색합니다.", interrupt: true);
   }
 
-  Future<void> _announceMovieItem(Movie movie) async {
-    SemanticsService.announce(
+  void _announceMovieItem(Movie movie) {
+    _announce(
       "${movie.title}. 재생시간 ${movie.duration}분. 영화 상세 정보로 이동합니다.",
-      TextDirection.ltr,
+      interrupt: true,
     );
   }
 
@@ -247,10 +253,7 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
         // header: true, // "헤더" 시스템 음성 제거
         excludeSemantics: true,
         onDidGainAccessibilityFocus: () {
-          SemanticsService.announce(
-            "$title 목록입니다.",
-            TextDirection.ltr,
-          );
+          _announce("$title 목록입니다.", interrupt: true);
         },
         child: ExcludeSemantics(
           child: Text(
@@ -278,10 +281,7 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
               container: true,
               excludeSemantics: true,
               onDidGainAccessibilityFocus: () {
-                SemanticsService.announce(
-                  "목록을 불러오는데 실패했습니다.",
-                  TextDirection.ltr,
-                );
+                _announce("목록을 불러오는데 실패했습니다.", interrupt: true);
               },
               child: ExcludeSemantics(
                 child: const Text(
@@ -301,10 +301,7 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
               container: true,
               excludeSemantics: true,
               onDidGainAccessibilityFocus: () {
-                SemanticsService.announce(
-                  "영화 목록을 불러오는 중입니다.",
-                  TextDirection.ltr,
-                );
+                _announce("영화 목록을 불러오는 중입니다.", interrupt: true);
               },
               child: ExcludeSemantics(
                 child: const CircularProgressIndicator(color: Colors.white),
@@ -329,10 +326,7 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
               container: true,
               excludeSemantics: true,
               onDidGainAccessibilityFocus: () {
-                SemanticsService.announce(
-                  "화면해설 영화가 없습니다.",
-                  TextDirection.ltr,
-                );
+                _announce("화면해설 영화가 없습니다.", interrupt: true);
               },
               child: ExcludeSemantics(
                 child: const Text(

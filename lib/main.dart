@@ -195,6 +195,9 @@ class _MainScreenState extends State<MainScreen> {
             drawer: CustomDrawer(
               currentIndex: _currentIndex,
               onItemTapped: (index) async {
+                // Close the drawer first
+                Navigator.pop(context);
+                
                 setState(() {
                   _currentIndex = index;
                 });

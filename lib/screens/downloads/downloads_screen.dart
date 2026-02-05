@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../providers/auth_provider.dart';
 import '../auth/login_screen.dart';
 
 import '../settings/point_history_screen.dart';
-import '../profile/edit_profile_screen.dart'; // Add import
+import '../profile/edit_profile_screen.dart';
 import '../settings/mode_selection_screen.dart';
 
 class MyPageScreen extends StatefulWidget {
@@ -19,6 +21,16 @@ class _MyPageScreenState extends State<MyPageScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   bool _isCheckingIn = false;
+
+  /// 한국어 나레이션을 중첩 없이 안내합니다.
+  void _announce(String message, {bool interrupt = false}) {
+    // ignore: deprecated_member_use
+    SemanticsService.announce(
+      message,
+      TextDirection.ltr,
+      assertiveness: interrupt ? Assertiveness.assertive : Assertiveness.polite,
+    );
+  }
 
   @override
   void initState() {
@@ -431,34 +443,43 @@ class _MyPageScreenState extends State<MyPageScreen>
         elevation: 0,
         title: Row(
           children: [
-            TextButton(
-              onPressed: () {
-                if (Navigator.of(context).canPop()) {
-                  Navigator.of(context).pop();
-                } else {
-                  Navigator.of(context)
-                      .pushNamedAndRemoveUntil('/main', (route) => false);
-                }
+            Semantics(
+              label: "뒤로가기",
+              button: true,
+              excludeSemantics: true,
+              onDidGainAccessibilityFocus: () {
+                _announce("뒤로가기. 두 번 탭하여 이전 화면으로 돌아갑니다.", interrupt: true);
               },
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.white,
-                minimumSize: const Size(60, 48),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(Icons.arrow_back, size: 28),
-                  SizedBox(width: 8),
-                  Text(
-                    "뒤로가기",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+              child: TextButton(
+                onPressed: () {
+                  HapticFeedback.mediumImpact();
+                  if (Navigator.of(context).canPop()) {
+                    Navigator.of(context).pop();
+                  } else {
+                    Navigator.of(context)
+                        .pushNamedAndRemoveUntil('/main', (route) => false);
+                  }
+                },
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  minimumSize: const Size(60, 48),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    Icon(Icons.arrow_back, size: 28),
+                    SizedBox(width: 8),
+                    Text(
+                      "뒤로가기",
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
@@ -468,34 +489,42 @@ class _MyPageScreenState extends State<MyPageScreen>
         padding: const EdgeInsets.symmetric(vertical: 20),
         children: [
           // User Info
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-            decoration: const BoxDecoration(
-              border: Border(
-                bottom: BorderSide(color: Colors.grey, width: 0.5),
+          Semantics(
+            label: "사용자 정보",
+            container: true,
+            excludeSemantics: true,
+            onDidGainAccessibilityFocus: () {
+              _announce("마이페이지입니다. $username님. 포인트 ${auth.points}P.", interrupt: true);
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+              decoration: const BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(color: Colors.grey, width: 0.5),
+                ),
               ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  username,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    username,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  '포인트: ${auth.points}P',
-                  style: const TextStyle(
-                    color: Colors.yellow,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+                  const SizedBox(height: 16),
+                  Text(
+                    '포인트: ${auth.points}P',
+                    style: const TextStyle(
+                      color: Colors.yellow,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
 
@@ -551,8 +580,19 @@ class _MyPageScreenState extends State<MyPageScreen>
     return Semantics(
       label: title,
       button: true,
+      excludeSemantics: true,
+      onDidGainAccessibilityFocus: () {
+        _announce("$title. 두 번 탭하여 선택합니다.", interrupt: true);
+      },
+      onTap: () {
+        HapticFeedback.mediumImpact();
+        onTap();
+      },
       child: InkWell(
-        onTap: onTap,
+        onTap: () {
+          HapticFeedback.mediumImpact();
+          onTap();
+        },
         child: Container(
           width: double.infinity,
           constraints: const BoxConstraints(minHeight: 80),

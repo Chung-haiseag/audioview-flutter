@@ -20,7 +20,9 @@
       "Bash(\"C:/Program Files/GitHub CLI/gh.exe\" workflow list --repo Chung-haiseag/audioview-flutter)",
       "Bash(\"C:/Program Files/GitHub CLI/gh.exe\" run list --repo Chung-haiseag/audioview-flutter --limit 5)",
       "Bash(\"C:/Program Files/GitHub CLI/gh.exe\" run view 21207074406 --repo Chung-haiseag/audioview-flutter --log-failed)",
-      "Bash(\"C:/Program Files/GitHub CLI/gh.exe\" run view 21207183237 --repo Chung-haiseag/audioview-flutter --log-failed)"
+      "Bash(\"C:/Program Files/GitHub CLI/gh.exe\" run view 21207183237 --repo Chung-haiseag/audioview-flutter --log-failed)",
+      "Bash(flutter analyze:*)",
+      "Bash(flutter --version:*)"
     ]
   }
 }

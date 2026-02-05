@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
 
 class UserGuideScreen extends StatelessWidget {
   const UserGuideScreen({super.key});
+
+  /// 한국어 나레이션을 중첩 없이 안내합니다.
+  void _announce(String message, {bool interrupt = false}) {
+    // ignore: deprecated_member_use
+    SemanticsService.announce(
+      message,
+      TextDirection.ltr,
+      assertiveness: interrupt ? Assertiveness.assertive : Assertiveness.polite,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -153,35 +164,43 @@ class UserGuideScreen extends StatelessWidget {
         elevation: 0,
         title: Row(
           children: [
-            TextButton(
-              onPressed: () {
-                HapticFeedback.mediumImpact();
-                if (Navigator.of(context).canPop()) {
-                  Navigator.of(context).pop();
-                } else {
-                  Navigator.of(context)
-                      .pushNamedAndRemoveUntil('/main', (route) => false);
-                }
+            Semantics(
+              label: "뒤로가기",
+              button: true,
+              excludeSemantics: true,
+              onDidGainAccessibilityFocus: () {
+                _announce("뒤로가기. 두 번 탭하여 이전 화면으로 돌아갑니다.", interrupt: true);
               },
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.white,
-                minimumSize: const Size(60, 48),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(Icons.arrow_back, size: 28),
-                  SizedBox(width: 8),
-                  Text(
-                    "뒤로가기",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+              child: TextButton(
+                onPressed: () {
+                  HapticFeedback.mediumImpact();
+                  if (Navigator.of(context).canPop()) {
+                    Navigator.of(context).pop();
+                  } else {
+                    Navigator.of(context)
+                        .pushNamedAndRemoveUntil('/main', (route) => false);
+                  }
+                },
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  minimumSize: const Size(60, 48),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    Icon(Icons.arrow_back, size: 28),
+                    SizedBox(width: 8),
+                    Text(
+                      "뒤로가기",
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
@@ -193,12 +212,19 @@ class UserGuideScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Title
-            const Text(
-              '이용안내',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
+            Semantics(
+              header: true,
+              excludeSemantics: true,
+              onDidGainAccessibilityFocus: () {
+                _announce("이용안내 화면입니다. 아래로 스와이프하여 내용을 확인하세요.", interrupt: true);
+              },
+              child: const Text(
+                '이용안내',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             const SizedBox(height: 40),
@@ -224,29 +250,36 @@ class UserGuideScreen extends StatelessWidget {
   }
 
   Widget _buildLiteModeSection(String title, String content) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 40),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(
-              color: Colors.yellow,
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
+    return Semantics(
+      container: true,
+      excludeSemantics: true,
+      onDidGainAccessibilityFocus: () {
+        _announce("$title. $content", interrupt: true);
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 40),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                color: Colors.yellow,
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            content,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              height: 1.5,
+            const SizedBox(height: 16),
+            Text(
+              content,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                height: 1.5,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
