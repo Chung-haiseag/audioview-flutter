@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/rendering.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
@@ -12,6 +14,27 @@ class CustomDrawer extends StatelessWidget {
     required this.currentIndex,
     required this.onItemTapped,
   });
+
+  Future<void> _announceDrawerItem(String label, bool isSelected) async {
+    String announcement = label;
+    if (isSelected) {
+      announcement += ". 현재 선택된 메뉴입니다.";
+    } else {
+      announcement += ". 선택하려면 두 번 탭하세요.";
+    }
+
+    SemanticsService.announce(
+      announcement,
+      TextDirection.ltr,
+    );
+  }
+
+  Future<void> _announceVersion() async {
+    SemanticsService.announce(
+      "버전 1.0.0",
+      TextDirection.ltr,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,11 +93,18 @@ class CustomDrawer extends StatelessWidget {
             // Optional: Footer or version info
             Padding(
               padding: const EdgeInsets.all(24.0),
-              child: Text(
-                'v1.0.0',
-                style: TextStyle(
-                  color: Colors.grey[600],
-                  fontSize: isLiteMode ? 18 : 12,
+              child: Semantics(
+                label: "", // 빈 라벨로 TalkBack 읽기 방지
+                excludeSemantics: true,
+                onDidGainAccessibilityFocus: () {
+                  _announceVersion();
+                },
+                child: Text(
+                  'v1.0.0',
+                  style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: isLiteMode ? 18 : 12,
+                  ),
                 ),
               ),
             ),
@@ -101,10 +131,13 @@ class CustomDrawer extends StatelessWidget {
     final verticalPadding = isLiteMode ? 12.0 : 4.0;
 
     return Semantics(
-      label: "$label ${isSelected ? '현재 선택됨' : ''}",
-      hint: isSelected ? "" : "선택하려면 두 번 탭하세요",
+      label: "", // 빈 라벨로 TalkBack 읽기 방지
       button: true,
       selected: isSelected,
+      excludeSemantics: true,
+      onDidGainAccessibilityFocus: () {
+        _announceDrawerItem(label, isSelected);
+      },
       child: ListTile(
         leading: Icon(
           icon,
@@ -122,11 +155,10 @@ class CustomDrawer extends StatelessWidget {
           ),
         ),
         selected: isSelected,
-        selectedTileColor: activeColor.withAlpha(
-            25), // withValues(alpha: 0.1) replacement for older flutter if needed, but keeping simple
+        selectedTileColor: activeColor.withAlpha(25),
         onTap: () {
+          HapticFeedback.mediumImpact();
           onItemTapped(index);
-          Navigator.pop(context); // Close drawer
         },
         contentPadding:
             EdgeInsets.symmetric(horizontal: 24, vertical: verticalPadding),
