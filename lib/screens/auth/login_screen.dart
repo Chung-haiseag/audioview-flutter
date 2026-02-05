@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -23,16 +22,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   bool _showPassword = false;
   bool _isLoading = false;
-
-  /// 한국어 나레이션을 중첩 없이 안내합니다.
-  void _announce(String message, {bool interrupt = false}) {
-    // ignore: deprecated_member_use
-    SemanticsService.announce(
-      message,
-      TextDirection.ltr,
-      assertiveness: interrupt ? Assertiveness.assertive : Assertiveness.polite,
-    );
-  }
 
   Future<void> _handleLogin() async {
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
@@ -89,11 +78,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       Semantics(
                         label: "뒤로가기",
-                        button: true,
+                        hint: "이전 화면으로 돌아갑니다",
                         excludeSemantics: true,
-                        onDidGainAccessibilityFocus: () {
-                          _announce("뒤로가기. 이전 화면으로 돌아갑니다.", interrupt: true);
-                        },
                         child: IconButton(
                           icon: const Icon(LucideIcons.chevronLeft,
                               color: Colors.white, size: 28),
@@ -119,11 +105,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: 40),
                         Semantics(
                           header: true,
-                          label: "로그인 화면",
+                          label: "로그인 화면. 이메일과 비밀번호를 입력하거나 소셜 로그인을 사용하세요",
                           excludeSemantics: true,
-                          onDidGainAccessibilityFocus: () {
-                            _announce("로그인 화면입니다. 이메일과 비밀번호를 입력하거나 소셜 로그인을 사용하세요.", interrupt: true);
-                          },
                           child: const Text(
                             '로그인',
                             style: TextStyle(
@@ -136,74 +119,56 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: 32),
 
                         // Email Field
-                        Semantics(
-                          label: "이메일 주소 또는 전화번호 입력",
-                          textField: true,
-                          onDidGainAccessibilityFocus: () {
-                            _announce("이메일 주소 또는 전화번호 입력 필드입니다.", interrupt: true);
-                          },
-                          child: TextField(
-                            controller: _emailController,
-                            keyboardType: TextInputType.emailAddress,
-                            style: const TextStyle(color: Colors.white),
-                            decoration: InputDecoration(
-                              hintText: '이메일 주소 또는 전화번호',
-                              hintStyle: TextStyle(color: Colors.grey[400]),
-                              filled: true,
-                              fillColor: const Color(0xFF333333),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide.none,
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 16),
+                        TextField(
+                          controller: _emailController,
+                          keyboardType: TextInputType.emailAddress,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: InputDecoration(
+                            labelText: '이메일 주소 또는 전화번호',
+                            labelStyle: TextStyle(color: Colors.grey[400]),
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
+                            filled: true,
+                            fillColor: const Color(0xFF333333),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide.none,
                             ),
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 16),
                           ),
                         ),
                         const SizedBox(height: 16),
 
                         // Password Field
-                        Semantics(
-                          label: "비밀번호 입력",
-                          textField: true,
-                          obscured: !_showPassword,
-                          onDidGainAccessibilityFocus: () {
-                            _announce("비밀번호 입력 필드입니다. ${_showPassword ? '비밀번호가 보입니다.' : '비밀번호가 숨겨져 있습니다.'}", interrupt: true);
-                          },
-                          child: TextField(
-                            controller: _passwordController,
-                            obscureText: !_showPassword,
-                            style: const TextStyle(color: Colors.white),
-                            decoration: InputDecoration(
-                              hintText: '비밀번호',
-                              hintStyle: TextStyle(color: Colors.grey[400]),
-                              filled: true,
-                              fillColor: const Color(0xFF333333),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide.none,
-                              ),
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 16),
-                              suffixIcon: Semantics(
-                                label: _showPassword ? "비밀번호 숨기기" : "비밀번호 보기",
-                                button: true,
-                                excludeSemantics: true,
-                                onDidGainAccessibilityFocus: () {
-                                  _announce(_showPassword ? "비밀번호 숨기기 버튼" : "비밀번호 보기 버튼", interrupt: true);
-                                },
-                                child: IconButton(
-                                  icon: Icon(
-                                    _showPassword
-                                        ? LucideIcons.eye
-                                        : LucideIcons.eyeOff,
-                                    color: Colors.grey,
-                                  ),
-                                  onPressed: () {
-                                    setState(() => _showPassword = !_showPassword);
-                                    _announce(_showPassword ? "비밀번호가 보입니다" : "비밀번호가 숨겨졌습니다", interrupt: true);
-                                  },
+                        TextField(
+                          controller: _passwordController,
+                          obscureText: !_showPassword,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: InputDecoration(
+                            labelText: '비밀번호',
+                            labelStyle: TextStyle(color: Colors.grey[400]),
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
+                            filled: true,
+                            fillColor: const Color(0xFF333333),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide.none,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 16),
+                            suffixIcon: Semantics(
+                              label: _showPassword ? "비밀번호 숨기기" : "비밀번호 보기",
+                              excludeSemantics: true,
+                              child: IconButton(
+                                icon: Icon(
+                                  _showPassword
+                                      ? LucideIcons.eye
+                                      : LucideIcons.eyeOff,
+                                  color: Colors.grey,
                                 ),
+                                onPressed: () {
+                                  setState(() => _showPassword = !_showPassword);
+                                },
                               ),
                             ),
                           ),
@@ -213,12 +178,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         // Login Button
                         Semantics(
                           label: _isLoading ? "로그인 중" : "로그인",
-                          button: true,
-                          enabled: !_isLoading,
+                          hint: _isLoading ? null : "두 번 탭하여 로그인",
                           excludeSemantics: true,
-                          onDidGainAccessibilityFocus: () {
-                            _announce(_isLoading ? "로그인 중입니다. 잠시만 기다려주세요." : "로그인 버튼. 두 번 탭하여 로그인합니다.", interrupt: true);
-                          },
                           child: ElevatedButton(
                             onPressed: _isLoading ? null : _handleLogin,
                             style: ElevatedButton.styleFrom(
@@ -264,19 +225,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
                         // Kakao Login Button
                         Semantics(
-                          label: "카카오 계정으로 로그인",
-                          button: true,
-                          enabled: !_isLoading,
+                          label: "카카오 로그인",
+                          hint: "두 번 탭하여 카카오 계정으로 로그인",
                           excludeSemantics: true,
-                          onDidGainAccessibilityFocus: () {
-                            _announce("카카오 로그인 버튼. 두 번 탭하여 카카오 계정으로 로그인합니다.", interrupt: true);
-                          },
                           child: ElevatedButton(
                             onPressed: _isLoading
                                 ? null
                                 : () async {
                                     setState(() => _isLoading = true);
-                                    _announce("카카오 로그인 중입니다.", interrupt: true);
                                     try {
                                       await Provider.of<AuthProvider>(context,
                                               listen: false)
@@ -286,7 +242,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                       }
                                     } catch (e) {
                                       if (mounted) {
-                                        _announce("카카오 로그인에 실패했습니다.", interrupt: true);
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(SnackBar(
                                           content:
@@ -325,19 +280,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
                         // Naver Login Button
                         Semantics(
-                          label: "네이버 계정으로 로그인",
-                          button: true,
-                          enabled: !_isLoading,
+                          label: "네이버 로그인",
+                          hint: "두 번 탭하여 네이버 계정으로 로그인",
                           excludeSemantics: true,
-                          onDidGainAccessibilityFocus: () {
-                            _announce("네이버 로그인 버튼. 두 번 탭하여 네이버 계정으로 로그인합니다.", interrupt: true);
-                          },
                           child: ElevatedButton(
                             onPressed: _isLoading
                                 ? null
                                 : () async {
                                     setState(() => _isLoading = true);
-                                    _announce("네이버 로그인 중입니다.", interrupt: true);
                                     try {
                                       await Provider.of<AuthProvider>(context,
                                               listen: false)
@@ -347,7 +297,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                       }
                                     } catch (e) {
                                       if (mounted) {
-                                        _announce("네이버 로그인에 실패했습니다.", interrupt: true);
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(SnackBar(
                                                 content: Text(e
@@ -390,19 +339,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
                         // Google Login Button
                         Semantics(
-                          label: "구글 계정으로 로그인",
-                          button: true,
-                          enabled: !_isLoading,
+                          label: "구글 로그인",
+                          hint: "두 번 탭하여 구글 계정으로 로그인",
                           excludeSemantics: true,
-                          onDidGainAccessibilityFocus: () {
-                            _announce("구글 로그인 버튼. 두 번 탭하여 구글 계정으로 로그인합니다.", interrupt: true);
-                          },
                           child: ElevatedButton(
                             onPressed: _isLoading
                                 ? null
                                 : () async {
                                     setState(() => _isLoading = true);
-                                    _announce("구글 로그인 중입니다.", interrupt: true);
                                     try {
                                       await Provider.of<AuthProvider>(context,
                                               listen: false)
@@ -412,7 +356,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                       }
                                     } catch (e) {
                                       if (mounted) {
-                                        _announce("구글 로그인에 실패했습니다.", interrupt: true);
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(const SnackBar(
                                                 content:
@@ -454,11 +397,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           alignment: Alignment.center,
                           child: Semantics(
                             label: "비밀번호 찾기",
-                            button: true,
+                            hint: "두 번 탭하여 비밀번호를 찾습니다",
                             excludeSemantics: true,
-                            onDidGainAccessibilityFocus: () {
-                              _announce("비밀번호 찾기 버튼. 두 번 탭하여 비밀번호를 찾습니다.", interrupt: true);
-                            },
                             child: TextButton(
                               onPressed: () {},
                               child: const Text('비밀번호를 잊으셨나요?',
@@ -477,11 +417,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             Semantics(
                               label: "회원가입",
-                              button: true,
+                              hint: "두 번 탭하여 새 계정을 만듭니다",
                               excludeSemantics: true,
-                              onDidGainAccessibilityFocus: () {
-                                _announce("회원가입 버튼. 두 번 탭하여 새 계정을 만듭니다.", interrupt: true);
-                              },
                               child: MouseRegion(
                                 cursor: SystemMouseCursors.click,
                                 child: GestureDetector(
@@ -514,11 +451,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: 20),
 
                         Semantics(
-                          label: "고객센터 문의 안내",
+                          label: "문의 사항이 있으시면 고객센터에 문의하세요",
                           excludeSemantics: true,
-                          onDidGainAccessibilityFocus: () {
-                            _announce("문의 사항이 있으시면 고객센터에 문의하세요.", interrupt: true);
-                          },
                           child: Row(
                             children: [
                               const Icon(LucideIcons.helpCircle,

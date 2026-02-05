@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -21,16 +20,6 @@ class _MyPageScreenState extends State<MyPageScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   bool _isCheckingIn = false;
-
-  /// 한국어 나레이션을 중첩 없이 안내합니다.
-  void _announce(String message, {bool interrupt = false}) {
-    // ignore: deprecated_member_use
-    SemanticsService.announce(
-      message,
-      TextDirection.ltr,
-      assertiveness: interrupt ? Assertiveness.assertive : Assertiveness.polite,
-    );
-  }
 
   @override
   void initState() {
@@ -445,11 +434,8 @@ class _MyPageScreenState extends State<MyPageScreen>
           children: [
             Semantics(
               label: "뒤로가기",
-              button: true,
+              hint: "두 번 탭하여 이전 화면으로 돌아갑니다",
               excludeSemantics: true,
-              onDidGainAccessibilityFocus: () {
-                _announce("뒤로가기. 두 번 탭하여 이전 화면으로 돌아갑니다.", interrupt: true);
-              },
               child: TextButton(
                 onPressed: () {
                   HapticFeedback.mediumImpact();
@@ -490,12 +476,8 @@ class _MyPageScreenState extends State<MyPageScreen>
         children: [
           // User Info
           Semantics(
-            label: "사용자 정보",
-            container: true,
+            label: "$username님, 포인트 ${auth.points}P",
             excludeSemantics: true,
-            onDidGainAccessibilityFocus: () {
-              _announce("마이페이지입니다. $username님. 포인트 ${auth.points}P.", interrupt: true);
-            },
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
               decoration: const BoxDecoration(
@@ -579,20 +561,14 @@ class _MyPageScreenState extends State<MyPageScreen>
   }) {
     return Semantics(
       label: title,
-      button: true,
+      hint: "두 번 탭하여 선택",
       excludeSemantics: true,
-      onDidGainAccessibilityFocus: () {
-        _announce("$title. 두 번 탭하여 선택합니다.", interrupt: true);
-      },
-      onTap: () {
-        HapticFeedback.mediumImpact();
-        onTap();
-      },
-      child: InkWell(
+      child: GestureDetector(
         onTap: () {
           HapticFeedback.mediumImpact();
           onTap();
         },
+        behavior: HitTestBehavior.opaque,
         child: Container(
           width: double.infinity,
           constraints: const BoxConstraints(minHeight: 80),

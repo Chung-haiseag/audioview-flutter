@@ -40,9 +40,8 @@ class HeroSection extends StatelessWidget {
             children: [
               // 1. Background Image
               Semantics(
-                label: '${heroMovie.title} 포스터 이미지',
-                hint: '영화 상세 정보를 보려면 두 번 탭하세요',
-                button: true,
+                label: '${heroMovie.title} 포스터',
+                excludeSemantics: true,
                 child: GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -136,8 +135,7 @@ class HeroSection extends StatelessWidget {
                       children: [
                         Semantics(
                           label: '${heroMovie.title} 재생',
-                          hint: '영화를 재생하려면 두 번 탭하세요',
-                          button: true,
+                          excludeSemantics: true,
                           child: ElevatedButton.icon(
                             onPressed: () {
                               Navigator.push(
@@ -156,37 +154,6 @@ class HeroSection extends StatelessWidget {
                                     fontWeight: FontWeight.bold)),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 12),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8)),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Semantics(
-                          label: '${heroMovie.title} 상세 정보',
-                          hint: '영화 정보를 보려면 두 번 탭하세요',
-                          button: true,
-                          child: ElevatedButton.icon(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      MovieDetailScreen(movie: heroMovie),
-                                ),
-                              );
-                            },
-                            icon: const Icon(Icons.info_outline,
-                                color: Colors.white),
-                            label: const Text('상세 정보',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold)),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Colors.white.withValues(alpha: 0.2),
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 12),
                               shape: RoundedRectangleBorder(

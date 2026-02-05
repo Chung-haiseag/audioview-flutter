@@ -43,8 +43,6 @@ class MovieCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       label: _buildAccessibilityLabel(),
-      hint: '영화 상세 정보를 보려면 두 번 탭하세요',
-      button: true,
       excludeSemantics: true,
       child: GestureDetector(
         onTap: onTap,
