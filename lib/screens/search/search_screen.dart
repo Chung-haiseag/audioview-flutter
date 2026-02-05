@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../models/movie.dart';
@@ -91,6 +92,7 @@ class _SearchScreenState extends State<SearchScreen> {
         if (available) {
           debugPrint('STT: Starting to listen...');
           setState(() => _isListening = true);
+          _announce("듣고 있어요. 영화 제목이나 배우를 말씀하세요");
           await _speech.listen(
             onResult: (result) {
               debugPrint('STT Result: ${result.recognizedWords} (final: ${result.finalResult})');
@@ -150,6 +152,12 @@ class _SearchScreenState extends State<SearchScreen> {
       setState(() {
         _searchResults = results;
       });
+      // 검색 결과 나래이션
+      if (results.isNotEmpty) {
+        _announceSearchResults(results.length);
+      } else {
+        _announce("검색 결과가 없습니다");
+      }
     } catch (e) {
       debugPrint('Search error: $e');
     } finally {
@@ -157,6 +165,14 @@ class _SearchScreenState extends State<SearchScreen> {
         _isLoading = false;
       });
     }
+  }
+
+  void _announce(String message) {
+    SemanticsService.announce(message, TextDirection.ltr);
+  }
+
+  void _announceSearchResults(int count) {
+    _announce("영화 $count개가 검색되었습니다");
   }
 
   @override
@@ -198,19 +214,15 @@ class _SearchScreenState extends State<SearchScreen> {
                             child: Icon(Icons.search, color: Colors.blue),
                           ),
                           Expanded(
-                            child: Semantics(
-                              label: "검색어 입력",
-                              excludeSemantics: true,
-                              child: TextField(
-                                controller: _searchController,
-                                onChanged: _onSearchChanged,
-                                style: const TextStyle(color: Colors.white),
-                                decoration: const InputDecoration(
-                                  hintText: '영화, 시리즈, 배우 검색',
-                                  hintStyle: TextStyle(color: Colors.grey),
-                                  border: InputBorder.none,
-                                  contentPadding: EdgeInsets.symmetric(vertical: 12),
-                                ),
+                            child: TextField(
+                              controller: _searchController,
+                              onChanged: _onSearchChanged,
+                              style: const TextStyle(color: Colors.white),
+                              decoration: const InputDecoration(
+                                hintText: '검색어 입력',
+                                hintStyle: TextStyle(color: Colors.grey),
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.symmetric(vertical: 12),
                               ),
                             ),
                           ),
@@ -550,14 +562,18 @@ class _SearchScreenState extends State<SearchScreen> {
             spacing: 8,
             runSpacing: 8,
             children: _recommendations
-                .map((tag) => ActionChip(
-                      label: Text(tag),
-                      backgroundColor: Colors.white.withValues(alpha: 0.1),
-                      labelStyle: const TextStyle(color: Colors.white),
-                      onPressed: () {
-                        _searchController.text = tag;
-                        _performSearch(tag);
-                      },
+                .map((tag) => Semantics(
+                      label: tag,
+                      excludeSemantics: true,
+                      child: ActionChip(
+                        label: Text(tag),
+                        backgroundColor: Colors.white.withValues(alpha: 0.1),
+                        labelStyle: const TextStyle(color: Colors.white),
+                        onPressed: () {
+                          _searchController.text = tag;
+                          _performSearch(tag);
+                        },
+                      ),
                     ))
                 .toList(),
           ),
