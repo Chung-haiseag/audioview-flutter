@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/rendering.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
@@ -14,17 +13,6 @@ class CustomDrawer extends StatelessWidget {
     required this.currentIndex,
     required this.onItemTapped,
   });
-
-  /// 한국어 나레이션을 중첩 없이 안내합니다.
-  void _announce(String message, {bool interrupt = false}) {
-    // ignore: deprecated_member_use
-    SemanticsService.announce(
-      message,
-      TextDirection.ltr,
-      assertiveness: interrupt ? Assertiveness.assertive : Assertiveness.polite,
-    );
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -126,15 +114,13 @@ class CustomDrawer extends StatelessWidget {
     return Semantics(
       label: accessibilityLabel,
       hint: isSelected ? null : "선택하려면 두 번 탭하세요",
-      button: true,
-      selected: isSelected,
       excludeSemantics: true,
-      child: InkWell(
+      child: GestureDetector(
         onTap: () {
           HapticFeedback.mediumImpact();
-          _announce("$label 선택됨", interrupt: true);
           onItemTapped(index);
         },
+        behavior: HitTestBehavior.opaque,
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: verticalPadding + 12),
           decoration: BoxDecoration(
