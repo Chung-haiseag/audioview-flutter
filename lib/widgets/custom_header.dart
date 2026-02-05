@@ -70,9 +70,6 @@ class _CustomHeaderState extends State<CustomHeader> {
                       label: widget.isSubPage && widget.onBackPressed != null
                           ? "뒤로 가기"
                           : "메뉴",
-                      hint: widget.isSubPage && widget.onBackPressed != null
-                          ? "이전 화면으로 돌아갑니다"
-                          : "메뉴를 엽니다",
                       excludeSemantics: true,
                       child: IconButton(
                         icon: Icon(
@@ -137,7 +134,6 @@ class _CustomHeaderState extends State<CustomHeader> {
                           width: 48,
                           child: Semantics(
                             label: "영화검색",
-                            hint: "두 번 탭하여 검색",
                             excludeSemantics: true,
                             child: IconButton(
                               icon: const Icon(
@@ -154,9 +150,6 @@ class _CustomHeaderState extends State<CustomHeader> {
                         width: 48, // Adjusted width slightly
                         child: Semantics(
                           label: _showBrightness ? "밝기 조절 닫기" : "밝기 조절",
-                          hint: _showBrightness
-                              ? "두 번 탭하여 닫기"
-                              : "두 번 탭하여 밝기 조절",
                           excludeSemantics: true,
                           child: IconButton(
                             icon: Icon(

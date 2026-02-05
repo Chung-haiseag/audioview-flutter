@@ -198,39 +198,51 @@ class _SearchScreenState extends State<SearchScreen> {
                             child: Icon(Icons.search, color: Colors.blue),
                           ),
                           Expanded(
-                            child: TextField(
-                              controller: _searchController,
-                              onChanged: _onSearchChanged,
-                              style: const TextStyle(color: Colors.white),
-                              decoration: const InputDecoration(
-                                hintText: '영화, 시리즈, 배우 검색',
-                                hintStyle: TextStyle(color: Colors.grey),
-                                border: InputBorder.none,
-                                contentPadding: EdgeInsets.symmetric(vertical: 12),
+                            child: Semantics(
+                              label: "검색어 입력",
+                              excludeSemantics: true,
+                              child: TextField(
+                                controller: _searchController,
+                                onChanged: _onSearchChanged,
+                                style: const TextStyle(color: Colors.white),
+                                decoration: const InputDecoration(
+                                  hintText: '영화, 시리즈, 배우 검색',
+                                  hintStyle: TextStyle(color: Colors.grey),
+                                  border: InputBorder.none,
+                                  contentPadding: EdgeInsets.symmetric(vertical: 12),
+                                ),
                               ),
                             ),
                           ),
                           if (_searchController.text.isNotEmpty)
-                            IconButton(
-                              icon: const Icon(Icons.clear, color: Colors.white70),
+                            Semantics(
+                              label: "검색어 지우기",
+                              excludeSemantics: true,
+                              child: IconButton(
+                                icon: const Icon(Icons.clear, color: Colors.white70),
+                                onPressed: () {
+                                  debugPrint('UI: Search clear button pressed');
+                                  setState(() {
+                                    _searchController.clear();
+                                    _searchResults = [];
+                                  });
+                                  _performSearch('');
+                                },
+                              ),
+                            ),
+                          Semantics(
+                            label: _isListening ? "음성 검색 중지" : "음성 검색",
+                            excludeSemantics: true,
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.mic,
+                                color: _isListening ? Colors.red : Colors.white,
+                              ),
                               onPressed: () {
-                                debugPrint('UI: Search clear button pressed');
-                                setState(() {
-                                  _searchController.clear();
-                                  _searchResults = [];
-                                });
-                                _performSearch('');
+                                debugPrint('UI: Mic button pressed');
+                                _toggleListening();
                               },
                             ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.mic,
-                              color: _isListening ? Colors.red : Colors.white,
-                            ),
-                            onPressed: () {
-                              debugPrint('UI: Mic button pressed');
-                              _toggleListening();
-                            },
                           ),
                         ],
                       ),
@@ -309,21 +321,25 @@ class _SearchScreenState extends State<SearchScreen> {
             // Left: Back button as text
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
-              child: TextButton(
-                onPressed: () {
-                  HapticFeedback.mediumImpact();
-                  Navigator.pop(context);
-                },
-                style: TextButton.styleFrom(
-                  minimumSize: const Size(80, 48),
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                ),
-                child: const Text(
-                  "뒤로가기",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+              child: Semantics(
+                label: "뒤로가기",
+                excludeSemantics: true,
+                child: TextButton(
+                  onPressed: () {
+                    HapticFeedback.mediumImpact();
+                    Navigator.pop(context);
+                  },
+                  style: TextButton.styleFrom(
+                    minimumSize: const Size(80, 48),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                  ),
+                  child: const Text(
+                    "뒤로가기",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
@@ -331,8 +347,8 @@ class _SearchScreenState extends State<SearchScreen> {
             const Spacer(),
             // Center: Title with double-tap to reset
             Semantics(
-              label: "음성 검색, 두 번 터치하면 검색 초기화",
-              button: true,
+              label: "음성 검색",
+              excludeSemantics: true,
               child: GestureDetector(
                 onDoubleTap: () {
                   setState(() {
@@ -364,8 +380,8 @@ class _SearchScreenState extends State<SearchScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Semantics(
-                    button: true,
                     label: _isListening ? "듣고 있어요" : "음성 검색 시작",
+                    excludeSemantics: true,
                     child: GestureDetector(
                       onTap: () {
                         HapticFeedback.mediumImpact();
@@ -448,7 +464,9 @@ class _SearchScreenState extends State<SearchScreen> {
                           return Semantics(
                             focused: index == 0,
                             label: "${movie.title}, ${movie.duration}분",
-                            child: InkWell(
+                            excludeSemantics: true,
+                            child: GestureDetector(
+                              behavior: HitTestBehavior.opaque,
                               onTap: () {
                                 HapticFeedback.lightImpact();
                                 Navigator.push(
@@ -593,7 +611,7 @@ class _SearchScreenState extends State<SearchScreen> {
         final movie = _searchResults[index];
         return Semantics(
           label: movie.title,
-          button: true, // Announcements: "Title, Button"
+          excludeSemantics: true,
           child: GestureDetector(
             onTap: () {
               Navigator.push(

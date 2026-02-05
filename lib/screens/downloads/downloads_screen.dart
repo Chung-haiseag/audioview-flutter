@@ -434,7 +434,6 @@ class _MyPageScreenState extends State<MyPageScreen>
           children: [
             Semantics(
               label: "뒤로가기",
-              hint: "두 번 탭하여 이전 화면으로 돌아갑니다",
               excludeSemantics: true,
               child: TextButton(
                 onPressed: () {
@@ -561,7 +560,6 @@ class _MyPageScreenState extends State<MyPageScreen>
   }) {
     return Semantics(
       label: title,
-      hint: "두 번 탭하여 선택",
       excludeSemantics: true,
       child: GestureDetector(
         onTap: () {

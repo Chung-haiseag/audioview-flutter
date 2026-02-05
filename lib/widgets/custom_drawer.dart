@@ -113,7 +113,6 @@ class CustomDrawer extends StatelessWidget {
 
     return Semantics(
       label: accessibilityLabel,
-      hint: isSelected ? null : "선택하려면 두 번 탭하세요",
       excludeSemantics: true,
       child: GestureDetector(
         onTap: () {

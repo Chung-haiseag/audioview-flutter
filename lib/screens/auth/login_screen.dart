@@ -78,7 +78,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       Semantics(
                         label: "뒤로가기",
-                        hint: "이전 화면으로 돌아갑니다",
                         excludeSemantics: true,
                         child: IconButton(
                           icon: const Icon(LucideIcons.chevronLeft,
@@ -119,47 +118,49 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: 32),
 
                         // Email Field
-                        TextField(
-                          controller: _emailController,
-                          keyboardType: TextInputType.emailAddress,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            labelText: '이메일 주소 또는 전화번호',
-                            labelStyle: TextStyle(color: Colors.grey[400]),
-                            floatingLabelBehavior: FloatingLabelBehavior.never,
-                            filled: true,
-                            fillColor: const Color(0xFF333333),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide.none,
+                        Semantics(
+                          label: "아이디",
+                          excludeSemantics: true,
+                          child: TextField(
+                            controller: _emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            style: const TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                              hintText: '이메일 주소 또는 전화번호',
+                              hintStyle: TextStyle(color: Colors.grey[400]),
+                              filled: true,
+                              fillColor: const Color(0xFF333333),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide.none,
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 16),
                             ),
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 16),
                           ),
                         ),
                         const SizedBox(height: 16),
 
                         // Password Field
-                        TextField(
-                          controller: _passwordController,
-                          obscureText: !_showPassword,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            labelText: '비밀번호',
-                            labelStyle: TextStyle(color: Colors.grey[400]),
-                            floatingLabelBehavior: FloatingLabelBehavior.never,
-                            filled: true,
-                            fillColor: const Color(0xFF333333),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide.none,
-                            ),
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 16),
-                            suffixIcon: Semantics(
-                              label: _showPassword ? "비밀번호 숨기기" : "비밀번호 보기",
-                              excludeSemantics: true,
-                              child: IconButton(
+                        Semantics(
+                          label: "비밀번호",
+                          excludeSemantics: true,
+                          child: TextField(
+                            controller: _passwordController,
+                            obscureText: !_showPassword,
+                            style: const TextStyle(color: Colors.white),
+                            decoration: InputDecoration(
+                              hintText: '비밀번호',
+                              hintStyle: TextStyle(color: Colors.grey[400]),
+                              filled: true,
+                              fillColor: const Color(0xFF333333),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide.none,
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 16),
+                              suffixIcon: IconButton(
                                 icon: Icon(
                                   _showPassword
                                       ? LucideIcons.eye
@@ -178,7 +179,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         // Login Button
                         Semantics(
                           label: _isLoading ? "로그인 중" : "로그인",
-                          hint: _isLoading ? null : "두 번 탭하여 로그인",
                           excludeSemantics: true,
                           child: ElevatedButton(
                             onPressed: _isLoading ? null : _handleLogin,
@@ -226,7 +226,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         // Kakao Login Button
                         Semantics(
                           label: "카카오 로그인",
-                          hint: "두 번 탭하여 카카오 계정으로 로그인",
                           excludeSemantics: true,
                           child: ElevatedButton(
                             onPressed: _isLoading
@@ -281,7 +280,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         // Naver Login Button
                         Semantics(
                           label: "네이버 로그인",
-                          hint: "두 번 탭하여 네이버 계정으로 로그인",
                           excludeSemantics: true,
                           child: ElevatedButton(
                             onPressed: _isLoading
@@ -340,7 +338,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         // Google Login Button
                         Semantics(
                           label: "구글 로그인",
-                          hint: "두 번 탭하여 구글 계정으로 로그인",
                           excludeSemantics: true,
                           child: ElevatedButton(
                             onPressed: _isLoading
@@ -397,7 +394,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           alignment: Alignment.center,
                           child: Semantics(
                             label: "비밀번호 찾기",
-                            hint: "두 번 탭하여 비밀번호를 찾습니다",
                             excludeSemantics: true,
                             child: TextButton(
                               onPressed: () {},
@@ -417,7 +413,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             Semantics(
                               label: "회원가입",
-                              hint: "두 번 탭하여 새 계정을 만듭니다",
                               excludeSemantics: true,
                               child: MouseRegion(
                                 cursor: SystemMouseCursors.click,

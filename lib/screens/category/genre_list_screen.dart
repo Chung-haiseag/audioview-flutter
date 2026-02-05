@@ -65,37 +65,51 @@ class GenreListScreen extends StatelessWidget {
             ),
             itemBuilder: (context, index) {
               final genre = genres[index];
-              return ListTile(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CategoryListScreen(genre: genre),
+              return Semantics(
+                label: "${genre.name} 장르",
+                excludeSemantics: true,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CategoryListScreen(genre: genre),
+                      ),
+                    );
+                  },
+                  behavior: HitTestBehavior.opaque,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 8,
+                          height: 8,
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFE50914),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Text(
+                            genre.name,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: -0.5,
+                            ),
+                          ),
+                        ),
+                        Icon(
+                          Icons.chevron_right,
+                          color: Colors.grey[700],
+                          size: 20,
+                        ),
+                      ],
                     ),
-                  );
-                },
-                contentPadding: EdgeInsets.zero,
-                leading: Container(
-                  width: 8,
-                  height: 8,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFE50914),
-                    shape: BoxShape.circle,
                   ),
-                ),
-                title: Text(
-                  genre.name,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                    letterSpacing: -0.5,
-                  ),
-                ),
-                trailing: Icon(
-                  Icons.chevron_right,
-                  color: Colors.grey[700],
-                  size: 20,
                 ),
               );
             },
@@ -153,9 +167,9 @@ class GenreListScreen extends StatelessWidget {
       itemBuilder: (context, index) {
         final genre = genres[index];
         return Semantics(
-          label: genre.name,
-          button: true,
-          child: InkWell(
+          label: "${genre.name} 장르",
+          excludeSemantics: true,
+          child: GestureDetector(
             onTap: () {
               Navigator.push(
                 context,
@@ -164,6 +178,7 @@ class GenreListScreen extends StatelessWidget {
                 ),
               );
             },
+            behavior: HitTestBehavior.opaque,
             child: Container(
               width: double.infinity,
               constraints: const BoxConstraints(minHeight: 80),
