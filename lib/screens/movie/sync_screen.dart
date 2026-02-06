@@ -100,14 +100,14 @@ class _SyncScreenState extends State<SyncScreen>
 
   @override
   Widget build(BuildContext context) {
-    // Determine if we should show the minimal CC UI
-    final bool isMinimalCCStatus = _isSynced && widget.syncType == 'CC';
+    // Determine if we should show the minimal UI (both AD and CC)
+    final bool isSyncedMinimalUI = _isSynced;
 
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          // Close button (Always there but logic changes slightly when synced)
+          // Close button (Subtle when synced)
           SafeArea(
             child: Align(
               alignment: Alignment.topRight,
@@ -118,12 +118,12 @@ class _SyncScreenState extends State<SyncScreen>
                     width: 40,
                     height: 40,
                     decoration: BoxDecoration(
-                      color: Colors.grey[900]?.withOpacity(isMinimalCCStatus ? 0.3 : 1.0),
+                      color: Colors.grey[900]?.withOpacity(isSyncedMinimalUI ? 0.3 : 1.0),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
                       Icons.close,
-                      color: Colors.white.withOpacity(isMinimalCCStatus ? 0.3 : 1.0),
+                      color: Colors.white.withOpacity(isSyncedMinimalUI ? 0.3 : 1.0),
                       size: 24,
                     ),
                   ),
@@ -140,7 +140,7 @@ class _SyncScreenState extends State<SyncScreen>
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  if (!isMinimalCCStatus) ...[
+                  if (!isSyncedMinimalUI) ...[
                     // Animated audio visualizer
                     SizedBox(
                       width: 300,
@@ -248,17 +248,49 @@ class _SyncScreenState extends State<SyncScreen>
                       ),
                       textAlign: TextAlign.center,
                     )
-                  else if (widget.syncType == 'AD')
-                    const Text(
-                      '현재 배경음과 화면해설이\n동기화되어 출력되고 있습니다.',
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 18,
-                        height: 1.5,
+                  else if (widget.syncType == 'AD') ...[
+                    // Minimal AD UI
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                      decoration: BoxDecoration(
+                        color: Colors.green.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(30),
+                        border: Border.all(color: Colors.green, width: 1),
                       ),
-                      textAlign: TextAlign.center,
-                    )
-                  else
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.graphic_eq, color: Colors.green, size: 24),
+                          SizedBox(width: 12),
+                          Text(
+                            "화면해설 중",
+                            style: TextStyle(
+                              color: Colors.green,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 60),
+                    ElevatedButton(
+                      onPressed: () => Navigator.pop(context),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey[900],
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        elevation: 0,
+                      ),
+                      child: const Text(
+                        "동기화 종료",
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ] else
                     // Large caption on black background
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -283,12 +315,11 @@ class _SyncScreenState extends State<SyncScreen>
                       ),
                     ),
 
-                  if (!isMinimalCCStatus) ...[
+                  if (!isSyncedMinimalUI) ...[
                     const SizedBox(height: 60),
 
-                    // Post-Sync specific UI
+                    // Progress Bar (Only during sync)
                     if (!_isSynced)
-                      // Progress Bar
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 48),
                         child: ClipRRect(
@@ -300,39 +331,6 @@ class _SyncScreenState extends State<SyncScreen>
                             minHeight: 12,
                           ),
                         ),
-                      )
-                    else
-                      // Status Text or Control Button (AD ONLY)
-                      Column(
-                        children: [
-                          if (widget.syncType == 'AD') ...[
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                              decoration: BoxDecoration(
-                                color: Colors.green.withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(color: Colors.green, width: 1),
-                              ),
-                              child: const Text(
-                                "● 화면해설 중",
-                                style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            const SizedBox(height: 40),
-                            ElevatedButton(
-                              onPressed: () => Navigator.pop(context),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.grey[900],
-                                foregroundColor: Colors.white,
-                                minimumSize: const Size(200, 56),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(28),
-                                ),
-                              ),
-                              child: const Text("동기화 종료", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                            ),
-                          ],
-                        ],
                       ),
                   ],
                 ],
