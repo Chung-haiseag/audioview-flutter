@@ -20,7 +20,21 @@ class _SyncScreenState extends State<SyncScreen>
   late AnimationController _controller;
   double _progress = 0.0;
   Timer? _progressTimer;
+  Timer? _captionTimer;
   String _statusMessage = '영화 스트림 분석 중...';
+  bool _isSynced = false;
+  int _captionIndex = 0;
+
+  final List<String> _sampleCaptions = [
+    "저 멀리 어둠 속에서 누군가 걸어옵니다.",
+    "바람 소리가 점점 거세집니다.",
+    "이곳은 예전부터 숨겨진 공간이었습니다.",
+    "조심하세요, 뒤를 돌아보지 마세요.",
+    "문이 끼익 소리를 내며 열립니다.",
+    "우리는 이미 늦었을지도 모릅니다.",
+    "하지만 아직 희망은 남아있습니다.",
+    "빛이 서서히 어둠을 몰아냅니다."
+  ];
 
   @override
   void initState() {
@@ -48,7 +62,7 @@ class _SyncScreenState extends State<SyncScreen>
           _statusMessage = '최적의 자원을 설정하는 중...';
         } else {
           _progress = 1.0;
-          _statusMessage = '완료되었습니다!';
+          _statusMessage = '동기화 완료';
           _progressTimer?.cancel();
           _onSyncComplete();
         }
@@ -58,16 +72,20 @@ class _SyncScreenState extends State<SyncScreen>
 
   void _onSyncComplete() {
     HapticFeedback.heavyImpact();
-    Future.delayed(const Duration(milliseconds: 800), () {
+    setState(() {
+      _isSynced = true;
+      if (widget.syncType == 'CC') {
+        _startCaptionSimulation();
+      }
+    });
+  }
+
+  void _startCaptionSimulation() {
+    _captionTimer = Timer.periodic(const Duration(seconds: 3), (timer) {
       if (mounted) {
-        Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('동기화가 완료되었습니다.'),
-            backgroundColor: Colors.green,
-            duration: Duration(seconds: 2),
-          ),
-        );
+        setState(() {
+          _captionIndex = (_captionIndex + 1) % _sampleCaptions.length;
+        });
       }
     });
   }
@@ -76,6 +94,7 @@ class _SyncScreenState extends State<SyncScreen>
   void dispose() {
     _controller.dispose();
     _progressTimer?.cancel();
+    _captionTimer?.cancel();
     super.dispose();
   }
 
@@ -106,7 +125,7 @@ class _SyncScreenState extends State<SyncScreen>
                           gradient: RadialGradient(
                             colors: [
                               Colors.red.withValues(alpha: 0.3),
-                              Colors.red.withValues(alpha: 0.1),
+                              (_isSynced ? Colors.green : Colors.red).withValues(alpha: 0.1),
                               Colors.transparent,
                             ],
                             stops: const [0.0, 0.5, 1.0],
@@ -122,8 +141,8 @@ class _SyncScreenState extends State<SyncScreen>
                           shape: BoxShape.circle,
                           gradient: RadialGradient(
                             colors: [
-                              Colors.red.withValues(alpha: 0.4),
-                              Colors.red.withValues(alpha: 0.2),
+                              (_isSynced ? Colors.green : Colors.red).withValues(alpha: 0.4),
+                              (_isSynced ? Colors.green : Colors.red).withValues(alpha: 0.2),
                               Colors.transparent,
                             ],
                             stops: const [0.0, 0.6, 1.0],
@@ -139,24 +158,35 @@ class _SyncScreenState extends State<SyncScreen>
                             size: const Size(120, 80),
                             painter: AudioBarsPainter(
                               animation: _controller.value,
+                              color: _isSynced ? Colors.green : Colors.red,
                             ),
                           );
                         },
                       ),
 
-                      // Percentage text
-                      Positioned(
-                        bottom: 40,
-                        child: Text(
-                          '${(_progress * 100).toInt()}%',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 48,
-                            fontWeight: FontWeight.w900,
-                            letterSpacing: -1,
+                      // Percentage or Synced Icon
+                      if (!_isSynced)
+                        Positioned(
+                          bottom: 40,
+                          child: Text(
+                            '${(_progress * 100).toInt()}%',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 48,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: -1,
+                            ),
+                          ),
+                        )
+                      else
+                        const Positioned(
+                          bottom: 40,
+                          child: Icon(
+                            Icons.check_circle_outline,
+                            color: Colors.green,
+                            size: 64,
                           ),
                         ),
-                      ),
                     ],
                   ),
                 ),
@@ -164,10 +194,10 @@ class _SyncScreenState extends State<SyncScreen>
                 const SizedBox(height: 40),
 
                 // Title
-                const Text(
-                  '실시간 동기화 중',
+                Text(
+                  _isSynced ? '실시간 동기화 완료' : '실시간 동기화 중',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: _isSynced ? Colors.green : Colors.white,
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
                   ),
@@ -175,36 +205,100 @@ class _SyncScreenState extends State<SyncScreen>
 
                 const SizedBox(height: 12),
 
-                // Subtitle / Status Message
-                Text(
-                  _statusMessage,
-                  style: const TextStyle(
-                    color: Colors.grey,
-                    fontSize: 16,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-
-                const SizedBox(height: 40),
-
-                // Progress Bar
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 48),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: LinearProgressIndicator(
-                      value: _progress,
-                      backgroundColor: Colors.grey[900],
-                      valueColor: const AlwaysStoppedAnimation<Color>(Colors.red),
-                      minHeight: 12,
+                // Subtitle / Status / Captions
+                if (!_isSynced)
+                  Text(
+                    _statusMessage,
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 16,
+                    ),
+                    textAlign: TextAlign.center,
+                  )
+                else if (widget.syncType == 'AD')
+                  const Text(
+                    '현재 배경음과 화면해설이\n동기화되어 출력되고 있습니다.',
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 18,
+                      height: 1.5,
+                    ),
+                    textAlign: TextAlign.center,
+                  )
+                else
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 40),
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      _sampleCaptions[_captionIndex],
+                      style: const TextStyle(
+                        color: Colors.yellow,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        height: 1.4,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
                   ),
-                ),
+
+                const SizedBox(height: 60),
+
+                // Post-Sync specific UI
+                if (!_isSynced)
+                  // Progress Bar
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 48),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: LinearProgressIndicator(
+                        value: _progress,
+                        backgroundColor: Colors.grey[900],
+                        valueColor: const AlwaysStoppedAnimation<Color>(Colors.red),
+                        minHeight: 12,
+                      ),
+                    ),
+                  )
+                else
+                  // Status Text or Control Button
+                  Column(
+                    children: [
+                      if (widget.syncType == 'AD')
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                          decoration: BoxDecoration(
+                            color: Colors.green.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: Colors.green, width: 1),
+                          ),
+                          child: const Text(
+                            "● 화면해설 중",
+                            style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      const SizedBox(height: 40),
+                      ElevatedButton(
+                        onPressed: () => Navigator.pop(context),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.grey[900],
+                          foregroundColor: Colors.white,
+                          minimumSize: const Size(200, 56),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(28),
+                          ),
+                        ),
+                        child: const Text("동기화 종료", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      ),
+                    ],
+                  ),
               ],
             ),
           ),
 
-          // Close button
+          // Close button (Always there but logic changes slightly when synced)
           SafeArea(
             child: Align(
               alignment: Alignment.topRight,
@@ -237,13 +331,14 @@ class _SyncScreenState extends State<SyncScreen>
 
 class AudioBarsPainter extends CustomPainter {
   final double animation;
+  final Color color;
 
-  AudioBarsPainter({required this.animation});
+  AudioBarsPainter({required this.animation, this.color = Colors.red});
 
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.red
+      ..color = color
       ..style = PaintingStyle.fill;
 
     const barCount = 7;
@@ -272,6 +367,6 @@ class AudioBarsPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(AudioBarsPainter oldDelegate) {
-    return animation != oldDelegate.animation;
+    return animation != oldDelegate.animation || color != oldDelegate.color;
   }
 }
