@@ -98,6 +98,7 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
                 builder: (context) => Semantics(
                   label: "메뉴",
                   excludeSemantics: true,
+                  container: true,
                   child: GestureDetector(
                     onTap: () {
                       HapticFeedback.mediumImpact();
@@ -132,6 +133,7 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
               child: Semantics(
                 label: "음성검색",
                 excludeSemantics: true,
+                container: true,
                 child: GestureDetector(
                   onTap: () {
                     HapticFeedback.mediumImpact();
@@ -313,8 +315,8 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
 
   String _buildMovieLabel(Movie movie) {
     final parts = <String>[movie.title];
-    if (movie.hasAD) parts.add("화면해설");
-    if (movie.hasCC) parts.add("한글자막");
+    if (movie.hasAD) parts.add("화면해설 지원");
+    if (movie.hasCC) parts.add("한글자막 지원");
     return parts.join(", ");
   }
 

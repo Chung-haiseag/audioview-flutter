@@ -26,10 +26,13 @@ class _SearchScreenState extends State<SearchScreen> {
   List<Movie> _searchResults = [];
   bool _isLoading = false;
   Timer? _debounce;
+  bool _hasSearched = false; // 검색이 완료되었는지 추적
 
   // Voice Search states
   final stt.SpeechToText _speech = stt.SpeechToText();
   bool _isListening = false;
+  Timer? _listenTimeoutTimer;
+  bool _isRetryListening = false; // 재시도 청취 여부
 
   List<String> _recommendations = [];
 
@@ -39,6 +42,28 @@ class _SearchScreenState extends State<SearchScreen> {
     _movieService = context.read<MovieService>();
     _initSpeech();
     _loadRecommendations();
+
+    // 간편모드에서 화면 진입 시 자동으로 음성검색 시작
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _startLiteModeVoiceSearch();
+    });
+  }
+
+  Future<void> _startLiteModeVoiceSearch() async {
+    final auth = Provider.of<AuthProvider>(context, listen: false);
+    final isLiteMode = auth.userData?['isVisuallyImpaired'] == true;
+
+    if (isLiteMode && mounted) {
+      await Future.delayed(const Duration(milliseconds: 500));
+      if (mounted) {
+        _announce("영화 제목이나 배우 이름을 말씀하시면 영화 찾아드립니다");
+        await Future.delayed(const Duration(milliseconds: 1500));
+        if (mounted && !_isListening) {
+          _isRetryListening = true; // 첫 진입 시에도 중복 나래이션 방지
+          _toggleListening();
+        }
+      }
+    }
   }
 
   Future<void> _loadRecommendations() async {
@@ -66,6 +91,7 @@ class _SearchScreenState extends State<SearchScreen> {
     debugPrint('STT: _toggleListening called. current state _isListening: $_isListening');
     if (_isListening) {
       debugPrint('STT: Stopping listening...');
+      _listenTimeoutTimer?.cancel();
       await _speech.stop();
       if (!mounted) return;
       setState(() => _isListening = false);
@@ -93,20 +119,54 @@ class _SearchScreenState extends State<SearchScreen> {
         if (available) {
           debugPrint('STT: Starting to listen...');
           setState(() => _isListening = true);
-          _announce("듣고 있어요. 영화 제목이나 배우를 말씀하세요");
+
+          // 재시도가 아닐 때만 나래이션
+          if (!_isRetryListening) {
+            _announce("영화 제목이나 배우 이름을 말씀하시면 영화 찾아드립니다");
+          }
+          _isRetryListening = false; // 플래그 리셋
+
+          // 20초 타임아웃 타이머 시작
+          _listenTimeoutTimer?.cancel();
+          _listenTimeoutTimer = Timer(const Duration(seconds: 20), () {
+            if (mounted && _isListening) {
+              _speech.stop();
+              setState(() => _isListening = false);
+              // 입력된 텍스트가 없으면 "다시 말씀하세요" 안내 후 재시작
+              if (_searchController.text.trim().isEmpty) {
+                _announce("다시 말씀하세요");
+                // 2초 후 비프음 + 음성청취 재시작
+                Future.delayed(const Duration(seconds: 2), () {
+                  if (mounted && !_isListening) {
+                    SystemSound.play(SystemSoundType.click);
+                    HapticFeedback.mediumImpact();
+                    _isRetryListening = true; // 재시도 플래그 설정
+                    _toggleListening();
+                  }
+                });
+              }
+            }
+          });
+
           await _speech.listen(
             onResult: (result) {
-              debugPrint('STT Result: ${result.recognizedWords} (final: ${result.finalResult})');
+              debugPrint('STT Result: ${result.recognizedWords} (final: ${result.finalResult}, confidence: ${result.confidence})');
               if (!mounted) return;
               setState(() {
                 _searchController.text = result.recognizedWords;
                 if (result.finalResult) {
+                  _listenTimeoutTimer?.cancel();
                   _isListening = false;
                   _performSearch(result.recognizedWords);
                 }
               });
             },
             localeId: 'ko_KR',
+            listenFor: const Duration(seconds: 20),
+            pauseFor: const Duration(seconds: 5),
+            partialResults: true, // 중간 결과도 받기
+            cancelOnError: false, // 에러 시 취소하지 않음
+            listenMode: stt.ListenMode.search, // 검색 모드 (짧은 문구에 최적화)
           );
         } else {
           debugPrint('STT: Speech not available on this device/environment');
@@ -140,6 +200,7 @@ class _SearchScreenState extends State<SearchScreen> {
     if (query.trim().isEmpty) {
       setState(() {
         _searchResults = [];
+        _hasSearched = false;
       });
       return;
     }
@@ -152,6 +213,7 @@ class _SearchScreenState extends State<SearchScreen> {
       final results = await _movieService.searchMovies(query);
       setState(() {
         _searchResults = results;
+        _hasSearched = true;
       });
       // 검색 결과 나래이션
       if (results.isNotEmpty) {
@@ -179,6 +241,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   void dispose() {
     _debounce?.cancel();
+    _listenTimeoutTimer?.cancel();
     _searchController.dispose();
     _searchFocusNode.dispose();
     super.dispose();
@@ -336,25 +399,303 @@ class _SearchScreenState extends State<SearchScreen> {
         titleSpacing: 0,
         backgroundColor: Colors.black,
         elevation: 0,
-        title: Row(
+        title: ExcludeSemantics(
+          child: Center(
+            child: Text(
+              "음성 검색",
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+      ),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : _buildLiteModeBody(),
+    );
+  }
+
+  Widget _buildLiteModeBody() {
+    // 검색 결과가 있는 경우
+    if (_searchResults.isNotEmpty) {
+      return Column(
+        children: [
+          // 검색 결과 개수 표시
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Semantics(
+                  liveRegion: true,
+                  excludeSemantics: true,
+                  container: true,
+                  child: Text(
+                    "영화 ${_searchResults.length}개가 검색되었습니다",
+                    style: const TextStyle(
+                      color: Colors.yellow,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                // 다시 검색 버튼
+                Semantics(
+                  label: "다시 검색",
+                  excludeSemantics: true,
+                  container: true,
+                  child: GestureDetector(
+                    onTap: () {
+                      HapticFeedback.mediumImpact();
+                      setState(() {
+                        _searchResults = [];
+                        _hasSearched = false;
+                        _searchController.clear();
+                      });
+                      _toggleListening();
+                    },
+                    behavior: HitTestBehavior.opaque,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white54, width: 1),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: const [
+                          Icon(Icons.mic, color: Colors.white, size: 20),
+                          SizedBox(width: 8),
+                          Text(
+                            "다시 검색",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // 검색 결과 목록
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              itemCount: _searchResults.length,
+              itemBuilder: (context, index) {
+                final movie = _searchResults[index];
+                return Semantics(
+                  focused: index == 0,
+                  label: "${movie.title}, ${movie.duration}분${movie.hasAD ? ', 화면해설 지원' : ''}${movie.hasCC ? ', 한글자막 지원' : ''}",
+                  excludeSemantics: true,
+                  container: true,
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      HapticFeedback.lightImpact();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MovieDetailScreen(movie: movie),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      constraints: const BoxConstraints(minHeight: 80),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                      decoration: const BoxDecoration(
+                        border: Border(bottom: BorderSide(color: Colors.grey, width: 0.5)),
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.baseline,
+                        textBaseline: TextBaseline.alphabetic,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              movie.title,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Text(
+                            "${movie.duration}분",
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      );
+    }
+
+    // 검색했으나 결과가 없는 경우
+    if (_hasSearched && _searchResults.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Left: Back button as text
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Semantics(
-                label: "뒤로가기",
-                excludeSemantics: true,
-                child: TextButton(
-                  onPressed: () {
-                    HapticFeedback.mediumImpact();
-                    Navigator.pop(context);
-                  },
-                  style: TextButton.styleFrom(
-                    minimumSize: const Size(80, 48),
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+            const Icon(
+              Icons.search_off,
+              size: 80,
+              color: Colors.white54,
+            ),
+            const SizedBox(height: 24),
+            Text(
+              "'${_searchController.text}' 검색 결과가 없습니다",
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 40),
+            Semantics(
+              label: "다시 검색",
+              excludeSemantics: true,
+              container: true,
+              child: GestureDetector(
+                onTap: () {
+                  HapticFeedback.mediumImpact();
+                  setState(() {
+                    _hasSearched = false;
+                    _searchController.clear();
+                  });
+                  _toggleListening();
+                },
+                behavior: HitTestBehavior.opaque,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      Icon(Icons.mic, color: Colors.white, size: 24),
+                      SizedBox(width: 12),
+                      Text(
+                        "다시 검색",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // 초기 화면 (마이크 애니메이션)
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // 마이크 애니메이션
+          Semantics(
+            label: _isListening ? "듣고 있어요" : "음성 검색 시작",
+            excludeSemantics: true,
+            container: true,
+            child: GestureDetector(
+              onTap: () {
+                HapticFeedback.mediumImpact();
+                _toggleListening();
+              },
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                padding: const EdgeInsets.all(50),
+                decoration: BoxDecoration(
+                  color: _isListening
+                      ? Colors.red.withOpacity(0.3)
+                      : Colors.grey.withOpacity(0.2),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: _isListening ? Colors.red : Colors.white,
+                    width: _isListening ? 4 : 3,
+                  ),
+                  boxShadow: _isListening
+                      ? [
+                          BoxShadow(
+                            color: Colors.red.withOpacity(0.5),
+                            blurRadius: 30,
+                            spreadRadius: 10,
+                          )
+                        ]
+                      : null,
+                ),
+                child: Icon(
+                  Icons.mic,
+                  size: 100,
+                  color: _isListening ? Colors.red : Colors.white,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 40),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32),
+            child: Text(
+              _isListening
+                  ? "듣고 있어요..."
+                  : "영화 제목이나 배우 이름을\n말씀하시면 영화 찾아드립니다",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: _isListening ? Colors.red : Colors.white,
+                fontSize: 24,
+                height: 1.5,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          if (_isListening) ...[
+            const SizedBox(height: 30),
+            Semantics(
+              label: "취소",
+              excludeSemantics: true,
+              container: true,
+              child: GestureDetector(
+                onTap: () {
+                  HapticFeedback.mediumImpact();
+                  _toggleListening();
+                },
+                behavior: HitTestBehavior.opaque,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.white54, width: 2),
+                    borderRadius: BorderRadius.circular(30),
                   ),
                   child: const Text(
-                    "뒤로가기",
+                    "취소",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,
@@ -364,217 +705,38 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               ),
             ),
-            const Spacer(),
-            // Center: Title with double-tap to reset
-            Semantics(
-              label: "음성 검색",
-              excludeSemantics: true,
-              child: GestureDetector(
-                onDoubleTap: () {
-                  setState(() {
-                    _searchResults = [];
-                    _searchController.clear();
-                  });
-                },
-                child: const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    "음성 검색",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
+          ],
+          // 뒤로가기 버튼 (접근성 포커스 순서 마지막)
+          const SizedBox(height: 40),
+          Semantics(
+            label: "뒤로가기",
+            excludeSemantics: true,
+            container: true,
+            child: GestureDetector(
+              onTap: () {
+                HapticFeedback.mediumImpact();
+                Navigator.pop(context);
+              },
+              behavior: HitTestBehavior.opaque,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey, width: 1),
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                child: const Text(
+                  "뒤로가기",
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
             ),
-            const Spacer(),
-            const SizedBox(width: 80), // Balance for back button
-          ],
-        ),
+          ),
+        ],
       ),
-      body: _searchResults.isEmpty && !_isLoading
-          ? SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Added TextField for Lite Mode
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Colors.white24, width: 2),
-                      ),
-                      child: TextField(
-                        controller: _searchController,
-                        focusNode: _searchFocusNode,
-                        onChanged: _onSearchChanged,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        decoration: const InputDecoration(
-                          hintText: '검색어를 직접 입력하려면 여기를 누르세요',
-                          hintStyle: TextStyle(color: Colors.grey, fontSize: 18),
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.all(20),
-                        ),
-                        onTap: () {
-                          HapticFeedback.mediumImpact();
-                          _announce("제목 입력을 위해 키보드를 엽니다");
-                        },
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Semantics(
-                    label: _isListening ? "듣고 있어요" : "음성 검색 시작",
-                    excludeSemantics: true,
-                    child: GestureDetector(
-                      onTap: () {
-                        HapticFeedback.mediumImpact();
-                        _toggleListening();
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(40),
-                        decoration: BoxDecoration(
-                          color: _isListening
-                              ? Colors.red.withOpacity(0.2)
-                              : Colors.grey.withOpacity(0.2),
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: _isListening ? Colors.red : Colors.white,
-                            width: 3,
-                          ),
-                        ),
-                        child: Icon(
-                          Icons.mic,
-                          size: 80,
-                          color: _isListening ? Colors.red : Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 32),
-                    child: Text(
-                      "영화제목이나 배우의 이름을\n이야기 하시면 영화를 찾아 드릴게요",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        height: 1.5,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  if (_isListening) ...[
-                    const SizedBox(height: 20),
-                    const Text(
-                      "듣고 있어요...",
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ],
-              ),
-            )
-          : _isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : Column(
-                  children: [
-                    if (_searchResults.length > 1)
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Semantics(
-                          liveRegion: true,
-                          child: Text(
-                            "영화 ${_searchResults.length}개가 검색되었습니다",
-                            style: const TextStyle(
-                              color: Colors.yellow,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    Expanded(
-                      child: ListView.builder(
-                        padding: const EdgeInsets.symmetric(vertical: 20),
-                        itemCount: _searchResults.length,
-                        itemBuilder: (context, index) {
-                          final movie = _searchResults[index];
-                          // Auto-focus first item semantics
-                          return Semantics(
-                            focused: index == 0,
-                            label: "${movie.title}, ${movie.duration}분",
-                            excludeSemantics: true,
-                            child: GestureDetector(
-                              behavior: HitTestBehavior.opaque,
-                              onTap: () {
-                                HapticFeedback.lightImpact();
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        MovieDetailScreen(movie: movie),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                width: double.infinity,
-                                constraints:
-                                    const BoxConstraints(minHeight: 80),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 20),
-                                decoration: const BoxDecoration(
-                                  border: Border(
-                                      bottom: BorderSide(
-                                          color: Colors.grey, width: 0.5)),
-                                ),
-                                child: Row(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.baseline,
-                                  textBaseline: TextBaseline.alphabetic,
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        movie.title,
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 16),
-                                    Text(
-                                      "${movie.duration}분",
-                                      style: const TextStyle(
-                                        color: Colors.white70,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
     );
   }
 

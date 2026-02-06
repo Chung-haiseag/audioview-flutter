@@ -52,13 +52,13 @@ class _SyncScreenState extends State<SyncScreen>
     _progressTimer = Timer.periodic(duration, (timer) {
       setState(() {
         if (_progress < 0.3) {
-          _progress += 0.005;
+          _progress += 0.010; // 2배 빠르게 (0.005 -> 0.010)
           _statusMessage = '영화 스트림 분석 중...';
         } else if (_progress < 0.7) {
-          _progress += 0.008;
+          _progress += 0.016; // 2배 빠르게 (0.008 -> 0.016)
           _statusMessage = '${widget.syncType == 'AD' ? '화면해설' : '한글자막'} 준비 중...';
         } else if (_progress < 1.0) {
-          _progress += 0.012;
+          _progress += 0.024; // 2배 빠르게 (0.012 -> 0.024)
           _statusMessage = '최적의 자원을 설정하는 중...';
         } else {
           _progress = 1.0;
