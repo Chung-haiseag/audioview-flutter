@@ -67,10 +67,7 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
   }
 
   void _announceMovieItem(Movie movie) {
-    _announce(
-      "${movie.title}. 재생시간 ${movie.duration}분. 상세 정보로 이동합니다.",
-      interrupt: true,
-    );
+    _announce(movie.title, interrupt: true);
   }
 
   @override
@@ -248,21 +245,14 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       child: Semantics(
-        label: "", // 빈 라벨로 TalkBack 읽기 방지
-        container: true,
-        // header: true, // "헤더" 시스템 음성 제거
+        label: title,
         excludeSemantics: true,
-        onDidGainAccessibilityFocus: () {
-          _announce("$title 목록입니다.", interrupt: true);
-        },
-        child: ExcludeSemantics(
-          child: Text(
-            title,
-            style: const TextStyle(
-              color: Colors.yellow, // High contrast
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-            ),
+        child: Text(
+          title,
+          style: const TextStyle(
+            color: Colors.yellow,
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
@@ -345,69 +335,58 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
     );
   }
 
+  String _buildMovieLabel(Movie movie) {
+    final parts = <String>[movie.title];
+    if (movie.hasAD) parts.add("화면해설");
+    if (movie.hasCC) parts.add("한글자막");
+    return parts.join(", ");
+  }
+
   Widget _buildMovieTile(Movie movie) {
     return Semantics(
-      label: "", // 빈 라벨로 TalkBack 읽기 방지
-      container: true,
-      // button: true, // "버튼" 시스템 음성 제거
+      label: _buildMovieLabel(movie),
       excludeSemantics: true,
-      onDidGainAccessibilityFocus: () {
-        _announceMovieItem(movie);
-      },
-      onTap: () {
-        HapticFeedback.lightImpact();
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => MovieDetailScreen(movie: movie),
+      child: GestureDetector(
+        onTap: () {
+          HapticFeedback.lightImpact();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MovieDetailScreen(movie: movie),
+            ),
+          );
+        },
+        behavior: HitTestBehavior.opaque,
+        child: Container(
+          width: double.infinity,
+          constraints: const BoxConstraints(minHeight: 100),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+          decoration: const BoxDecoration(
+            border: Border(bottom: BorderSide(color: Colors.grey, width: 0.5)),
           ),
-        );
-      },
-      child: ExcludeSemantics(
-        child: InkWell(
-          onTap: () {
-            // Visual touch
-            HapticFeedback.lightImpact();
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MovieDetailScreen(movie: movie),
-              ),
-            );
-          },
-          child: Container(
-            width: double.infinity,
-            constraints:
-                const BoxConstraints(minHeight: 100), // Increased height
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-            decoration: const BoxDecoration(
-              border:
-                  Border(bottom: BorderSide(color: Colors.grey, width: 0.5)),
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Text(
-                    movie.title,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Text(
-                  "${movie.duration}분",
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Text(
+                  movie.title,
                   style: const TextStyle(
-                    color: Colors.white70,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(width: 16),
+              Text(
+                "${movie.duration}분",
+                style: const TextStyle(
+                  color: Colors.white70,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
           ),
         ),
       ),
