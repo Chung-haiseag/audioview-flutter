@@ -80,6 +80,18 @@ class _SyncScreenState extends State<SyncScreen>
     });
   }
 
+  void _resetSync() {
+    _progressTimer?.cancel();
+    _captionTimer?.cancel();
+    setState(() {
+      _progress = 0.0;
+      _isSynced = false;
+      _statusMessage = '동기화 시작 중...';
+      _captionIndex = 0;
+    });
+    _startSimulatedProgress();
+  }
+
   void _startCaptionSimulation() {
     _captionTimer = Timer.periodic(const Duration(seconds: 3), (timer) {
       if (mounted) {
@@ -274,20 +286,21 @@ class _SyncScreenState extends State<SyncScreen>
                       ),
                     ),
                     const SizedBox(height: 60),
-                    ElevatedButton(
-                      onPressed: () => Navigator.pop(context),
+                    ElevatedButton.icon(
+                      onPressed: _resetSync,
+                      icon: const Icon(Icons.refresh, size: 18),
+                      label: const Text(
+                        "재동기화",
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.grey[900],
                         foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                          borderRadius: BorderRadius.circular(20),
                         ),
                         elevation: 0,
-                      ),
-                      child: const Text(
-                        "동기화 종료",
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ] else
