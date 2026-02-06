@@ -275,8 +275,8 @@ class _SyncScreenState extends State<SyncScreen>
                           Icon(Icons.graphic_eq, color: Colors.green, size: 24),
                           SizedBox(width: 12),
                           Text(
-                            "화면해설 중",
-                            style: TextStyle(
+                            "화면해설 동기화",
+                            style: const TextStyle(
                               color: Colors.green,
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
