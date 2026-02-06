@@ -56,7 +56,7 @@ class _SyncScreenState extends State<SyncScreen>
           _statusMessage = '영화 스트림 분석 중...';
         } else if (_progress < 0.7) {
           _progress += 0.008;
-          _statusMessage = '${widget.syncType == 'AD' ? '화면해설' : '한글자막'} 다운로드 중...';
+          _statusMessage = '${widget.syncType == 'AD' ? '화면해설' : '한글자막'} 준비 중...';
         } else if (_progress < 1.0) {
           _progress += 0.012;
           _statusMessage = '최적의 자원을 설정하는 중...';
