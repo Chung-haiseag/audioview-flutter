@@ -96,41 +96,31 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
               padding: const EdgeInsets.only(left: 8.0),
               child: Builder(
                 builder: (context) => Semantics(
-                  label: "", // 빈 라벨로 TalkBack 읽기 방지
-                  // button: true, // "버튼" 시스템 음성 제거
+                  label: "메뉴",
                   excludeSemantics: true,
-                  onDidGainAccessibilityFocus: () {
-                    _announceMenuButton();
-                  },
-                  onTap: () {
-                    HapticFeedback.mediumImpact();
-                    Scaffold.of(context).openDrawer();
-                  },
-                  child: TextButton(
-                    onPressed: () {
-                      // Visual touch (optional if Semantics absorbs it, but safer to keep for non-a11y touch)
+                  child: GestureDetector(
+                    onTap: () {
                       HapticFeedback.mediumImpact();
                       Scaffold.of(context).openDrawer();
                     },
-                    style: TextButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      minimumSize: const Size(60, 48),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 8),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        Icon(Icons.menu, size: 28),
-                        SizedBox(width: 8),
-                        Text(
-                          "메뉴",
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
+                    behavior: HitTestBehavior.opaque,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: const [
+                          Icon(Icons.menu, size: 28, color: Colors.white),
+                          SizedBox(width: 8),
+                          Text(
+                            "메뉴",
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -140,23 +130,10 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
             Padding(
               padding: const EdgeInsets.only(right: 8.0),
               child: Semantics(
-                label: "", // 빈 라벨로 TalkBack 읽기 방지
-                // button: true, // "버튼" 시스템 음성 제거
+                label: "음성검색",
                 excludeSemantics: true,
-                onDidGainAccessibilityFocus: () {
-                  _announceSearchButton();
-                },
-                onTap: () {
-                  HapticFeedback.mediumImpact();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SearchScreen(),
-                    ),
-                  );
-                },
-                child: TextButton(
-                  onPressed: () {
+                child: GestureDetector(
+                  onTap: () {
                     HapticFeedback.mediumImpact();
                     Navigator.push(
                       context,
@@ -165,25 +142,24 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
                       ),
                     );
                   },
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    minimumSize: const Size(60, 48),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      Icon(Icons.mic, size: 28),
-                      SizedBox(width: 8),
-                      Text(
-                        "음성검색",
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
+                  behavior: HitTestBehavior.opaque,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: const [
+                        Icon(Icons.mic, size: 28, color: Colors.white),
+                        SizedBox(width: 8),
+                        Text(
+                          "음성검색",
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -346,6 +322,7 @@ class _VoiceHomeScreenState extends State<VoiceHomeScreen> {
     return Semantics(
       label: _buildMovieLabel(movie),
       excludeSemantics: true,
+      container: true,
       child: GestureDetector(
         onTap: () {
           HapticFeedback.lightImpact();
