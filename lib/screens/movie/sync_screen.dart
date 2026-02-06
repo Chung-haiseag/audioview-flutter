@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'dart:math' as math;
+import 'dart:async';
 
 class SyncScreen extends StatefulWidget {
   final String syncType; // 'AD' or 'CC'
@@ -16,6 +18,9 @@ class SyncScreen extends StatefulWidget {
 class _SyncScreenState extends State<SyncScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+  double _progress = 0.0;
+  Timer? _progressTimer;
+  String _statusMessage = '영화 스트림 분석 중...';
 
   @override
   void initState() {
@@ -24,11 +29,53 @@ class _SyncScreenState extends State<SyncScreen>
       duration: const Duration(milliseconds: 1500),
       vsync: this,
     )..repeat();
+
+    _startSimulatedProgress();
+  }
+
+  void _startSimulatedProgress() {
+    const duration = Duration(milliseconds: 50);
+    _progressTimer = Timer.periodic(duration, (timer) {
+      setState(() {
+        if (_progress < 0.3) {
+          _progress += 0.005;
+          _statusMessage = '영화 스트림 분석 중...';
+        } else if (_progress < 0.7) {
+          _progress += 0.008;
+          _statusMessage = '${widget.syncType == 'AD' ? '화면해설' : '문자해설'} 다운로드 중...';
+        } else if (_progress < 1.0) {
+          _progress += 0.012;
+          _statusMessage = '최적의 자원을 설정하는 중...';
+        } else {
+          _progress = 1.0;
+          _statusMessage = '완료되었습니다!';
+          _progressTimer?.cancel();
+          _onSyncComplete();
+        }
+      });
+    });
+  }
+
+  void _onSyncComplete() {
+    HapticFeedback.heavyImpact();
+    Future.delayed(const Duration(milliseconds: 800), () {
+      if (mounted) {
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('동기화가 완료되었습니다.'),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    });
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _progressTimer?.cancel();
     super.dispose();
   }
 
@@ -96,32 +143,62 @@ class _SyncScreenState extends State<SyncScreen>
                           );
                         },
                       ),
+
+                      // Percentage text
+                      Positioned(
+                        bottom: 40,
+                        child: Text(
+                          '${(_progress * 100).toInt()}%',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 48,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: -1,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
 
-                const SizedBox(height: 60),
+                const SizedBox(height: 40),
 
                 // Title
                 const Text(
                   '실시간 동기화 중',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 24,
+                    fontSize: 28,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
 
                 const SizedBox(height: 12),
 
-                // Subtitle
-                const Text(
-                  '영화 스트림 분석하여 최적의 자원을 찾고 있습니다.',
-                  style: TextStyle(
+                // Subtitle / Status Message
+                Text(
+                  _statusMessage,
+                  style: const TextStyle(
                     color: Colors.grey,
-                    fontSize: 14,
+                    fontSize: 16,
                   ),
                   textAlign: TextAlign.center,
+                ),
+
+                const SizedBox(height: 40),
+
+                // Progress Bar
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 48),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: LinearProgressIndicator(
+                      value: _progress,
+                      backgroundColor: Colors.grey[900],
+                      valueColor: const AlwaysStoppedAnimation<Color>(Colors.red),
+                      minHeight: 12,
+                    ),
+                  ),
                 ),
               ],
             ),
