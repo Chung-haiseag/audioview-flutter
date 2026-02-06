@@ -300,7 +300,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                     // CC button
                     _buildAccessibilityButton(
                       icon: Icons.closed_caption,
-                      label: '문자해설(CC)',
+                      label: '한글자막(CC)',
                       isEnabled: widget.movie.hasCC,
                       onTap: () {
                         Navigator.push(
@@ -492,7 +492,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
             if (widget.movie.hasCC)
               _buildLiteModeActionButton(
                 context: context,
-                label: '문자해설(CC) 감상하기',
+                label: '한글자막(CC) 감상하기',
                 onTap: () {
                   Navigator.push(
                     context,
