@@ -119,27 +119,55 @@ class _SyncScreenState extends State<SyncScreen>
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          // Close button (Subtle when synced)
+          // Top actions (Re-sync for CC & Close)
           SafeArea(
             child: Align(
               alignment: Alignment.topRight,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: IconButton(
-                  icon: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[900]?.withOpacity(isSyncedMinimalUI ? 0.3 : 1.0),
-                      shape: BoxShape.circle,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Re-sync button (Only for CC when synced)
+                    if (isSyncedMinimalUI && widget.syncType == 'CC') ...[
+                      IconButton(
+                        tooltip: '재동기화',
+                        icon: Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[900]?.withOpacity(0.3),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.refresh,
+                            color: Colors.white54,
+                            size: 20,
+                          ),
+                        ),
+                        onPressed: _resetSync,
+                      ),
+                      const SizedBox(width: 8),
+                    ],
+
+                    // Close button
+                    IconButton(
+                      icon: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[900]?.withOpacity(isSyncedMinimalUI ? 0.3 : 1.0),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.close,
+                          color: Colors.white.withOpacity(isSyncedMinimalUI ? 0.3 : 1.0),
+                          size: 24,
+                        ),
+                      ),
+                      onPressed: () => Navigator.pop(context),
                     ),
-                    child: Icon(
-                      Icons.close,
-                      color: Colors.white.withOpacity(isSyncedMinimalUI ? 0.3 : 1.0),
-                      size: 24,
-                    ),
-                  ),
-                  onPressed: () => Navigator.pop(context),
+                  ],
                 ),
               ),
             ),
