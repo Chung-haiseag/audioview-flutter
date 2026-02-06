@@ -100,110 +100,141 @@ class _SyncScreenState extends State<SyncScreen>
 
   @override
   Widget build(BuildContext context) {
+    // Determine if we should show the minimal CC UI
+    final bool isMinimalCCStatus = _isSynced && widget.syncType == 'CC';
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
         children: [
+          // Close button (Always there but logic changes slightly when synced)
+          SafeArea(
+            child: Align(
+              alignment: Alignment.topRight,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: IconButton(
+                  icon: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[900]?.withOpacity(isMinimalCCStatus ? 0.3 : 1.0),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.close,
+                      color: Colors.white.withOpacity(isMinimalCCStatus ? 0.3 : 1.0),
+                      size: 24,
+                    ),
+                  ),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ),
+            ),
+          ),
+
           // Main content
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Animated audio visualizer
-                SizedBox(
-                  width: 300,
-                  height: 300,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      // Outer gradient circle
-                      Container(
-                        width: 300,
-                        height: 300,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: RadialGradient(
-                            colors: [
-                              Colors.red.withValues(alpha: 0.3),
-                              (_isSynced ? Colors.green : Colors.red).withValues(alpha: 0.1),
-                              Colors.transparent,
-                            ],
-                            stops: const [0.0, 0.5, 1.0],
-                          ),
-                        ),
-                      ),
-
-                      // Middle gradient circle
-                      Container(
-                        width: 200,
-                        height: 200,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: RadialGradient(
-                            colors: [
-                              (_isSynced ? Colors.green : Colors.red).withValues(alpha: 0.4),
-                              (_isSynced ? Colors.green : Colors.red).withValues(alpha: 0.2),
-                              Colors.transparent,
-                            ],
-                            stops: const [0.0, 0.6, 1.0],
-                          ),
-                        ),
-                      ),
-
-                      // Audio bars animation
-                      AnimatedBuilder(
-                        animation: _controller,
-                        builder: (context, child) {
-                          return CustomPaint(
-                            size: const Size(120, 80),
-                            painter: AudioBarsPainter(
-                              animation: _controller.value,
-                              color: _isSynced ? Colors.green : Colors.red,
-                            ),
-                          );
-                        },
-                      ),
-
-                      // Percentage or Synced Icon
-                      if (!_isSynced)
-                        Positioned(
-                          bottom: 40,
-                          child: Text(
-                            '${(_progress * 100).toInt()}%',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 48,
-                              fontWeight: FontWeight.w900,
-                              letterSpacing: -1,
+                if (!isMinimalCCStatus) ...[
+                  // Animated audio visualizer
+                  SizedBox(
+                    width: 300,
+                    height: 300,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        // Outer gradient circle
+                        Container(
+                          width: 300,
+                          height: 300,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: RadialGradient(
+                              colors: [
+                                Colors.red.withValues(alpha: 0.3),
+                                (_isSynced ? Colors.green : Colors.red).withValues(alpha: 0.1),
+                                Colors.transparent,
+                              ],
+                              stops: const [0.0, 0.5, 1.0],
                             ),
                           ),
-                        )
-                      else
-                        const Positioned(
-                          bottom: 40,
-                          child: Icon(
-                            Icons.check_circle_outline,
-                            color: Colors.green,
-                            size: 64,
+                        ),
+
+                        // Middle gradient circle
+                        Container(
+                          width: 200,
+                          height: 200,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: RadialGradient(
+                              colors: [
+                                (_isSynced ? Colors.green : Colors.red).withValues(alpha: 0.4),
+                                (_isSynced ? Colors.green : Colors.red).withValues(alpha: 0.2),
+                                Colors.transparent,
+                              ],
+                              stops: const [0.0, 0.6, 1.0],
+                            ),
                           ),
                         ),
-                    ],
+
+                        // Audio bars animation
+                        AnimatedBuilder(
+                          animation: _controller,
+                          builder: (context, child) {
+                            return CustomPaint(
+                              size: const Size(120, 80),
+                              painter: AudioBarsPainter(
+                                animation: _controller.value,
+                                color: _isSynced ? Colors.green : Colors.red,
+                              ),
+                            );
+                          },
+                        ),
+
+                        // Percentage or Synced Icon
+                        if (!_isSynced)
+                          Positioned(
+                            bottom: 40,
+                            child: Text(
+                              '${(_progress * 100).toInt()}%',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 48,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: -1,
+                              ),
+                            ),
+                          )
+                        else
+                          const Positioned(
+                            bottom: 40,
+                            child: Icon(
+                              Icons.check_circle_outline,
+                              color: Colors.green,
+                              size: 64,
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
-                ),
 
-                const SizedBox(height: 40),
+                  const SizedBox(height: 40),
 
-                // Title
-                Text(
-                  _isSynced ? '실시간 동기화 완료' : '실시간 동기화 중',
-                  style: TextStyle(
-                    color: _isSynced ? Colors.green : Colors.white,
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
+                  // Title
+                  Text(
+                    _isSynced ? '실시간 동기화 완료' : '실시간 동기화 중',
+                    style: TextStyle(
+                      color: _isSynced ? Colors.green : Colors.white,
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
 
-                const SizedBox(height: 12),
+                  const SizedBox(height: 12),
+                ],
 
                 // Subtitle / Status / Captions
                 if (!_isSynced)
@@ -226,101 +257,83 @@ class _SyncScreenState extends State<SyncScreen>
                     textAlign: TextAlign.center,
                   )
                 else
+                  // Large caption on black background
                   Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 40),
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+                    width: double.infinity,
                     child: Text(
                       _sampleCaptions[_captionIndex],
                       style: const TextStyle(
-                        color: Colors.yellow,
-                        fontSize: 22,
+                        color: Colors.white,
+                        fontSize: 32,
                         fontWeight: FontWeight.bold,
                         height: 1.4,
+                        shadows: [
+                          Shadow(
+                            offset: Offset(0, 2),
+                            blurRadius: 4.0,
+                            color: Colors.black,
+                          ),
+                        ],
                       ),
                       textAlign: TextAlign.center,
                     ),
                   ),
 
-                const SizedBox(height: 60),
+                if (!isMinimalCCStatus) ...[
+                  const SizedBox(height: 60),
 
-                // Post-Sync specific UI
-                if (!_isSynced)
-                  // Progress Bar
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 48),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: LinearProgressIndicator(
-                        value: _progress,
-                        backgroundColor: Colors.grey[900],
-                        valueColor: const AlwaysStoppedAnimation<Color>(Colors.red),
-                        minHeight: 12,
-                      ),
-                    ),
-                  )
-                else
-                  // Status Text or Control Button
-                  Column(
-                    children: [
-                      if (widget.syncType == 'AD')
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                          decoration: BoxDecoration(
-                            color: Colors.green.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(color: Colors.green, width: 1),
-                          ),
-                          child: const Text(
-                            "● 화면해설 중",
-                            style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      const SizedBox(height: 40),
-                      ElevatedButton(
-                        onPressed: () => Navigator.pop(context),
-                        style: ElevatedButton.styleFrom(
+                  // Post-Sync specific UI
+                  if (!_isSynced)
+                    // Progress Bar
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 48),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: LinearProgressIndicator(
+                          value: _progress,
                           backgroundColor: Colors.grey[900],
-                          foregroundColor: Colors.white,
-                          minimumSize: const Size(200, 56),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(28),
-                          ),
+                          valueColor: const AlwaysStoppedAnimation<Color>(Colors.red),
+                          minHeight: 12,
                         ),
-                        child: const Text("동기화 종료", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                       ),
-                    ],
-                  ),
+                    )
+                  else
+                    // Status Text or Control Button (AD ONLY)
+                    Column(
+                      children: [
+                        if (widget.syncType == 'AD') ...[
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                            decoration: BoxDecoration(
+                              color: Colors.green.withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(color: Colors.green, width: 1),
+                            ),
+                            child: const Text(
+                              "● 화면해설 중",
+                              style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          const SizedBox(height: 40),
+                          ElevatedButton(
+                            onPressed: () => Navigator.pop(context),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey[900],
+                              foregroundColor: Colors.white,
+                              minimumSize: const Size(200, 56),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(28),
+                              ),
+                            ),
+                            child: const Text("동기화 종료", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                          ),
+                        ],
+                      ],
+                    ),
+                ],
               ],
-            ),
-          ),
-
-          // Close button (Always there but logic changes slightly when synced)
-          SafeArea(
-            child: Align(
-              alignment: Alignment.topRight,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: IconButton(
-                  icon: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[900],
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.close,
-                      color: Colors.white,
-                      size: 24,
-                    ),
-                  ),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ),
             ),
           ),
         ],
